@@ -310,6 +310,8 @@ public class Inlupp2_Gui extends JFrame {
 				System.out.println("Klickad");
 			}
 
+		//Hur funkar det här då?
+
 
 
 	} // End MusLyss
