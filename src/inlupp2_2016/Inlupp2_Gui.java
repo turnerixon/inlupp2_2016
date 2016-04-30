@@ -16,6 +16,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -26,8 +28,8 @@ public class Inlupp2_Gui extends JFrame {
 	private JPanel categoryDisplay;
 	private JScrollPane kartScroll;
 	private JScrollPane categoryScroll;
-	private String[] placesVal = { "Named places", "Described places" };
-	private String[] categoryListItem = { "Buss", "Tunnelbana", "Tåg" };
+	private String[] placesVal = {"Named places", "Described places"};
+	private String[] categoryListItem = {"Buss", "Tunnelbana", "Tåg"};
 
 	private JComboBox<String> boxen = new JComboBox<String>(placesVal);
 	private JList<String> categoryList = new JList<String>(categoryListItem);
@@ -81,7 +83,6 @@ public class Inlupp2_Gui extends JFrame {
 		JLabel newLabel = new JLabel("New: ");
 		vanster.add(newLabel);
 		vanster.add(boxen);
-		boxen.addActionListener(new PlaceLyss());
 
 		searchField = new JTextField("Search");
 		vanster.add(searchField);
@@ -149,6 +150,8 @@ public class Inlupp2_Gui extends JFrame {
 			kartScroll = new JScrollPane(bp);
 
 			add(kartScroll);
+			//PlaceLyss läggs här för att se till att användaren väljer en karta före den börja skapa platser.
+			boxen.addActionListener(new PlaceLyss());
 			pack();
 			validate();
 			repaint();
@@ -181,12 +184,13 @@ public class Inlupp2_Gui extends JFrame {
 		} // End constructor BildPlan
 	} // End class BildPlan
 
-	// KnappLyss för places
 
+
+	// KnappLyss för places
 	class PlaceLyss implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent ave) {
-				//Named place
+			//Named place
 			if (boxen.getSelectedIndex() == 0) {
 				bp.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 				bp.addMouseListener(musLyss);
@@ -201,35 +205,53 @@ public class Inlupp2_Gui extends JFrame {
 	} // End PlaceLyss-knappen
 
 
+	//Osäker på vad jag ska göra här just nu
+	class ListLyss implements ListSelectionListener {
+		public void valueChanged(ListSelectionEvent lev) {
+
+		}
+	}
+
+	class DrawPanel extends JPanel{
+		protected void paintComponent(Graphics g){
+			g.setColor(Color.RED);
+			g.fillRect(0,0,50,50);
+		}
+	}
+
+
+
+
 	//Utritning av trianglarna som markerar platser
-	class Triangel extends JComponent {
+	class Triangel extends DrawPanel {
 
 		public Triangel(int x, int y) {
 			setBounds(x, y, 50, 50);
 			setPreferredSize(new Dimension(50, 50));
-
 		}
 
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			if(categoryList.getSelectedValue()=="Buss"){
+			if (categoryList.getSelectedValue() == "Buss") {
 				g.setColor(Color.RED);
-			}
-			else if (categoryList.getSelectedValue()=="Tunnelbana"){
+				g.fillRect(0, 0, 50, 50);
+			} else if (categoryList.getSelectedValue() == "Tunnelbana") {
 				g.setColor(Color.BLUE);
-			}
-			else if(categoryList.getSelectedValue()=="Tåg"){
+				g.fillRect(0, 0, 50, 50);
+
+			} else if (categoryList.getSelectedValue() == "Tåg") {
 				g.setColor(Color.GREEN);
-			}
-			else {
+				g.fillRect(0, 0, 50, 50);
 
+			} else {
 				g.setColor(Color.BLACK);
+				g.fillRect(0, 0, 50, 50);
 			}
-			g.fillRect(0, 0, 50, 50);
-		}
-	}// End Triangel
 
+		} //End paintComponent
+
+	}// End Triangel
 
 
 	class MusLyss extends MouseAdapter {
@@ -252,10 +274,10 @@ public class Inlupp2_Gui extends JFrame {
 					}
 
 					String name = namedPlacesForm.getName();
-					if (name.equals("")){
+					if (name.equals("")) {
 						JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Inget namn");
-					return;
-				}
+						return;
+					}
 
 					NamedPlace namedPlace = new NamedPlace(name, category);
 					allMyPlaces.put(namedPlace, position);
@@ -265,60 +287,59 @@ public class Inlupp2_Gui extends JFrame {
 
 				}
 
-			}
+			} else {
+				try {
 
-			else {
-					try {
-
-						DescribedPlaceForm describedPlaceForm = new DescribedPlaceForm();
-						int svar = JOptionPane.showConfirmDialog(Inlupp2_Gui.this, describedPlaceForm, "Ny Plats",
-								JOptionPane.OK_CANCEL_OPTION);
-						if (svar != JOptionPane.OK_OPTION) {
-							return;
-						}
-
-						String name = describedPlaceForm.getName();
-						String description = describedPlaceForm.getDescription();
-						if (name.equals("")){
-							JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Inget namn");
+					DescribedPlaceForm describedPlaceForm = new DescribedPlaceForm();
+					int svar = JOptionPane.showConfirmDialog(Inlupp2_Gui.this, describedPlaceForm, "Ny Plats",
+							JOptionPane.OK_CANCEL_OPTION);
+					if (svar != JOptionPane.OK_OPTION) {
 						return;
-						}
-						if(description.equals("")){
-							JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Beskrivning saknas");
-							return;
-						}
-
-						DescribedPlace describedPlace = new DescribedPlace(name, description, category);
-						allMyPlaces.put(describedPlace, position);
-
-					} catch (NumberFormatException e) {
-						JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Fel inmatning");
-
 					}
-				} // End try-catch
 
-				bp.add(triangel);
-				bp.removeMouseListener(musLyss);
-				bp.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-				bp.validate();
-				bp.repaint();
-				System.out.println(allMyPlaces.toString());
+					String name = describedPlaceForm.getName();
+					String description = describedPlaceForm.getDescription();
+					if (name.equals("")) {
+						JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Inget namn");
+						return;
+					}
+					if (description.equals("")) {
+						JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Beskrivning saknas");
+						return;
+					}
+
+					DescribedPlace describedPlace = new DescribedPlace(name, description, category);
+					allMyPlaces.put(describedPlace, position);
+
+				} catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Fel inmatning");
+
+				}
+			} // End try-catch
+
+			bp.add(triangel);
+			bp.removeMouseListener(musLyss);
+			bp.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			bp.validate();
+			bp.repaint();
+			System.out.println(allMyPlaces.toString());
 
 				/*for(Map.Entry<Place, Position> me : allMyPlaces.entrySet()){
 					System.out.println(me.getKey() + " : " + me.getValue());
 				} */
-				System.out.println("Klickad");
-			}
+			System.out.println("Klickad");
+		}
 
 		//Hur funkar det här då?
 
 
-
 	} // End MusLyss
+
 
 	public static void main(String[] arg) {
 		new Inlupp2_Gui();
 
-	}
-
+	} //End main
 }
+
+

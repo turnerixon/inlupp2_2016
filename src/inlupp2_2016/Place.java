@@ -1,8 +1,9 @@
 package inlupp2_2016;
 
 
+import javax.swing.*;
 
-public abstract class Place {
+public abstract class Place extends JComponent{
 	private String name;
 	private String category;
 
