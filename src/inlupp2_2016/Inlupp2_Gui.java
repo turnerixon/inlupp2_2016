@@ -46,6 +46,7 @@ public class Inlupp2_Gui extends JFrame {
 	private Place place;
 	private HashMap<Place, Position> allMyPlaces = new HashMap<>();
 
+
 	public Inlupp2_Gui() {
 
 		super("Inlupp 2");
@@ -179,6 +180,7 @@ public class Inlupp2_Gui extends JFrame {
 			int w = bild.getIconWidth();
 			int h = bild.getIconHeight();
 			setPreferredSize(new Dimension(w, h));
+			setResizable(false);
 			setLayout(null);
 
 		} // End constructor BildPlan
@@ -201,7 +203,6 @@ public class Inlupp2_Gui extends JFrame {
 
 			} // End If-sats
 		}// End ActionPerformed
-
 	} // End PlaceLyss-knappen
 
 
@@ -212,6 +213,8 @@ public class Inlupp2_Gui extends JFrame {
 		}
 	}
 
+
+	//Hjälper till att skapa trianglarna
 	class DrawPanel extends JPanel{
 		protected void paintComponent(Graphics g){
 			g.setColor(Color.RED);
@@ -226,6 +229,7 @@ public class Inlupp2_Gui extends JFrame {
 	class Triangel extends DrawPanel {
 
 		public Triangel(int x, int y) {
+
 			setBounds(x, y, 50, 50);
 			setPreferredSize(new Dimension(50, 50));
 		}
@@ -233,24 +237,7 @@ public class Inlupp2_Gui extends JFrame {
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			if (categoryList.getSelectedValue() == "Buss") {
-				g.setColor(Color.RED);
-				g.fillRect(0, 0, 50, 50);
-			} else if (categoryList.getSelectedValue() == "Tunnelbana") {
-				g.setColor(Color.BLUE);
-				g.fillRect(0, 0, 50, 50);
-
-			} else if (categoryList.getSelectedValue() == "Tåg") {
-				g.setColor(Color.GREEN);
-				g.fillRect(0, 0, 50, 50);
-
-			} else {
-				g.setColor(Color.BLACK);
-				g.fillRect(0, 0, 50, 50);
-			}
-
 		} //End paintComponent
-
 	}// End Triangel
 
 
@@ -263,6 +250,7 @@ public class Inlupp2_Gui extends JFrame {
 			String category = categoryList.getSelectedValue();
 
 			Triangel triangel = new Triangel(x, y);
+
 			if (boxen.getSelectedItem().equals("Named places")) {
 				try {
 
@@ -279,7 +267,7 @@ public class Inlupp2_Gui extends JFrame {
 						return;
 					}
 
-					NamedPlace namedPlace = new NamedPlace(name, category);
+					NamedPlace namedPlace = new NamedPlace(name, position, category);
 					allMyPlaces.put(namedPlace, position);
 
 				} catch (NumberFormatException e) {
@@ -308,7 +296,7 @@ public class Inlupp2_Gui extends JFrame {
 						return;
 					}
 
-					DescribedPlace describedPlace = new DescribedPlace(name, description, category);
+					DescribedPlace describedPlace = new DescribedPlace(name, position, description, category);
 					allMyPlaces.put(describedPlace, position);
 
 				} catch (NumberFormatException e) {

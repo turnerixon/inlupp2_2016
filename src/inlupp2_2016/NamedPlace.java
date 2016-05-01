@@ -1,14 +1,16 @@
 package inlupp2_2016;
 
+import java.awt.*;
+
 public class NamedPlace extends Place{
 	//private String farg;
 
-	public NamedPlace(String name){
-		super(name);
+	public NamedPlace(String name, Position position){
+		super(name, position);
 	}
 
-	public NamedPlace(String name, String category){
-		super(name, category);
+	public NamedPlace(String name, Position position, String category){
+		super(name, position, category);
 	}
 
 
@@ -25,4 +27,9 @@ public class NamedPlace extends Place{
 	public String toString () {
 		return getName() + " " + getCategory();
 	}
+
+	protected void visa (Graphics g){
+
+	}
+
 }
