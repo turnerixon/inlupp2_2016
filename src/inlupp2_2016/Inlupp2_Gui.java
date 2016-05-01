@@ -44,6 +44,7 @@ public class Inlupp2_Gui extends JFrame {
 	private JMenu progMenu;
 	MusLyss musLyss = new MusLyss();
 	private Place place;
+	private boolean visad= false;
 	private HashMap<Place, Position> allMyPlaces = new HashMap<>();
 
 
@@ -214,114 +215,128 @@ public class Inlupp2_Gui extends JFrame {
 	}
 
 
-	//Hjälper till att skapa trianglarna
-	class DrawPanel extends JPanel{
-		protected void paintComponent(Graphics g){
+
+	class BussPlace extends Place {
+		final int [] xes = {0,25,50};
+		final int [] yes ={0,50,0};
+
+		public BussPlace (String name, Position position, String category){
+			super(name, position,  "Buss");
+		}
+		protected void visa (Graphics g){
 			g.setColor(Color.RED);
-			g.fillRect(0,0,50,50);
+			g.fillPolygon(xes, yes, 3);
 		}
-	}
+} //End BussPlace
 
 
+	class TunnelbanaPlace extends Place {
+		final int [] xes = {0,25,50};
+		final int [] yes ={0,50,0};
 
-
-	//Utritning av trianglarna som markerar platser
-	class Triangel extends DrawPanel {
-
-		public Triangel(int x, int y) {
-
-			setBounds(x, y, 50, 50);
-			setPreferredSize(new Dimension(50, 50));
+		public TunnelbanaPlace (String name, Position position, String category){
+			super(name, position,  "Tunnelbana");
 		}
+		protected void visa (Graphics g){
+			g.setColor(Color.BLUE);
+			g.fillPolygon(xes, yes, 3);
+		}
+	} //End BussPlace
 
-		@Override
-		protected void paintComponent(Graphics g) {
-			super.paintComponent(g);
-		} //End paintComponent
-	}// End Triangel
+
+
 
 
 	class MusLyss extends MouseAdapter {
-		@Override
-		public void mouseClicked(MouseEvent mev) {
-			int x = mev.getX();
-			int y = mev.getY();
-			Position position = new Position(x, y);
-			String category = categoryList.getSelectedValue();
+	@Override
+	public void mouseClicked(MouseEvent mev) {
+		int x = mev.getX();
+		int y = mev.getY();
+		Position position = new Position(x, y);
+		String category = categoryList.getSelectedValue();
 
-			Triangel triangel = new Triangel(x, y);
+		if(category.equals("Buss")){
+			place = new BussPlace(getName(), position, category);
+			place.setVisad(true);
 
-			if (boxen.getSelectedItem().equals("Named places")) {
-				try {
+		}
 
-					NamedPlaceForm namedPlacesForm = new NamedPlaceForm();
-					int svar = JOptionPane.showConfirmDialog(Inlupp2_Gui.this, namedPlacesForm, "Ny Plats",
-							JOptionPane.OK_CANCEL_OPTION);
-					if (svar != JOptionPane.OK_OPTION) {
-						return;
-					}
+		else if (category.equals("Tunnelbana")){
+			place = new TunnelbanaPlace(getName(), position, category);
+			place.setVisad(true);
+		}
 
-					String name = namedPlacesForm.getName();
-					if (name.equals("")) {
-						JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Inget namn");
-						return;
-					}
+		if (boxen.getSelectedItem().equals("Named places")) {
+			try {
 
-					NamedPlace namedPlace = new NamedPlace(name, position, category);
-					allMyPlaces.put(namedPlace, position);
-
-				} catch (NumberFormatException e) {
-					JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Fel inmatning");
-
+				NamedPlaceForm namedPlacesForm = new NamedPlaceForm();
+				int svar = JOptionPane.showConfirmDialog(Inlupp2_Gui.this, namedPlacesForm, "Ny Plats",
+						JOptionPane.OK_CANCEL_OPTION);
+				if (svar != JOptionPane.OK_OPTION) {
+					return;
 				}
 
-			} else {
-				try {
-
-					DescribedPlaceForm describedPlaceForm = new DescribedPlaceForm();
-					int svar = JOptionPane.showConfirmDialog(Inlupp2_Gui.this, describedPlaceForm, "Ny Plats",
-							JOptionPane.OK_CANCEL_OPTION);
-					if (svar != JOptionPane.OK_OPTION) {
-						return;
-					}
-
-					String name = describedPlaceForm.getName();
-					String description = describedPlaceForm.getDescription();
-					if (name.equals("")) {
-						JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Inget namn");
-						return;
-					}
-					if (description.equals("")) {
-						JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Beskrivning saknas");
-						return;
-					}
-
-					DescribedPlace describedPlace = new DescribedPlace(name, position, description, category);
-					allMyPlaces.put(describedPlace, position);
-
-				} catch (NumberFormatException e) {
-					JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Fel inmatning");
-
+				String name = namedPlacesForm.getName();
+				if (name.equals("")) {
+					JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Inget namn");
+					return;
 				}
-			} // End try-catch
 
-			bp.add(triangel);
-			bp.removeMouseListener(musLyss);
-			bp.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-			bp.validate();
-			bp.repaint();
-			System.out.println(allMyPlaces.toString());
+				NamedPlace namedPlace = new NamedPlace(name, position, category);
+				allMyPlaces.put(namedPlace, position);
+
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Fel inmatning");
+
+			}
+
+		} else {
+			try {
+
+				DescribedPlaceForm describedPlaceForm = new DescribedPlaceForm();
+				int svar = JOptionPane.showConfirmDialog(Inlupp2_Gui.this, describedPlaceForm, "Ny Plats",
+						JOptionPane.OK_CANCEL_OPTION);
+				if (svar != JOptionPane.OK_OPTION) {
+					return;
+				}
+
+				String name = describedPlaceForm.getName();
+				String description = describedPlaceForm.getDescription();
+				if (name.equals("")) {
+					JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Inget namn");
+					return;
+				}
+				if (description.equals("")) {
+					JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Beskrivning saknas");
+					return;
+				}
+
+				DescribedPlace describedPlace = new DescribedPlace(name, position, description, category);
+				allMyPlaces.put(describedPlace, position);
+
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Fel inmatning");
+
+			}
+		} // End try-catch
+
+		bp.add(place);
+		bp.removeMouseListener(musLyss);
+		bp.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		bp.validate();
+		bp.repaint();
+		System.out.println(allMyPlaces.toString());
 
 				/*for(Map.Entry<Place, Position> me : allMyPlaces.entrySet()){
 					System.out.println(me.getKey() + " : " + me.getValue());
 				} */
-			System.out.println("Klickad");
-		}
+		System.out.println("Klickad");
+	}
 
-		//Hur funkar det här då?
+	//Hur funkar det här då?
 
 
-	} // End MusLyss
+} // End MusLyss
 
 
 	public static void main(String[] arg) {

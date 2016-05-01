@@ -2,7 +2,6 @@ package inlupp2_2016;
 
 
 import javax.swing.*;
-import javax.xml.ws.handler.PortInfo;
 import java.awt.*;
 
 public abstract class Place extends JComponent {
@@ -45,12 +44,13 @@ public abstract class Place extends JComponent {
 
 	//Visa-metod
 	abstract protected void visa(Graphics g);
+
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if (visad) {
 			visa(g);
 		} else {
-			g.setColor(Color.BLUE);
+			g.setColor(Color.BLACK);
 			g.fillRect(0, 0, 50, 50);
 		}
 	}
