@@ -44,7 +44,7 @@ public class Inlupp2_Gui extends JFrame {
 	private JMenu progMenu;
 	MusLyss musLyss = new MusLyss();
 	private Place place;
-	private boolean visad= false;
+	private boolean visad = false;
 	private HashMap<Place, Position> allMyPlaces = new HashMap<>();
 
 
@@ -188,7 +188,6 @@ public class Inlupp2_Gui extends JFrame {
 	} // End class BildPlan
 
 
-
 	// KnappLyss för places
 	class PlaceLyss implements ActionListener {
 		@Override
@@ -215,33 +214,49 @@ public class Inlupp2_Gui extends JFrame {
 	}
 
 
-
 	class BussPlace extends Place {
-		final int [] xes = {0,25,50};
-		final int [] yes ={0,50,0};
+		final int[] xes = {0, 25, 50};
+		final int[] yes = {0, 50, 0};
 
-		public BussPlace (String name, Position position, String category){
-			super(name, position,  "Buss");
+		public BussPlace(String name, Position position, String category) {
+
+			super(name, position, "Buss");
 		}
-		protected void visa (Graphics g){
+
+		protected void visa(Graphics g) {
 			g.setColor(Color.RED);
 			g.fillPolygon(xes, yes, 3);
 		}
-} //End BussPlace
+	} //End BussPlace
 
 
 	class TunnelbanaPlace extends Place {
-		final int [] xes = {0,25,50};
-		final int [] yes ={0,50,0};
+		final int[] xes = {0, 25, 50};
+		final int[] yes = {0, 50, 0};
 
-		public TunnelbanaPlace (String name, Position position, String category){
-			super(name, position,  "Tunnelbana");
+		public TunnelbanaPlace(String name, Position position, String category) {
+			super(name, position, "Tunnelbana");
 		}
-		protected void visa (Graphics g){
+
+		protected void visa(Graphics g) {
 			g.setColor(Color.BLUE);
 			g.fillPolygon(xes, yes, 3);
 		}
 	} //End BussPlace
+
+	class TrainPlace extends Place {
+		final int[] xes = {0, 25, 50};
+		final int[] yes = {0, 50, 0};
+
+		public TrainPlace(String name, Position position, String category) {super(name, position, "Tåg"); }
+
+		protected void visa(Graphics g) {
+			g.setColor(Color.GREEN);
+			g.fillPolygon(xes, yes, 3);
+		}
+	} //End Class TrainPlace
+
+
 
 
 
@@ -258,13 +273,20 @@ public class Inlupp2_Gui extends JFrame {
 		if(category.equals("Buss")){
 			place = new BussPlace(getName(), position, category);
 			place.setVisad(true);
-
 		}
 
 		else if (category.equals("Tunnelbana")){
 			place = new TunnelbanaPlace(getName(), position, category);
 			place.setVisad(true);
 		}
+			else if (category.equals("Tåg")){
+			place = new TrainPlace(getName(), position, category);
+			place.setVisad(true);
+		}
+
+		else
+		category = "none";
+
 
 		if (boxen.getSelectedItem().equals("Named places")) {
 			try {
@@ -322,6 +344,7 @@ public class Inlupp2_Gui extends JFrame {
 
 		bp.add(place);
 		bp.removeMouseListener(musLyss);
+		categoryList.clearSelection();
 		bp.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		bp.validate();
 		bp.repaint();
