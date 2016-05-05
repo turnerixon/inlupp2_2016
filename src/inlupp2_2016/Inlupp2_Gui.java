@@ -242,7 +242,7 @@ public class Inlupp2_Gui extends JFrame {
 			g.setColor(Color.BLUE);
 			g.fillPolygon(xes, yes, 3);
 		}
-	} //End BussPlace
+	} //End TunnelbanaPlace
 
 	class TrainPlace extends Place {
 		final int[] xes = {0, 25, 50};
@@ -256,6 +256,17 @@ public class Inlupp2_Gui extends JFrame {
 		}
 	} //End Class TrainPlace
 
+	class NonePlace extends Place {
+		final int[] xes = {0, 25, 50};
+		final int[] yes = {0, 50, 0};
+
+		public NonePlace(String name, Position position) {super(name, position, "None"); }
+
+		protected void visa(Graphics g) {
+			g.setColor(Color.BLACK);
+			g.fillPolygon(xes, yes, 3);
+		}
+	} //End Class NonePlace
 
 
 
@@ -269,24 +280,28 @@ public class Inlupp2_Gui extends JFrame {
 		int y = mev.getY();
 		Position position = new Position(x, y);
 		String category = categoryList.getSelectedValue();
+			if(categoryList.isSelectionEmpty())
+			category = "None";
 
-		if(category.equals("Buss")){
+
+		if (category.equals("Buss")) {
 			place = new BussPlace(getName(), position, category);
 			place.setVisad(true);
-		}
-
-		else if (category.equals("Tunnelbana")){
+		} else if (category.equals("Tunnelbana")) {
 			place = new TunnelbanaPlace(getName(), position, category);
 			place.setVisad(true);
-		}
-			else if (category.equals("Tåg")){
+		} else if (category.equals("Tåg")) {
 			place = new TrainPlace(getName(), position, category);
 			place.setVisad(true);
 		}
 
-		else
-		category = "none";
+		else {
+			place = new NonePlace(getName(), position);
+			place.setVisad(true);
+		}
 
+
+		System.out.println("Rad 299 Kategori är: " +category);
 
 		if (boxen.getSelectedItem().equals("Named places")) {
 			try {
