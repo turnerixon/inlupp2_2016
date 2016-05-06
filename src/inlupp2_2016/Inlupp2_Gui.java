@@ -196,10 +196,12 @@ public class Inlupp2_Gui extends JFrame {
 			if (boxen.getSelectedIndex() == 0) {
 				bp.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 				bp.addMouseListener(musLyss);
+				boxen.removeActionListener(this);
 				//Described place
 			} else {
 				bp.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 				bp.addMouseListener(musLyss);
+				boxen.removeActionListener(this);
 
 			} // End If-sats
 		}// End ActionPerformed
@@ -219,7 +221,6 @@ public class Inlupp2_Gui extends JFrame {
 		final int[] yes = {0, 50, 0};
 
 		public BussPlace(String name, Position position, String category) {
-
 			super(name, position, "Buss");
 		}
 
@@ -301,6 +302,7 @@ public class Inlupp2_Gui extends JFrame {
 		}
 
 
+
 		System.out.println("Rad 299 Kategori är: " +category);
 
 		if (boxen.getSelectedItem().equals("Named places")) {
@@ -359,6 +361,7 @@ public class Inlupp2_Gui extends JFrame {
 
 		bp.add(place);
 		bp.removeMouseListener(musLyss);
+		boxen.addActionListener(new PlaceLyss());
 		categoryList.clearSelection();
 		bp.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		bp.validate();

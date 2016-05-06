@@ -29,7 +29,6 @@ public class NamedPlace extends Place{
 	}
 
 	protected void visa (Graphics g){
-
 	}
 
 }
