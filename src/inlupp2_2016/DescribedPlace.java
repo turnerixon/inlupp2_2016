@@ -7,6 +7,7 @@ import java.awt.*;
 public class DescribedPlace extends Place {
 	String description;
 
+	//Iochmed att kategori sätts som None ifall ingen väljs används aldirg den här konstruktorn.
 	public DescribedPlace (String name, Position position, String description) {
 		super(name, position);
 		this.description=description;
@@ -29,8 +30,7 @@ public class DescribedPlace extends Place {
 		return super.toString() + " " +getDescription(); 
 	}
 
-	protected void visa (Graphics g){
+	protected void visa (Graphics g){ } //End visa()
 
-	}
-	
+	protected void markera (Graphics g){};
 }

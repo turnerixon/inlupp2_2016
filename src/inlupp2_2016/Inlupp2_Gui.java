@@ -227,7 +227,12 @@ public class Inlupp2_Gui extends JFrame {
 		protected void visa(Graphics g) {
 			g.setColor(Color.RED);
 			g.fillPolygon(xes, yes, 3);
+		} //End visa)()
+
+		protected void markera (Graphics g){
+
 		}
+
 	} //End BussPlace
 
 
@@ -243,6 +248,9 @@ public class Inlupp2_Gui extends JFrame {
 			g.setColor(Color.BLUE);
 			g.fillPolygon(xes, yes, 3);
 		}
+
+		protected void markera (Graphics g){ }
+
 	} //End TunnelbanaPlace
 
 	class TrainPlace extends Place {
@@ -255,6 +263,9 @@ public class Inlupp2_Gui extends JFrame {
 			g.setColor(Color.GREEN);
 			g.fillPolygon(xes, yes, 3);
 		}
+
+		protected void markera (Graphics g){ }
+
 	} //End Class TrainPlace
 
 	class NonePlace extends Place {
@@ -267,6 +278,11 @@ public class Inlupp2_Gui extends JFrame {
 			g.setColor(Color.BLACK);
 			g.fillPolygon(xes, yes, 3);
 		}
+
+		protected void markera (Graphics g){
+			System.out.println("NonePlaces markera-metod");
+		}
+
 	} //End Class NonePlace
 
 
@@ -362,22 +378,28 @@ public class Inlupp2_Gui extends JFrame {
 		bp.add(place);
 		bp.removeMouseListener(musLyss);
 		boxen.addActionListener(new PlaceLyss());
+		place.addMouseListener(new MusAndPlaceLyss());
 		categoryList.clearSelection();
 		bp.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		bp.validate();
 		bp.repaint();
 		System.out.println(allMyPlaces.toString());
-
-				/*for(Map.Entry<Place, Position> me : allMyPlaces.entrySet()){
-					System.out.println(me.getKey() + " : " + me.getValue());
-				} */
 		System.out.println("Klickad");
 	}
 
-	//Hur funkar det här då?
-
-
 } // End MusLyss
+
+	class MusAndPlaceLyss extends MouseAdapter {
+		public void mouseClicked (MouseEvent mev){
+
+			Place place = (Place)mev.getSource();
+			place.setMarkerad(true);
+			repaint();
+
+			System.out.println("Klickar på MusAndPlaceLyss"  + " x: " +place.getX() + "och " +"y: "+place.getY() );
+
+		}
+	} //End MusAndPlaceLyss
 
 
 	public static void main(String[] arg) {

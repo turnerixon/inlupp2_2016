@@ -28,7 +28,7 @@ public class NamedPlace extends Place{
 		return getName() + " " + getCategory();
 	}
 
-	protected void visa (Graphics g){
-	}
+	protected void visa (Graphics g){ }
 
+	protected void markera (Graphics g){ };
 }

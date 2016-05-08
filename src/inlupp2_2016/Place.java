@@ -43,7 +43,7 @@ public abstract class Place extends JComponent {
     }
 
 
-    //abstract protected void markera (Graphics g);
+   abstract protected void markera (Graphics g);
 
 
     //Visa-metod
@@ -53,16 +53,34 @@ public abstract class Place extends JComponent {
         super.paintComponent(g);
         if (visad) {
             visa(g);
+            System.out.println("Det här är visad, visa(g) i Place");
         } else {
             setVisible(false);
         } //End if-Visad
+        if(markerad){
+           // markera(g);
+            setBounds(getX(),getY(), 52,52);
+            g.setColor(Color.RED);
+            g.drawRect(0, 0 ,50, 50);
 
-    }
+            System.out.println("Markerad från Place-klassen");
+        }
+        else {
+            visa(g);
+        }
+
+    } //End paintComponent
 
 
     public void setVisad(boolean b) {
         visad = b;
         repaint();
+        System.out.println("SetVisad från Place här!!");
+    }//end setVisad
+
+    public void setMarkerad (boolean b){
+        markerad=b;
     }
 
-}
+
+} //End class Place
