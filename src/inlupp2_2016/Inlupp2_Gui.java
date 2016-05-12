@@ -44,7 +44,7 @@ public class Inlupp2_Gui extends JFrame {
 	private JMenu progMenu;
 	MusLyss musLyss = new MusLyss();
 	private Place place;
-	private boolean visad = false;
+	//private boolean markerad = false;
 	private HashMap<Place, Position> allMyPlaces = new HashMap<>();
 
 
@@ -277,6 +277,7 @@ public class Inlupp2_Gui extends JFrame {
 		protected void visa(Graphics g) {
 			g.setColor(Color.BLACK);
 			g.fillPolygon(xes, yes, 3);
+
 		}
 
 		protected void markera (Graphics g){
@@ -284,6 +285,9 @@ public class Inlupp2_Gui extends JFrame {
 		}
 
 	} //End Class NonePlace
+
+
+
 
 
 
@@ -390,13 +394,18 @@ public class Inlupp2_Gui extends JFrame {
 } // End MusLyss
 
 	class MusAndPlaceLyss extends MouseAdapter {
+		private boolean markerad;
+
 		public void mouseClicked (MouseEvent mev){
-
 			Place place = (Place)mev.getSource();
-			place.setMarkerad(true);
-			repaint();
+			markerad=!markerad;
+			place.setMarkerad(markerad);
 
-			System.out.println("Klickar på MusAndPlaceLyss"  + " x: " +place.getX() + "och " +"y: "+place.getY() );
+
+
+			if(mev.getButton()==MouseEvent.BUTTON1)
+
+				System.out.println("Klickar på MusAndPlaceLyss"  + " x: " +place.getX() + "och " +"y: "+place.getY() );
 
 		}
 	} //End MusAndPlaceLyss

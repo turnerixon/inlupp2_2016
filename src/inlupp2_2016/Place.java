@@ -58,7 +58,7 @@ public abstract class Place extends JComponent {
             setVisible(false);
         } //End if-Visad
         if(markerad){
-           // markera(g);
+            markera(g);
             setBounds(getX(),getY(), 52,52);
             g.setColor(Color.RED);
             g.drawRect(0, 0 ,50, 50);
@@ -66,7 +66,7 @@ public abstract class Place extends JComponent {
             System.out.println("Markerad från Place-klassen");
         }
         else {
-            visa(g);
+            //visa(g);
         }
 
     } //End paintComponent
@@ -80,6 +80,7 @@ public abstract class Place extends JComponent {
 
     public void setMarkerad (boolean b){
         markerad=b;
+        repaint();
     }
 
 
