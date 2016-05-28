@@ -81,6 +81,15 @@ public abstract class Place extends JComponent {
     public void setMarkerad (boolean b){
         markerad=b;
         repaint();
+        System.out.println("SetMarkerad från Place här!!!!");
+    }
+
+    public boolean getMarkerad (){
+        return markerad;
+    }
+
+    public boolean getVisad(){
+        return visad;
     }
 
 

@@ -1,5 +1,7 @@
 package inlupp2_2016;
 
+import javafx.geometry.Pos;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -11,8 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 import javax.swing.*;
@@ -92,6 +93,7 @@ public class Inlupp2_Gui extends JFrame {
 		vanster.add(searchButton);
 		hideButton = new JButton("Hide");
 		vanster.add(hideButton);
+		hideButton.addActionListener(new HideLyss());
 		removeButton = new JButton("Remove");
 		vanster.add(removeButton);
 		whatButton = new JButton("What is here?");
@@ -401,14 +403,29 @@ public class Inlupp2_Gui extends JFrame {
 			markerad=!markerad;
 			place.setMarkerad(markerad);
 
-
-
 			if(mev.getButton()==MouseEvent.BUTTON1)
 
 				System.out.println("Klickar på MusAndPlaceLyss"  + " x: " +place.getX() + "och " +"y: "+place.getY() );
 
 		}
 	} //End MusAndPlaceLyss
+
+	class HideLyss implements ActionListener{
+       //Det här funkar inte
+		List<Place> minaPlatser = new ArrayList<>(allMyPlaces);
+		@Override
+		public void actionPerformed(ActionEvent ave) {
+
+			for(Place p : minaPlatser) {
+				//Måste göra någon form av loop här, tror jag
+				p.getMarkerad();
+				p.setMarkerad(false);
+				p.setVisad(false);
+			}
+
+		}
+
+	} //End HideLyss
 
 
 	public static void main(String[] arg) {
