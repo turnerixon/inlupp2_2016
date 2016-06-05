@@ -2,12 +2,7 @@ package inlupp2_2016;
 
 import javafx.geometry.Pos;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -45,9 +40,9 @@ public class Inlupp2_Gui extends JFrame {
 	private JMenu progMenu;
 	MusLyss musLyss = new MusLyss();
 	private Place place;
-	//private boolean markerad = false;
-	private HashMap<Place, Position> allMyPlaces = new HashMap<>();
-
+	private boolean markerad;
+	private Map<Place, Position> allMyPlaces = new HashMap<>();
+	ArrayList<Place> markeradePlatser = new ArrayList<>();
 
 	public Inlupp2_Gui() {
 
@@ -396,12 +391,15 @@ public class Inlupp2_Gui extends JFrame {
 } // End MusLyss
 
 	class MusAndPlaceLyss extends MouseAdapter {
-		private boolean markerad;
+	//	private boolean markerad;
 
 		public void mouseClicked (MouseEvent mev){
 			Place place = (Place)mev.getSource();
 			markerad=!markerad;
 			place.setMarkerad(markerad);
+
+			if(place.getMarkerad())
+			markeradePlatser.add(place);
 
 			if(mev.getButton()==MouseEvent.BUTTON1)
 
@@ -410,22 +408,25 @@ public class Inlupp2_Gui extends JFrame {
 		}
 	} //End MusAndPlaceLyss
 
+
 	class HideLyss implements ActionListener{
-       //Det här funkar inte
-		List<Place> minaPlatser = new ArrayList<>(allMyPlaces);
+
 		@Override
 		public void actionPerformed(ActionEvent ave) {
-
-			for(Place p : minaPlatser) {
-				//Måste göra någon form av loop här, tror jag
-				p.getMarkerad();
-				p.setMarkerad(false);
-				p.setVisad(false);
-			}
-
-		}
-
+				for(Place p : markeradePlatser){
+					p.setMarkerad(false);
+					p.setVisad(false);
+				}
+			} //HideLyss ActionPerfomed
 	} //End HideLyss
+
+	class RemoveLyss implements ActionListener{
+
+		public void actionPerformed(ActionEvent ave){
+			
+
+		}//End ActionEvent
+	}//End RemoveLyss
 
 
 	public static void main(String[] arg) {
