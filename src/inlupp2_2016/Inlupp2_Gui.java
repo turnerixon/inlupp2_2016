@@ -40,9 +40,9 @@ public class Inlupp2_Gui extends JFrame {
 	private JMenu progMenu;
 	MusLyss musLyss = new MusLyss();
 	private Place place;
-	private boolean markerad;
-	private Map<Place, Position> allMyPlaces = new HashMap<>();
-	ArrayList<Place> markeradePlatser = new ArrayList<>();
+	private ArrayList<Place> allMyPlaces = new ArrayList<Place>();
+//	private <Place, Position> allMyPlaces = new HashMap<>();
+//	ArrayList<Place> markeradePlatser = new ArrayList<>();
 
 	public Inlupp2_Gui() {
 
@@ -90,6 +90,7 @@ public class Inlupp2_Gui extends JFrame {
 		vanster.add(hideButton);
 		hideButton.addActionListener(new HideLyss());
 		removeButton = new JButton("Remove");
+		removeButton.addActionListener(new RemoveLyss());
 		vanster.add(removeButton);
 		whatButton = new JButton("What is here?");
 		vanster.add(whatButton);
@@ -284,126 +285,121 @@ public class Inlupp2_Gui extends JFrame {
 	} //End Class NonePlace
 
 
-
-
-
-
-
-
-
 	class MusLyss extends MouseAdapter {
-	@Override
-	public void mouseClicked(MouseEvent mev) {
-		int x = mev.getX();
-		int y = mev.getY();
-		Position position = new Position(x, y);
-		String category = categoryList.getSelectedValue();
+		@Override
+		public void mouseClicked(MouseEvent mev) {
+			int x = mev.getX();
+			int y = mev.getY();
+			String name = "";
+			String description = "";
+
+			Position position = new Position(x, y);
+			String category = categoryList.getSelectedValue();
 			if(categoryList.isSelectionEmpty())
-			category = "None";
+				category = "None";
 
 
-		if (category.equals("Buss")) {
-			place = new BussPlace(getName(), position, category);
-			place.setVisad(true);
-		} else if (category.equals("Tunnelbana")) {
-			place = new TunnelbanaPlace(getName(), position, category);
-			place.setVisad(true);
-		} else if (category.equals("Tåg")) {
-			place = new TrainPlace(getName(), position, category);
-			place.setVisad(true);
-		}
+			if (boxen.getSelectedItem().equals("Named places")) {
+				try {
 
-		else {
-			place = new NonePlace(getName(), position);
-			place.setVisad(true);
-		}
+					NamedPlaceForm namedPlacesForm = new NamedPlaceForm();
+					int svar = JOptionPane.showConfirmDialog(Inlupp2_Gui.this, namedPlacesForm, "Ny Plats",
+							JOptionPane.OK_CANCEL_OPTION);
+					if (svar != JOptionPane.OK_OPTION) {
+						return;
+					}
 
+					name = namedPlacesForm.getName();
+					if (name.equals("")) {
+						JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Inget namn");
+						return;
+					}
 
+				} catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Fel inmatning");
 
-		System.out.println("Rad 299 Kategori är: " +category);
-
-		if (boxen.getSelectedItem().equals("Named places")) {
-			try {
-
-				NamedPlaceForm namedPlacesForm = new NamedPlaceForm();
-				int svar = JOptionPane.showConfirmDialog(Inlupp2_Gui.this, namedPlacesForm, "Ny Plats",
-						JOptionPane.OK_CANCEL_OPTION);
-				if (svar != JOptionPane.OK_OPTION) {
-					return;
 				}
 
-				String name = namedPlacesForm.getName();
-				if (name.equals("")) {
-					JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Inget namn");
-					return;
+			} else {
+				try {
+
+					DescribedPlaceForm describedPlaceForm = new DescribedPlaceForm();
+					int svar = JOptionPane.showConfirmDialog(Inlupp2_Gui.this, describedPlaceForm, "Ny Plats",
+							JOptionPane.OK_CANCEL_OPTION);
+					if (svar != JOptionPane.OK_OPTION) {
+						return;
+					}
+
+					name = describedPlaceForm.getName();
+					description = describedPlaceForm.getDescription();
+					if (name.equals("")) {
+						JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Inget namn");
+						return;
+					}
+					if (description.equals("")) {
+						JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Beskrivning saknas");
+						return;
+					}
+
+				} catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Fel inmatning");
+
 				}
+			} // End try-catch
 
-				NamedPlace namedPlace = new NamedPlace(name, position, category);
-				allMyPlaces.put(namedPlace, position);
+			if (category.equals("Buss")) {
+				place = new BussPlace(name, position, category);
 
-			} catch (NumberFormatException e) {
-				JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Fel inmatning");
+			} else if (category.equals("Tunnelbana")) {
+				place = new TunnelbanaPlace(name, position, category);
 
+			} else if (category.equals("Tåg")) {
+				place = new TrainPlace(name, position, category);
 			}
 
-		} else {
-			try {
-
-				DescribedPlaceForm describedPlaceForm = new DescribedPlaceForm();
-				int svar = JOptionPane.showConfirmDialog(Inlupp2_Gui.this, describedPlaceForm, "Ny Plats",
-						JOptionPane.OK_CANCEL_OPTION);
-				if (svar != JOptionPane.OK_OPTION) {
-					return;
-				}
-
-				String name = describedPlaceForm.getName();
-				String description = describedPlaceForm.getDescription();
-				if (name.equals("")) {
-					JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Inget namn");
-					return;
-				}
-				if (description.equals("")) {
-					JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Beskrivning saknas");
-					return;
-				}
-
-				DescribedPlace describedPlace = new DescribedPlace(name, position, description, category);
-				allMyPlaces.put(describedPlace, position);
-
-			} catch (NumberFormatException e) {
-				JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Fel inmatning");
-
+			else if(category.equals("None")){
+				place = new NonePlace (name, position);
 			}
-		} // End try-catch
 
-		bp.add(place);
-		bp.removeMouseListener(musLyss);
-		boxen.addActionListener(new PlaceLyss());
-		place.addMouseListener(new MusAndPlaceLyss());
-		categoryList.clearSelection();
-		bp.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		bp.validate();
-		bp.repaint();
-		System.out.println(allMyPlaces.toString());
-		System.out.println("Klickad");
+
+			else {
+				if(description.isEmpty())
+				{
+					place = new NamedPlace(name, position);
+				} else {
+					place = new DescribedPlace(name, position, description, category);
+				}
+
+			} // End MusLyss
+
+			place.setVisad(true);
+			bp.add(place);
+			bp.removeMouseListener(musLyss);
+			boxen.addActionListener(new PlaceLyss());
+			place.addMouseListener(new MusAndPlaceLyss());
+			categoryList.clearSelection();
+			bp.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			bp.validate();
+			bp.repaint();
+//		System.out.println(allMyPlaces.toString());
+			System.out.println("Klickad");
+		}
+
 	}
 
-} // End MusLyss
-
 	class MusAndPlaceLyss extends MouseAdapter {
-	//	private boolean markerad;
+		//	private boolean markerad;
 
 		public void mouseClicked (MouseEvent mev){
 			Place place = (Place)mev.getSource();
-			markerad=!markerad;
-			place.setMarkerad(markerad);
+			place.setMarkerad(!place.getMarkerad());
 
-			if(place.getMarkerad())
-			markeradePlatser.add(place);
+//			if(place.getMarkerad())
+//			markeradePlatser.add(place);
 
 			if(mev.getButton()==MouseEvent.BUTTON1)
 
-				System.out.println("Klickar på MusAndPlaceLyss"  + " x: " +place.getX() + "och " +"y: "+place.getY() );
+				System.out.println("Klickar på MusAndPlaceLyss " +place.getName()+ " "  + " x: " +place.getX() + "och " +"y: "+place.getY() );
 
 		}
 	} //End MusAndPlaceLyss
@@ -413,18 +409,43 @@ public class Inlupp2_Gui extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
-				for(Place p : markeradePlatser){
-					p.setMarkerad(false);
-					p.setVisad(false);
-				}
-			} //HideLyss ActionPerfomed
+
+//             Gå igenom den "riktiga" listan och sätt setVisible(false) istället
+//				for(Place p : ){
+//					p.setMarkerad(false);
+//					p.setVisad(false);
+//				}
+		} //HideLyss ActionPerfomed
 	} //End HideLyss
 
 	class RemoveLyss implements ActionListener{
 
 		public void actionPerformed(ActionEvent ave){
-			
 
+            /*Samma sak här som med hide.
+            * Gå igenom den gemensamma listan (den som finns i BP och plocka bort rätt element istället.
+            * Då bör man kunna göra if(platsIListan == ave.getSource()) remove
+            * */
+
+
+//            Iterator<Place> iterator = markeradePlatser.iterator();
+//
+//            while(iterator.hasNext())
+//            {
+//                Place place = iterator.next();
+//
+//                Iterator<Entry<Place, Position>> allPlacesIterator = allMyPlaces.entrySet().iterator();
+//
+//                while(allPlacesIterator.hasNext())
+//                {
+//                    Entry<Place, Position> currentPlace = allPlacesIterator.next();
+//                    if(place.getName() == currentPlace.getKey().getName()){
+//                        allPlacesIterator.remove();
+//                        iterator.remove();
+//                        break;
+//                    }
+//                }
+//            }
 		}//End ActionEvent
 	}//End RemoveLyss
 

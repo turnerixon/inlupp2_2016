@@ -10,7 +10,7 @@ public abstract class Place extends JComponent {
     private Position position;
     private boolean hopfalld;
     private boolean markerad = false;
-    private boolean visad = false;
+    private boolean visad = true;
 
 
     public Place(String name, Position position) {
@@ -71,6 +71,9 @@ public abstract class Place extends JComponent {
 
     } //End paintComponent
 
+    public boolean getVisad(){
+        return visad;
+    }
 
     public void setVisad(boolean b) {
         visad = b;
@@ -78,19 +81,19 @@ public abstract class Place extends JComponent {
         System.out.println("SetVisad från Place här!!");
     }//end setVisad
 
+    public boolean getMarkerad (){
+        return markerad;
+    }
+
+
     public void setMarkerad (boolean b){
         markerad=b;
         repaint();
         System.out.println("SetMarkerad från Place här!!!!");
     }
 
-    public boolean getMarkerad (){
-        return markerad;
-    }
 
-    public boolean getVisad(){
-        return visad;
-    }
+
 
 
 } //End class Place
