@@ -23,6 +23,7 @@ public class Position implements Comparable<Position>{
 		return "x = " + x + " y= " + y ; 
 	}
 
+
 	@Override
 	public int compareTo (Position other) {
 		if (x <other.x)

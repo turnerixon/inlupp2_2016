@@ -40,7 +40,8 @@ public class Inlupp2_Gui extends JFrame {
 	private JMenu progMenu;
 	MusLyss musLyss = new MusLyss();
 	private Place place;
-	private ArrayList<Place> allMyPlaces = new ArrayList<Place>();
+	public HashMap<String, Place> placesByName = new HashMap<>();
+	public HashMap<Position, Place> placesByPosition = new HashMap<>();
 //	private <Place, Position> allMyPlaces = new HashMap<>();
 //	ArrayList<Place> markeradePlatser = new ArrayList<>();
 
@@ -170,6 +171,7 @@ public class Inlupp2_Gui extends JFrame {
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			g.drawImage(bild.getImage(), 0, 0, getWidth(), getHeight(), this);
+
 
 		}
 
@@ -373,7 +375,12 @@ public class Inlupp2_Gui extends JFrame {
 			} // End MusLyss
 
 			place.setVisad(true);
-			bp.add(place);
+			placesByName.put(getName(), place);
+			placesByPosition.put(position, place);
+			for(Position p : placesByPosition.keySet()){
+				Place place = placesByPosition.get(p);
+				bp.add(place);
+			}
 			bp.removeMouseListener(musLyss);
 			boxen.addActionListener(new PlaceLyss());
 			place.addMouseListener(new MusAndPlaceLyss());
@@ -411,7 +418,8 @@ public class Inlupp2_Gui extends JFrame {
 		public void actionPerformed(ActionEvent ave) {
 
 //             Gå igenom den "riktiga" listan och sätt setVisible(false) istället
-//				for(Place p : ){
+
+				//for(Place p : placesByName.get ){
 //					p.setMarkerad(false);
 //					p.setVisad(false);
 //				}
