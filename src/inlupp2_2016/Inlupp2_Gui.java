@@ -388,12 +388,12 @@ public class Inlupp2_Gui extends JFrame {
 			bp.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			bp.validate();
 			bp.repaint();
-//		System.out.println(allMyPlaces.toString());
 			System.out.println("Klickad");
 		}
 
 	}
 
+	//Används för att markera och avmarkera platser
 	class MusAndPlaceLyss extends MouseAdapter {
 		//	private boolean markerad;
 
@@ -418,8 +418,16 @@ public class Inlupp2_Gui extends JFrame {
 		public void actionPerformed(ActionEvent ave) {
 
 //             Gå igenom den "riktiga" listan och sätt setVisible(false) istället
+				for(Map.Entry<String, Place> entry : placesByName.entrySet()){
+					String key = entry.getKey();
+					Place place = entry.getValue();
+					if(place.getMarkerad()){
+						place.setVisad(false);
+						place.setMarkerad(false);
+					}
+				}
 
-				//for(Place p : placesByName.get ){
+//                   (Place p : placesByPosition.g){
 //					p.setMarkerad(false);
 //					p.setVisad(false);
 //				}
