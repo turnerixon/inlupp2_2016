@@ -342,8 +342,7 @@ public class Inlupp2_Gui extends JFrame {
 		public void actionPerformed(ActionEvent ave) {
 
 			for(Place pos : placesByName.values()){
-				if(pos.getMarkerad())
-				{
+				if(pos.getMarkerad()){
 					pos.setVisible(false);
 				}
 				System.out.println(pos);
@@ -360,9 +359,10 @@ public class Inlupp2_Gui extends JFrame {
             * Gå igenom den gemensamma listan (den som finns i BP och plocka bort rätt element istället.
             * Då bör man kunna göra if(platsIListan == ave.getSource()) remove
             * */
+		//	Collection<Place> platserna = placesByName.values();
+		//	Iterator<Place> iter = platserna.iterator();
+		//	while(iter.hasNext())
 
-			Collection<Place> platserna = placesByName.values();
-			Iterator<Place> iter = platserna.iterator();
 
 
 
