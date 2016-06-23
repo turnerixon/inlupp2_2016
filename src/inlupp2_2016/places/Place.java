@@ -1,4 +1,6 @@
-package inlupp2_2016;
+package inlupp2_2016.places;
+
+import inlupp2_2016.Position;
 
 import javax.swing.*;
 import java.awt.*;

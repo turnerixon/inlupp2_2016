@@ -1,6 +1,6 @@
 package inlupp2_2016;
 
-import javafx.geometry.Pos;
+import inlupp2_2016.places.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,7 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.*;
-import java.util.Map.Entry;
+import java.util.Iterator;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -40,10 +40,9 @@ public class Inlupp2_Gui extends JFrame {
 	private JMenu progMenu;
 	MusLyss musLyss = new MusLyss();
 	private Place place;
-	public HashMap<String, Place> placesByName = new HashMap<>();
-	public HashMap<Position, Place> placesByPosition = new HashMap<>();
-//	private <Place, Position> allMyPlaces = new HashMap<>();
-//	ArrayList<Place> markeradePlatser = new ArrayList<>();
+	public Map<String, Place> placesByName = new HashMap<>();
+	public Map<Position, Place> placesByPosition = new HashMap<>();
+
 
 	public Inlupp2_Gui() {
 
@@ -215,78 +214,6 @@ public class Inlupp2_Gui extends JFrame {
 		}
 	}
 
-
-	class BussPlace extends Place {
-		final int[] xes = {0, 25, 50};
-		final int[] yes = {0, 50, 0};
-
-		public BussPlace(String name, Position position, String category) {
-			super(name, position, "Buss");
-		}
-
-		protected void visa(Graphics g) {
-			g.setColor(Color.RED);
-			g.fillPolygon(xes, yes, 3);
-		} //End visa)()
-
-		protected void markera (Graphics g){
-
-		}
-
-	} //End BussPlace
-
-
-	class TunnelbanaPlace extends Place {
-		final int[] xes = {0, 25, 50};
-		final int[] yes = {0, 50, 0};
-
-		public TunnelbanaPlace(String name, Position position, String category) {
-			super(name, position, "Tunnelbana");
-		}
-
-		protected void visa(Graphics g) {
-			g.setColor(Color.BLUE);
-			g.fillPolygon(xes, yes, 3);
-		}
-
-		protected void markera (Graphics g){ }
-
-	} //End TunnelbanaPlace
-
-	class TrainPlace extends Place {
-		final int[] xes = {0, 25, 50};
-		final int[] yes = {0, 50, 0};
-
-		public TrainPlace(String name, Position position, String category) {super(name, position, "Tåg"); }
-
-		protected void visa(Graphics g) {
-			g.setColor(Color.GREEN);
-			g.fillPolygon(xes, yes, 3);
-		}
-
-		protected void markera (Graphics g){ }
-
-	} //End Class TrainPlace
-
-	class NonePlace extends Place {
-		final int[] xes = {0, 25, 50};
-		final int[] yes = {0, 50, 0};
-
-		public NonePlace(String name, Position position) {super(name, position, "None"); }
-
-		protected void visa(Graphics g) {
-			g.setColor(Color.BLACK);
-			g.fillPolygon(xes, yes, 3);
-
-		}
-
-		protected void markera (Graphics g){
-			System.out.println("NonePlaces markera-metod");
-		}
-
-	} //End Class NonePlace
-
-
 	class MusLyss extends MouseAdapter {
 		@Override
 		public void mouseClicked(MouseEvent mev) {
@@ -360,7 +287,7 @@ public class Inlupp2_Gui extends JFrame {
 			}
 
 			else if(category.equals("None")){
-				place = new NonePlace (name, position);
+				place = new NonePlace(name, position);
 			}
 
 
@@ -375,12 +302,13 @@ public class Inlupp2_Gui extends JFrame {
 			} // End MusLyss
 
 			place.setVisad(true);
-			placesByName.put(getName(), place);
+			placesByName.put(name, place);
 			placesByPosition.put(position, place);
 			for(Position p : placesByPosition.keySet()){
 				Place place = placesByPosition.get(p);
 				bp.add(place);
 			}
+
 			bp.removeMouseListener(musLyss);
 			boxen.addActionListener(new PlaceLyss());
 			place.addMouseListener(new MusAndPlaceLyss());
@@ -400,14 +328,10 @@ public class Inlupp2_Gui extends JFrame {
 		public void mouseClicked (MouseEvent mev){
 			Place place = (Place)mev.getSource();
 			place.setMarkerad(!place.getMarkerad());
-
 //			if(place.getMarkerad())
 //			markeradePlatser.add(place);
-
 			if(mev.getButton()==MouseEvent.BUTTON1)
-
 				System.out.println("Klickar på MusAndPlaceLyss " +place.getName()+ " "  + " x: " +place.getX() + "och " +"y: "+place.getY() );
-
 		}
 	} //End MusAndPlaceLyss
 
@@ -417,20 +341,14 @@ public class Inlupp2_Gui extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent ave) {
 
-//             Gå igenom den "riktiga" listan och sätt setVisible(false) istället
-				for(Map.Entry<String, Place> entry : placesByName.entrySet()){
-					String key = entry.getKey();
-					Place place = entry.getValue();
-					if(place.getMarkerad()){
-						place.setVisad(false);
-						place.setMarkerad(false);
-					}
+			for(Place pos : placesByName.values()){
+				if(pos.getMarkerad())
+				{
+					pos.setVisible(false);
 				}
+				System.out.println(pos);
+			}
 
-//                   (Place p : placesByPosition.g){
-//					p.setMarkerad(false);
-//					p.setVisad(false);
-//				}
 		} //HideLyss ActionPerfomed
 	} //End HideLyss
 
@@ -443,25 +361,11 @@ public class Inlupp2_Gui extends JFrame {
             * Då bör man kunna göra if(platsIListan == ave.getSource()) remove
             * */
 
+			Collection<Place> platserna = placesByName.values();
+			Iterator<Place> iter = platserna.iterator();
 
-//            Iterator<Place> iterator = markeradePlatser.iterator();
-//
-//            while(iterator.hasNext())
-//            {
-//                Place place = iterator.next();
-//
-//                Iterator<Entry<Place, Position>> allPlacesIterator = allMyPlaces.entrySet().iterator();
-//
-//                while(allPlacesIterator.hasNext())
-//                {
-//                    Entry<Place, Position> currentPlace = allPlacesIterator.next();
-//                    if(place.getName() == currentPlace.getKey().getName()){
-//                        allPlacesIterator.remove();
-//                        iterator.remove();
-//                        break;
-//                    }
-//                }
-//            }
+
+
 		}//End ActionEvent
 	}//End RemoveLyss
 

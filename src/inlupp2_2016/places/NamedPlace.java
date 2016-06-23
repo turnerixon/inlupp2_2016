@@ -1,8 +1,11 @@
-package inlupp2_2016;
+package inlupp2_2016.places;
+
+import inlupp2_2016.Position;
+import inlupp2_2016.places.Place;
 
 import java.awt.*;
 
-public class NamedPlace extends Place{
+public class NamedPlace extends Place {
 	//private String farg;
 
 	public NamedPlace(String name, Position position){

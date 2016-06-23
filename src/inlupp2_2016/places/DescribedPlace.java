@@ -1,6 +1,7 @@
-package inlupp2_2016;
+package inlupp2_2016.places;
 
-import javafx.geometry.Pos;
+import inlupp2_2016.Position;
+import inlupp2_2016.places.Place;
 
 import java.awt.*;
 
