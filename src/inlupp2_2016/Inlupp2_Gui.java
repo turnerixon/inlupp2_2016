@@ -1,6 +1,7 @@
 package inlupp2_2016;
 
 import inlupp2_2016.places.*;
+import javafx.geometry.Pos;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,6 +13,7 @@ import java.util.*;
 import java.util.Iterator;
 
 import javax.swing.*;
+import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
@@ -302,7 +304,7 @@ public class Inlupp2_Gui extends JFrame {
 			} // End MusLyss
 
 			place.setVisad(true);
-			placesByName.put(name, place);
+			//placesByName.put(name, place);
 			placesByPosition.put(position, place);
 			for(Position p : placesByPosition.keySet()){
 				Place place = placesByPosition.get(p);
@@ -341,9 +343,10 @@ public class Inlupp2_Gui extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent ave) {
 
-			for(Place pos : placesByName.values()){
+			for(Place pos : placesByPosition.values()){
 				if(pos.getMarkerad()){
 					pos.setVisible(false);
+					pos.setMarkerad(false);
 				}
 				System.out.println(pos);
 			}
@@ -352,22 +355,28 @@ public class Inlupp2_Gui extends JFrame {
 	} //End HideLyss
 
 	class RemoveLyss implements ActionListener{
-
 		public void actionPerformed(ActionEvent ave){
+			for(Iterator<Map.Entry<Position, Place>> iter = placesByPosition.entrySet().iterator(); iter.hasNext(); ) {
+				Map.Entry<Position, Place> entry = iter.next();
+				Place place = entry.getValue();
+				if(place.getMarkerad()){
 
-            /*Samma sak här som med hide.
-            * Gå igenom den gemensamma listan (den som finns i BP och plocka bort rätt element istället.
-            * Då bör man kunna göra if(platsIListan == ave.getSource()) remove
-            * */
-		//	Collection<Place> platserna = placesByName.values();
-		//	Iterator<Place> iter = platserna.iterator();
-		//	while(iter.hasNext())
+					bp.remove(place);
 
+					iter.remove();
 
-
-
+					repaint();
+				}
+			}
 		}//End ActionEvent
 	}//End RemoveLyss
+
+	class SearchLyss implements ActionListener{
+		public void actionPerformed (ActionEvent ave){
+
+
+		}// End ActionEvent
+	}//End SearchLyss
 
 
 	public static void main(String[] arg) {
