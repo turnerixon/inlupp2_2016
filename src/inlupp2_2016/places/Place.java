@@ -12,7 +12,7 @@ public abstract class Place extends JComponent {
     private Position position;
     private boolean hopfalld;
     private boolean markerad = false;
-    private boolean visad = true;
+    private boolean visad;
 
 
     public Place(String name, Position position) {
@@ -73,9 +73,7 @@ public abstract class Place extends JComponent {
 
     } //End paintComponent
 
-    public boolean getVisad(){
-        return visad;
-    }
+    public boolean getVisad() {return visad;}
 
     public void setVisad(boolean b) {
         visad = b;
