@@ -373,13 +373,26 @@ public class Inlupp2_Gui extends JFrame {
     }//End RemoveLyss
 
     class SearchLyss implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent ave) {
-            //Ta fram namnet på platsen du vill söka efter. Resultatet visas genom att platserna blir markerade
-            //Markera samtliga platser som har det namnet och gör dem synliga
-            //Avmarkera samtliga platser som har det namnet om de var markerade innan
+
             String soktPlats = searchField.getText();
             List<Place> funnaPlatser = placesByName.get(soktPlats);
+/*            if(soktPlats.equals("" )
+                felMeddelandeVidSearch();
+
+            }*/
+
+            if(funnaPlatser == null || funnaPlatser.isEmpty())
+            {
+                felMeddelandeVidSearch();
+                return;
+            }
+
             for (Place p : funnaPlatser) {
+                if(!p.getVisad()){
+                    p.setVisad(true);
+                }
                 if (p.getMarkerad()) {
                     p.setMarkerad(false);
                 } else {
@@ -397,6 +410,9 @@ public class Inlupp2_Gui extends JFrame {
         }//End MouseEvent
     }//End SearchfieldLyss
 
+    public void felMeddelandeVidSearch() {
+        JOptionPane.showMessageDialog(null, "Det namnet finns inte. Vänligen sök på annat namn! ");
+    }
 
     public static void main(String[] arg) {
         new Inlupp2_Gui();
