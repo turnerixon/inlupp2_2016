@@ -4,10 +4,7 @@ import inlupp2_2016.places.*;
 import javafx.geometry.Pos;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.util.*;
 import java.util.Iterator;
@@ -87,6 +84,7 @@ public class Inlupp2_Gui extends JFrame {
 
         searchField = new JTextField("Search");
         vanster.add(searchField);
+        searchField.addMouseListener(new SearchFieldMusLyss());
         searchButton = new JButton("Search");
         vanster.add(searchButton);
         searchButton.addActionListener(new SearchLyss());
@@ -308,8 +306,8 @@ public class Inlupp2_Gui extends JFrame {
             }
             //Möjliggöra att söka fram platser via namn
             List<Place> sammaNamnList = placesByName.get(name);
-            if(sammaNamnList==null){
-                sammaNamnList= new ArrayList<>();
+            if (sammaNamnList == null) {
+                sammaNamnList = new ArrayList<>();
                 placesByName.put(name, sammaNamnList);
             }
             sammaNamnList.add(place);
@@ -347,7 +345,7 @@ public class Inlupp2_Gui extends JFrame {
 
             for (Place pos : placesByPosition.values()) {
                 if (pos.getMarkerad()) {
-                    pos.setVisible(false);
+                    pos.setVisad(false);
                     pos.setMarkerad(false);
                 }
                 System.out.println(pos);
@@ -366,7 +364,7 @@ public class Inlupp2_Gui extends JFrame {
                     iter.remove();
                     List<Place> sammaNamnList = placesByName.get(place.getName());
                     sammaNamnList.remove(place);
-                    if(sammaNamnList.isEmpty())
+                    if (sammaNamnList.isEmpty())
                         placesByName.remove(place.getName());
                     repaint();
                 }
@@ -381,20 +379,23 @@ public class Inlupp2_Gui extends JFrame {
             //Avmarkera samtliga platser som har det namnet om de var markerade innan
             String soktPlats = searchField.getText();
             List<Place> funnaPlatser = placesByName.get(soktPlats);
-            for(Place p : funnaPlatser){
-                if(p.getVisad()==false) {
-                    p.setVisad(true);
-                }
-                if(p.getMarkerad()) {
+            for (Place p : funnaPlatser) {
+                if (p.getMarkerad()) {
                     p.setMarkerad(false);
+                } else {
+                    p.setMarkerad(true);
                 }
-                    else{
-                        p.setMarkerad(true);
-                    }
-
-            } repaint();
+            }
+            repaint();
         }// End ActionEvent
     }//End SearchLyss
+
+    class SearchFieldMusLyss extends MouseAdapter {
+        @Override
+        public void mouseClicked(MouseEvent mev) {
+            searchField.setText("");
+        }//End MouseEvent
+    }//End SearchfieldLyss
 
 
     public static void main(String[] arg) {
