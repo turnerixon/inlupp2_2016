@@ -72,7 +72,7 @@ public class Inlupp2_Gui extends JFrame {
         // End ArchiveMenu
 
 		/*
-		 * Panelen med knappar
+         * Panelen med knappar
 		 */
         JPanel vanster = new JPanel();
 
@@ -372,25 +372,23 @@ public class Inlupp2_Gui extends JFrame {
         }//End ActionEvent
     }//End RemoveLyss
 
+    public void felMeddelandeVidSearch() {
+        JOptionPane.showMessageDialog(null, "Det namnet finns inte. Vänligen sök på annat namn, med minst ett tecken! ");
+    }
+
     class SearchLyss implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent ave) {
 
             String soktPlats = searchField.getText();
             List<Place> funnaPlatser = placesByName.get(soktPlats);
-/*            if(soktPlats.equals("" )
-                felMeddelandeVidSearch();
 
-            }*/
-
-            if(funnaPlatser == null || funnaPlatser.isEmpty())
-            {
+            if (funnaPlatser == null || funnaPlatser.isEmpty()) {
                 felMeddelandeVidSearch();
                 return;
             }
-
             for (Place p : funnaPlatser) {
-                if(!p.getVisad()){
+                if (!p.getVisad()) {
                     p.setVisad(true);
                 }
                 if (p.getMarkerad()) {
@@ -410,9 +408,6 @@ public class Inlupp2_Gui extends JFrame {
         }//End MouseEvent
     }//End SearchfieldLyss
 
-    public void felMeddelandeVidSearch() {
-        JOptionPane.showMessageDialog(null, "Det namnet finns inte. Vänligen sök på annat namn! ");
-    }
 
     public static void main(String[] arg) {
         new Inlupp2_Gui();
