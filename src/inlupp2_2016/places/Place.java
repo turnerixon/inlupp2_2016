@@ -77,6 +77,7 @@ public abstract class Place extends JComponent {
 
     public void setVisad(boolean b) {
         visad = b;
+        validate();
         repaint();
         System.out.println("SetVisad från Place här!!");
     }//end setVisad
@@ -88,6 +89,7 @@ public abstract class Place extends JComponent {
 
     public void setMarkerad (boolean b){
         markerad=b;
+        validate();
         repaint();
         System.out.println("SetMarkerad från Place här!!!!");
     }

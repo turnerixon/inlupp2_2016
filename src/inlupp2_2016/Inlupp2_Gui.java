@@ -372,9 +372,7 @@ public class Inlupp2_Gui extends JFrame {
         }//End ActionEvent
     }//End RemoveLyss
 
-    public void felMeddelandeVidSearch() {
-        JOptionPane.showMessageDialog(null, "Det namnet finns inte. Vänligen sök på annat namn, med minst ett tecken! ");
-    }
+
 
     class SearchLyss implements ActionListener {
         @Override
@@ -383,13 +381,15 @@ public class Inlupp2_Gui extends JFrame {
             String soktPlats = searchField.getText();
             List<Place> funnaPlatser = placesByName.get(soktPlats);
 
+
             if (funnaPlatser == null || funnaPlatser.isEmpty()) {
-                felMeddelandeVidSearch();
+                JOptionPane.showMessageDialog(null, "Det namnet finns inte. Vänligen sök på annat namn, med minst ett tecken! ");
                 return;
             }
             for (Place p : funnaPlatser) {
                 if (!p.getVisad()) {
                     p.setVisad(true);
+
                 }
                 if (p.getMarkerad()) {
                     p.setMarkerad(false);
@@ -397,6 +397,7 @@ public class Inlupp2_Gui extends JFrame {
                     p.setMarkerad(true);
                 }
             }
+            validate();
             repaint();
         }// End ActionEvent
     }//End SearchLyss
