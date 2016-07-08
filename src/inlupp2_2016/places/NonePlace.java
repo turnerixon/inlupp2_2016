@@ -18,7 +18,6 @@ public class NonePlace extends Place {
     protected void visa(Graphics g) {
         g.setColor(Color.BLACK);
         g.fillPolygon(xes, yes, 3);
-
     }
 
     protected void markera (Graphics g){

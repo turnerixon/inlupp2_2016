@@ -325,13 +325,11 @@ public class Inlupp2_Gui extends JFrame {
 
     //Används för att markera och avmarkera platser
     class MusAndPlaceLyss extends MouseAdapter {
-        //	private boolean markerad;
 
         public void mouseClicked(MouseEvent mev) {
             Place place = (Place) mev.getSource();
             place.setMarkerad(!place.getMarkerad());
-//			if(place.getMarkerad())
-//			markeradePlatser.add(place);
+
             if (mev.getButton() == MouseEvent.BUTTON1)
                 System.out.println("Klickar på MusAndPlaceLyss " + place.getName() + " " + " x: " + place.getX() + "och " + "y: " + place.getY());
         }
@@ -348,7 +346,7 @@ public class Inlupp2_Gui extends JFrame {
                     pos.setVisad(false);
                     pos.setMarkerad(false);
                 }
-                System.out.println(pos);
+                System.out.println(pos + "HideLyss här!!");
             }
 
         } //HideLyss ActionPerfomed
@@ -377,28 +375,24 @@ public class Inlupp2_Gui extends JFrame {
     class SearchLyss implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent ave) {
-
             String soktPlats = searchField.getText();
             List<Place> funnaPlatser = placesByName.get(soktPlats);
 
-
             if (funnaPlatser == null || funnaPlatser.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Det namnet finns inte. Vänligen sök på annat namn, med minst ett tecken! ");
+                 JOptionPane.showMessageDialog(null, "Det namnet finns inte. Vänligen sök på annat namn, med minst ett tecken! ");
                 return;
-            }
-            for (Place p : funnaPlatser) {
-                if (!p.getVisad()) {
-                    p.setVisad(true);
-
-                }
-                if (p.getMarkerad()) {
+            }//End-if
+            for(Place p :funnaPlatser ){
+                if(p.getMarkerad()){
+                    p.setVisad(false);
                     p.setMarkerad(false);
-                } else {
+                }else
+                    p.setVisad(true);
                     p.setMarkerad(true);
-                }
+
             }
-            validate();
-            repaint();
+
+
         }// End ActionEvent
     }//End SearchLyss
 

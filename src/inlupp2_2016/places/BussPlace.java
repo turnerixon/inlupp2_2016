@@ -21,7 +21,7 @@ public class BussPlace extends Place {
     } //End visa)()
 
     protected void markera(Graphics g) {
-
+        System.out.println("BussPlaces markera-metod");
     }
 } //End BussPlace
 

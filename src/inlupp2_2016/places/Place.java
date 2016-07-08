@@ -12,7 +12,7 @@ public abstract class Place extends JComponent {
     private Position position;
     private boolean hopfalld;
     private boolean markerad = false;
-    private boolean visad;
+    private boolean visad = false;
 
 
     public Place(String name, Position position) {
@@ -56,30 +56,26 @@ public abstract class Place extends JComponent {
         if (visad) {
             visa(g);
             System.out.println("Det här är visad, visa(g) i Place");
+
         } else {
             setVisible(false);
+            System.out.println("Set visible false i Place-klassen här");
         } //End if-Visad
         if(markerad){
             markera(g);
             setBounds(getX(),getY(), 52,52);
             g.setColor(Color.RED);
             g.drawRect(0, 0 ,50, 50);
-
             System.out.println("Markerad från Place-klassen");
-        }
-        else {
-            //visa(g);
-        }
-
+        }//End markerad()
     } //End paintComponent
 
     public boolean getVisad() {return visad;}
 
     public void setVisad(boolean b) {
         visad = b;
-        validate();
         repaint();
-        System.out.println("SetVisad från Place här!!");
+        System.out.println("SetVisad här, sörru!!");
     }//end setVisad
 
     public boolean getMarkerad (){
@@ -93,6 +89,7 @@ public abstract class Place extends JComponent {
         repaint();
         System.out.println("SetMarkerad från Place här!!!!");
     }
+
 
 
 
