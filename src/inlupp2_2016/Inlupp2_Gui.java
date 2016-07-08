@@ -298,7 +298,6 @@ public class Inlupp2_Gui extends JFrame {
             } // End MusLyss
 
             place.setVisad(true);
-            //placesByName.put(name, place);
             placesByPosition.put(position, place);
             for (Position p : placesByPosition.keySet()) {
                 Place place = placesByPosition.get(p);
