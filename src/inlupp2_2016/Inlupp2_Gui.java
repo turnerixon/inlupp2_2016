@@ -42,6 +42,7 @@ public class Inlupp2_Gui extends JFrame {
     private Place place;
     Map<String, List<Place>> placesByName = new HashMap<>();
     public Map<Position, Place> placesByPosition = new HashMap<>();
+    private JList<Place> markeradePlatser = new JList<Place>();
 
 
     public Inlupp2_Gui() {
@@ -99,7 +100,7 @@ public class Inlupp2_Gui extends JFrame {
         // Knapp-panelen slutar här
 
 		/*
-		 * Categories-delen
+         * Categories-delen
 		 */
         JPanel right = new JPanel();
         right.setLayout(new BoxLayout(right, BoxLayout.Y_AXIS));
@@ -370,27 +371,23 @@ public class Inlupp2_Gui extends JFrame {
     }//End RemoveLyss
 
 
-
     class SearchLyss implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent ave) {
             String soktPlats = searchField.getText();
             List<Place> funnaPlatser = placesByName.get(soktPlats);
-
             if (funnaPlatser == null || funnaPlatser.isEmpty()) {
-                 JOptionPane.showMessageDialog(null, "Det namnet finns inte. Vänligen sök på annat namn, med minst ett tecken! ");
+                JOptionPane.showMessageDialog(null, "Det namnet finns inte. Vänligen sök på annat namn, med minst ett tecken! ");
                 return;
             }//End-if
-            for(Place p :funnaPlatser ){
-                if(p.getMarkerad()){
-                    p.setVisad(false);
-                    p.setMarkerad(false);
-                }else
-                    p.setVisad(true);
-                    p.setMarkerad(true);
-
+            else {
+                      for (Place p : funnaPlatser) {
+                            p.setVisad(true);
+                            if(!p.getMarkerad()) {
+                                p.setMarkerad(true);
+                            }else p.setMarkerad(false);
+                    }
             }
-
 
         }// End ActionEvent
     }//End SearchLyss

@@ -56,9 +56,7 @@ public abstract class Place extends JComponent {
         if (visad) {
             visa(g);
             System.out.println("Det här är visad, visa(g) i Place");
-
         } else {
-            setVisible(false);
             System.out.println("Set visible false i Place-klassen här");
         } //End if-Visad
         if(markerad){
@@ -75,7 +73,7 @@ public abstract class Place extends JComponent {
     public void setVisad(boolean b) {
         visad = b;
         repaint();
-        System.out.println("SetVisad här, sörru!!");
+        System.out.println("Set");
     }//end setVisad
 
     public boolean getMarkerad (){
@@ -89,7 +87,6 @@ public abstract class Place extends JComponent {
         repaint();
         System.out.println("SetMarkerad från Place här!!!!");
     }
-
 
 
 
