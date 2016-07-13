@@ -44,7 +44,6 @@ public class Inlupp2_Gui extends JFrame {
     public Map<Category, List<Place>> placesByCategory = new HashMap<>();
 
 
-
     public Inlupp2_Gui() {
 
         super("Inlupp 2");
@@ -115,7 +114,6 @@ public class Inlupp2_Gui extends JFrame {
         // CategoryButton - Buss, tunnuelbana och Tåg
         categoryDisplay.add(categoryList);
         right.add(categoryScroll);
-        categoryScroll.addMouseListener(new HideCategoryLyss());
         categoryDisplay.setVisible(true);
         categoryList.setFixedCellWidth(250);
 
@@ -284,12 +282,12 @@ public class Inlupp2_Gui extends JFrame {
             if (category == Category.Buss) {
                 place = new BussPlace(name, position);
 
-            } else if (category==Category.Tunnelbana) {
+            } else if (category == Category.Tunnelbana) {
                 place = new TunnelbanaPlace(name, position);
 
-            } else if (category==Category.Tåg) {
+            } else if (category == Category.Tåg) {
                 place = new TrainPlace(name, position);
-            } else if (category==Category.Undefined) {
+            } else if (category == Category.Undefined) {
                 place = new NonePlace(name, position);
             } else {
                 if (description.isEmpty()) {
@@ -305,13 +303,26 @@ public class Inlupp2_Gui extends JFrame {
             for (Position p : placesByPosition.keySet()) {
                 Place place = placesByPosition.get(p);
                 bp.add(place);
+                categoryList.addMouseListener(new HideCategoryLyss());
+
             }
             //Möjliggöra att söka fram platser via namn
             List<Place> sammaNamnList = placesByName.get(name);
             if (sammaNamnList == null) {
                 sammaNamnList = new ArrayList<>();
                 placesByName.put(name, sammaNamnList);
-            }
+            } //End sammaNamnList
+
+            //Möjliggöra att söka fram platser via category
+
+            List<Place> sammaKategoriList = placesByCategory.get(category);
+            if (sammaKategoriList == null) {
+                sammaKategoriList = new ArrayList<>();
+                placesByCategory.put(category, sammaKategoriList);
+            } //End sammaKategoriList
+
+
+            sammaKategoriList.add(place);
             sammaNamnList.add(place);
             bp.removeMouseListener(musLyss);
             boxen.addActionListener(new PlaceLyss());
@@ -348,7 +359,7 @@ public class Inlupp2_Gui extends JFrame {
                     pos.setVisad(false);
                     pos.setMarkerad(false);
                 }
-                System.out.println(pos + "HideLyss här!!");
+                System.out.println(pos + " HideLyss här!!");
             }
 
         } //HideLyss ActionPerfomed
@@ -383,12 +394,12 @@ public class Inlupp2_Gui extends JFrame {
                 return;
             }//End-if
             else {
-                      for (Place p : funnaPlatser) {
-                            p.setVisad(true);
-                            if(!p.getMarkerad()) {
-                                p.setMarkerad(true);
-                            }else p.setMarkerad(false);
-                    }
+                for (Place p : funnaPlatser) {
+                    p.setVisad(true);
+                    if (!p.getMarkerad()) {
+                        p.setMarkerad(true);
+                    } else p.setMarkerad(false);
+                }
             }
         }// End ActionEvent
     }//End SearchLyss
@@ -400,18 +411,30 @@ public class Inlupp2_Gui extends JFrame {
         }//End MouseEvent
     }//End SearchfieldLyss
 
-    class HideCategoryLyss extends MouseAdapter{
-        @Override
-        public void mouseClicked (MouseEvent ave) {
-            Category category = categoryList.getSelectedValue();
-            List<Place> platserPerKategori = placesByCategory.get(category);
+    // Map<String, List<Place>> placesByName = new HashMap<>();
+//    public Map<Category, List<Place>> placesByCategory = new HashMap<>();
 
-            for( Place p : platserPerKategori){
-                p.setMarkerad(true);
-                p.setVisad(true);
+
+    class HideCategoryLyss extends MouseAdapter {
+        @Override
+        public void mouseClicked(MouseEvent ave) {
+            Category mycategory = categoryList.getSelectedValue();
+            List<Place> platserPerKategori = placesByCategory.get(mycategory);
+
+            avmarkeraAlla();
+
+            for (List<Place> placeList : placesByCategory.values()){
+                for(Place p : placeList)
+                {
+                    p.setMarkerad(false);
+                }
             }
 
-
+            for (Place p : platserPerKategori) {
+                p.setVisad(true);
+                p.setMarkerad(true);
+                System.out.println("Nu trycker jag på HideCategoryLyss");
+            }
 
         } // End ActionEvent
     } // End HideCategoryLyss
@@ -421,6 +444,15 @@ public class Inlupp2_Gui extends JFrame {
         new Inlupp2_Gui();
 
     } //End main
+
+    private void avmarkeraAlla(){
+        for (List<Place> placeList : placesByCategory.values()){
+            for(Place p : placeList)
+            {
+                p.setMarkerad(false);
+            }
+        }
+    }
 }
 
 
