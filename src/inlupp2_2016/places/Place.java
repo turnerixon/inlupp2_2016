@@ -1,5 +1,6 @@
 package inlupp2_2016.places;
 
+import inlupp2_2016.Category;
 import inlupp2_2016.Position;
 
 import javax.swing.*;
@@ -8,7 +9,7 @@ import java.awt.*;
 
 public abstract class Place extends JComponent {
     private String name;
-    private String category;
+    private Category category;
     private Position position;
     private boolean hopfalld;
     private boolean markerad = false;
@@ -22,7 +23,7 @@ public abstract class Place extends JComponent {
         setPreferredSize(new Dimension(50, 50));
     }
 
-    public Place(String name, Position position, String category) {
+    public Place(String name, Position position, Category category) {
         this.name = name;
         this.position = position;
         this.category = category;
@@ -34,7 +35,7 @@ public abstract class Place extends JComponent {
         return name;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 

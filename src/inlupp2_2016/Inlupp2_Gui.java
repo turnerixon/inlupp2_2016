@@ -25,10 +25,9 @@ public class Inlupp2_Gui extends JFrame {
     private JScrollPane kartScroll;
     private JScrollPane categoryScroll;
     private String[] placesVal = {"Named places", "Described places"};
-    private String[] categoryListItem = {"Buss", "Tunnelbana", "Tåg"};
 
     private JComboBox<String> boxen = new JComboBox<String>(placesVal);
-    private JList<String> categoryList = new JList<String>(categoryListItem);
+    private JList<Category> categoryList = new JList<>(Category.getSelectableValues());
 
     private JTextField searchField;
     private JButton searchButton;
@@ -42,7 +41,8 @@ public class Inlupp2_Gui extends JFrame {
     private Place place;
     Map<String, List<Place>> placesByName = new HashMap<>();
     public Map<Position, Place> placesByPosition = new HashMap<>();
-    private JList<Place> markeradePlatser = new JList<Place>();
+    public Map<Category, List<Place>> placesByCategory = new HashMap<>();
+
 
 
     public Inlupp2_Gui() {
@@ -115,6 +115,7 @@ public class Inlupp2_Gui extends JFrame {
         // CategoryButton - Buss, tunnuelbana och Tåg
         categoryDisplay.add(categoryList);
         right.add(categoryScroll);
+        categoryScroll.addMouseListener(new HideCategoryLyss());
         categoryDisplay.setVisible(true);
         categoryList.setFixedCellWidth(250);
 
@@ -163,6 +164,7 @@ public class Inlupp2_Gui extends JFrame {
     } // End NewMapLyss
 
 	/*
+
 	 * Kartan
 	 */
 
@@ -226,9 +228,9 @@ public class Inlupp2_Gui extends JFrame {
             String description = "";
 
             Position position = new Position(x, y);
-            String category = categoryList.getSelectedValue();
+            Category category = categoryList.getSelectedValue();
             if (categoryList.isSelectionEmpty())
-                category = "None";
+                category = Category.Undefined;
 
 
             if (boxen.getSelectedItem().equals("Named places")) {
@@ -279,21 +281,21 @@ public class Inlupp2_Gui extends JFrame {
                 }
             } // End try-catch
 
-            if (category.equals("Buss")) {
-                place = new BussPlace(name, position, category);
+            if (category == Category.Buss) {
+                place = new BussPlace(name, position);
 
-            } else if (category.equals("Tunnelbana")) {
-                place = new TunnelbanaPlace(name, position, category);
+            } else if (category==Category.Tunnelbana) {
+                place = new TunnelbanaPlace(name, position);
 
-            } else if (category.equals("Tåg")) {
-                place = new TrainPlace(name, position, category);
-            } else if (category.equals("None")) {
+            } else if (category==Category.Tåg) {
+                place = new TrainPlace(name, position);
+            } else if (category==Category.Undefined) {
                 place = new NonePlace(name, position);
             } else {
                 if (description.isEmpty()) {
                     place = new NamedPlace(name, position);
                 } else {
-                    place = new DescribedPlace(name, position, description, category);
+                    place = new DescribedPlace(name, position, description);
                 }
 
             } // End MusLyss
@@ -388,7 +390,6 @@ public class Inlupp2_Gui extends JFrame {
                             }else p.setMarkerad(false);
                     }
             }
-
         }// End ActionEvent
     }//End SearchLyss
 
@@ -398,6 +399,22 @@ public class Inlupp2_Gui extends JFrame {
             searchField.setText("");
         }//End MouseEvent
     }//End SearchfieldLyss
+
+    class HideCategoryLyss extends MouseAdapter{
+        @Override
+        public void mouseClicked (MouseEvent ave) {
+            Category category = categoryList.getSelectedValue();
+            List<Place> platserPerKategori = placesByCategory.get(category);
+
+            for( Place p : platserPerKategori){
+                p.setMarkerad(true);
+                p.setVisad(true);
+            }
+
+
+
+        } // End ActionEvent
+    } // End HideCategoryLyss
 
 
     public static void main(String[] arg) {

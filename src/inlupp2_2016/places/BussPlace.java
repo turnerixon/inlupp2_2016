@@ -1,5 +1,6 @@
 package inlupp2_2016.places;
 
+import inlupp2_2016.Category;
 import inlupp2_2016.Position;
 
 import java.awt.*;
@@ -11,8 +12,8 @@ public class BussPlace extends Place {
     final int[] xes = {0, 25, 50};
     final int[] yes = {0, 50, 0};
 
-    public BussPlace(String name, Position position, String category) {
-        super(name, position, "Buss");
+    public BussPlace(String name, Position position) {
+        super(name, position, Category.Buss);
     }
 
     protected void visa(Graphics g) {

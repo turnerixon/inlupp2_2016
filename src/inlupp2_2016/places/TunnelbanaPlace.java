@@ -1,5 +1,6 @@
 package inlupp2_2016.places;
 
+import inlupp2_2016.Category;
 import inlupp2_2016.Position;
 
 import java.awt.*;
@@ -12,8 +13,8 @@ public class TunnelbanaPlace extends Place {
     final int[] xes = {0, 25, 50};
     final int[] yes = {0, 50, 0};
 
-    public TunnelbanaPlace(String name, Position position, String category) {
-        super(name, position, "Tunnelbana");
+    public TunnelbanaPlace(String name, Position position) {
+        super(name, position, Category.Tunnelbana);
     }
 
     protected void visa(Graphics g) {
