@@ -114,6 +114,7 @@ public class Inlupp2_Gui extends JFrame {
         // CategoryButton - Buss, tunnuelbana och Tåg
         categoryDisplay.add(categoryList);
         right.add(categoryScroll);
+        categoryList.addListSelectionListener(new ListLyss());
         categoryDisplay.setVisible(true);
         categoryList.setFixedCellWidth(250);
 
@@ -214,8 +215,30 @@ public class Inlupp2_Gui extends JFrame {
     class ListLyss implements ListSelectionListener {
         public void valueChanged(ListSelectionEvent lev) {
 
-        }
-    }
+            //public void mouseClicked(MouseEvent ave) {
+                Category mycategory = categoryList.getSelectedValue();
+                List<Place> platserPerKategori = placesByCategory.get(mycategory);
+
+                avmarkeraAlla();
+                if(platserPerKategori!=null) {
+                    for (List<Place> placeList : placesByCategory.values()) {
+                        if (mycategory != null || !platserPerKategori.isEmpty()) ;
+                        {
+                            for (Place p : placeList) {
+                                p.setMarkerad(false);
+                            }
+                        }
+
+                        for (Place p : platserPerKategori) {
+                            p.setVisad(true);
+                            p.setMarkerad(true);
+                            System.out.println("Nu trycker jag på HideCategoryLyss");
+                        }
+                    }
+                }
+
+        }//End ValueChanged
+    } // End Listlyss
 
     class MusLyss extends MouseAdapter {
         @Override
@@ -303,7 +326,7 @@ public class Inlupp2_Gui extends JFrame {
             for (Position p : placesByPosition.keySet()) {
                 Place place = placesByPosition.get(p);
                 bp.add(place);
-                categoryList.addMouseListener(new HideCategoryLyss());
+
 
             }
             //Möjliggöra att söka fram platser via namn
@@ -328,6 +351,7 @@ public class Inlupp2_Gui extends JFrame {
             boxen.addActionListener(new PlaceLyss());
             place.addMouseListener(new MusAndPlaceLyss());
             categoryList.clearSelection();
+            categoryList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             bp.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             bp.validate();
             bp.repaint();
@@ -416,27 +440,8 @@ public class Inlupp2_Gui extends JFrame {
 
 
     class HideCategoryLyss extends MouseAdapter {
-        @Override
-        public void mouseClicked(MouseEvent ave) {
-            Category mycategory = categoryList.getSelectedValue();
-            List<Place> platserPerKategori = placesByCategory.get(mycategory);
 
-            avmarkeraAlla();
-
-            for (List<Place> placeList : placesByCategory.values()){
-                for(Place p : placeList)
-                {
-                    p.setMarkerad(false);
-                }
-            }
-
-            for (Place p : platserPerKategori) {
-                p.setVisad(true);
-                p.setMarkerad(true);
-                System.out.println("Nu trycker jag på HideCategoryLyss");
-            }
-
-        } // End ActionEvent
+         // End ActionEvent
     } // End HideCategoryLyss
 
 
