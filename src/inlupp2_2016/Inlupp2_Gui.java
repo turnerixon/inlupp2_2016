@@ -121,6 +121,7 @@ public class Inlupp2_Gui extends JFrame {
 		/* Hide-knappen */
         JButton hideCatButton = new JButton("Hide category");
         right.add(hideCatButton);
+        hideCatButton.addActionListener(new HideCategoryLyss());
         add(right, BorderLayout.EAST);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -211,7 +212,7 @@ public class Inlupp2_Gui extends JFrame {
     } // End PlaceLyss-knappen
 
 
-    //Osäker på vad jag ska göra här just nu
+    //Välj bland kategorier i listan och markera och visa de som är skapade.
     class ListLyss implements ListSelectionListener {
         public void valueChanged(ListSelectionEvent lev) {
 
@@ -433,15 +434,27 @@ public class Inlupp2_Gui extends JFrame {
         public void mouseClicked(MouseEvent mev) {
             searchField.setText("");
         }//End MouseEvent
-    }//End SearchfieldLyss
+        }//End SearchfieldLyss
 
-    // Map<String, List<Place>> placesByName = new HashMap<>();
-//    public Map<Category, List<Place>> placesByCategory = new HashMap<>();
+    //Göm platser från vald kategori.
+    class HideCategoryLyss implements ActionListener {
+        @Override
+        public void actionPerformed (ActionEvent ave) {
+            Category mycategory = categoryList.getSelectedValue();
+            List<Place> platserPerKategori = placesByCategory.get(mycategory);
 
+            if(platserPerKategori==null) {
+                JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Det finns ingen plats av den typen att gömma!");
+            }
 
-    class HideCategoryLyss extends MouseAdapter {
+            else {
+                for (Place p : platserPerKategori) {
+                    p.setVisad(false);
+                    p.setMarkerad(false);
+                }
+            }
 
-         // End ActionEvent
+        } // End ActionEvent
     } // End HideCategoryLyss
 
 
