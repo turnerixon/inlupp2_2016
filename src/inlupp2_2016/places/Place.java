@@ -11,7 +11,7 @@ public abstract class Place extends JComponent {
     private String name;
     private Category category;
     private Position position;
-    private boolean hopfalld;
+    private boolean utfalld;
     private boolean markerad = false;
     private boolean visad = false;
 
@@ -40,14 +40,12 @@ public abstract class Place extends JComponent {
     }
 
 
-    public String toString() {
-
-        return "Namn: " + getName() + "kategori: " + getCategory();
-    }
+    public String toString() { return  name ; }
 
 
    abstract protected void markera (Graphics g);
 
+    abstract protected void utfallning (Graphics g);
 
     //Visa-metod
     abstract protected void visa(Graphics g);
@@ -67,6 +65,18 @@ public abstract class Place extends JComponent {
             g.drawRect(0, 0 ,50, 50);
             System.out.println("Markerad från Place-klassen");
         }//End markerad()
+        if(utfalld){
+            int fontSize = 12;
+            utfallning(g);
+            setBounds(getX(), getY(), 150, 100);
+            g.setColor(Color.LIGHT_GRAY);
+            g.fillRect(50, 0, 150, 50);
+            g.setFont(new Font("TimesRoman", Font.PLAIN, fontSize));
+            g.setColor(Color.BLACK);
+            g.drawString(toString(), 50, 20);
+
+        }//End if-utfälld
+
     } //End paintComponent
 
     public boolean getVisad() {return visad;}
@@ -74,19 +84,26 @@ public abstract class Place extends JComponent {
     public void setVisad(boolean b) {
         visad = b;
         repaint();
-        System.out.println("Set");
+        System.out.println("SetVisad i Place-klassen");
     }//end setVisad
 
     public boolean getMarkerad (){
         return markerad;
     }
 
+    public boolean getUtfalld() {return utfalld;}
+
 
     public void setMarkerad (boolean b){
         markerad=b;
-        validate();
         repaint();
         System.out.println("SetMarkerad från Place här!!!!");
+    }
+
+    public void setUtfalld(boolean b){
+        utfalld=b;
+        repaint();
+        System.out.println("SetUtfälld från Place här!!!!");
     }
 
 

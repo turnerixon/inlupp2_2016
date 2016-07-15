@@ -25,4 +25,6 @@ public class NonePlace extends Place {
         System.out.println("NonePlaces markera-metod");
     }
 
+    protected void utfallning (Graphics g){ }
+
 } //End Class NonePlace

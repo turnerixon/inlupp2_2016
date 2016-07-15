@@ -13,11 +13,14 @@ public class NamedPlace extends Place {
 		super(name, position, Category.Undefined);
 	}
 
+
 	public String toString () {
-		return getName() + " " + getCategory();
+		return super.toString();
 	}
 
 	protected void visa (Graphics g){ }
 
 	protected void markera (Graphics g){ };
+
+	protected void utfallning (Graphics g){ };
 }

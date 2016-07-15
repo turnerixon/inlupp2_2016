@@ -366,10 +366,20 @@ public class Inlupp2_Gui extends JFrame {
 
         public void mouseClicked(MouseEvent mev) {
             Place place = (Place) mev.getSource();
-            place.setMarkerad(!place.getMarkerad());
 
-            if (mev.getButton() == MouseEvent.BUTTON1)
-                System.out.println("Klickar på MusAndPlaceLyss " + place.getName() + " " + " x: " + place.getX() + "och " + "y: " + place.getY());
+
+
+            // Klick på Vänsterknappen
+            if (mev.getButton() == MouseEvent.BUTTON1) {
+                place.setMarkerad(!place.getMarkerad());
+                System.out.println("Klickar på MusAndPlaceLyss knapp 1" + place.getName() + " " + " x: " + place.getX() + "och " + "y: " + place.getY());
+                //Klick på Högerknappen
+
+            }else if(mev.getButton()== MouseEvent.BUTTON3) {
+                place.setUtfalld(!place.getUtfalld());
+                System.out.println("Klickar på MusPlaceLyss knapp 2");
+
+            }
         }
     } //End MusAndPlaceLyss
 

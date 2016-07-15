@@ -23,11 +23,15 @@ public class DescribedPlace extends Place {
 	public String getDescription(){
 		return description;
 	}
+
+	@Override
 	public String toString(){
-		return super.toString() + " " +getDescription(); 
+		 return super.toString() + " " + description;
 	}
 
 	protected void visa (Graphics g){ } //End visa()
 
 	protected void markera (Graphics g){};
+
+	protected void utfallning (Graphics g){ };
 }

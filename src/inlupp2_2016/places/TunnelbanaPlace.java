@@ -24,4 +24,6 @@ public class TunnelbanaPlace extends Place {
 
     protected void markera (Graphics g){ }
 
+    protected void utfallning (Graphics g){ }
+
 } //End TunnelbanaPlace
