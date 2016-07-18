@@ -460,6 +460,23 @@ public class Inlupp2_Gui extends JFrame {
     } // End HideCategoryLyss
 
 
+    class WhatIsHereLyss implements ActionListener{
+        public void actionPerformed (ActionEvent ave){
+
+        } //End ActionEvent
+      }//End WhatIsHereLyss
+
+    class WhatIsHereMusKnappLyss extends MouseAdapter{
+        public void mouseClicked (MouseEvent mev){
+            int x = mev.getX();
+            int y = mev.getY();
+
+
+
+
+        } //End MouseEvent
+    }//End WhatIsHereMusKnapp
+
     public static void main(String[] arg) {
         new Inlupp2_Gui();
 
