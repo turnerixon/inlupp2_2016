@@ -8,47 +8,34 @@ import java.awt.*;
 
 
 public abstract class Place extends JComponent {
-    private String name;
     private Category category;
     private Position position;
-    private boolean utfalld;
-    private boolean markerad = false;
-    private boolean visad = false;
+    protected boolean utfalld;
+    protected boolean markerad = false;
+    protected boolean visad = false;
+    private  Color myColor;
 
 
-    public Place(String name, Position position) {
-        this.name = name;
-        this.position = position;
-        setBounds(position.getX(), position.getY(), 50, 50);
-        setPreferredSize(new Dimension(50, 50));
-    }
+    final int[] xes = {0, 25, 50};
+    final int[] yes = {0, 50, 0};
 
-    public Place(String name, Position position, Category category) {
-        this.name = name;
+    protected Place(Position position, Category category) {
+
         this.position = position;
         this.category = category;
         setBounds(position.getX(), position.getY(), 50, 50);
         setPreferredSize(new Dimension(50, 50));
     }
 
-    public String getName() {
-        return name;
-    }
-
     public Category getCategory() {
         return category;
     }
 
+    protected void visa(Graphics g) {
 
-    public String toString() { return  name ; }
-
-
-   abstract protected void markera (Graphics g);
-
-    abstract protected void utfallning (Graphics g);
-
-    //Visa-metod
-    abstract protected void visa(Graphics g);
+        g.setColor(myColor());
+        g.fillPolygon(xes, yes, 3);
+    }
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -58,19 +45,17 @@ public abstract class Place extends JComponent {
         } else {
             System.out.println("Set visible false i Place-klassen här");
         } //End if-Visad
-        if(markerad){
-            markera(g);
-            setBounds(getX(),getY(), 52,52);
+        if (markerad) {
+            setBounds(getX(), getY(), 52, 52);
             g.setColor(Color.RED);
-            g.drawRect(0, 0 ,50, 50);
+            g.drawRect(0, 0, 50, 50);
             System.out.println("Markerad från Place-klassen");
         }//End markerad()
-        if(utfalld){
+        if (utfalld) {
             int fontSize = 12;
-            utfallning(g);
-            setBounds(getX(), getY(), 150, 100);
+            setBounds(getX(), getY(), 250, 100);
             g.setColor(Color.LIGHT_GRAY);
-            g.fillRect(50, 0, 150, 50);
+            g.fillRect(50, 0, 250, 50);
             g.setFont(new Font("TimesRoman", Font.PLAIN, fontSize));
             g.setColor(Color.BLACK);
             g.drawString(toString(), 50, 20);
@@ -79,7 +64,9 @@ public abstract class Place extends JComponent {
 
     } //End paintComponent
 
-    public boolean getVisad() {return visad;}
+    public boolean getVisad() {
+        return visad;
+    }
 
     public void setVisad(boolean b) {
         visad = b;
@@ -87,27 +74,44 @@ public abstract class Place extends JComponent {
         System.out.println("SetVisad i Place-klassen");
     }//end setVisad
 
-    public boolean getMarkerad (){
+    public boolean getMarkerad() {
         return markerad;
     }
 
-    public boolean getUtfalld() {return utfalld;}
+    public boolean getUtfalld() {
+        return utfalld;
+    }
+
+    public Color myColor(){
+        switch (getCategory()) {
+            case Tåg:
+                myColor = Color.GREEN;
+                break;
+            case Tunnelbana:
+                myColor = Color.BLUE;
+                break;
+            case Buss:
+                myColor = Color.RED;
+                break;
+            default:
+                myColor = Color.BLACK;
+                break;
+        }
+            return myColor;
+    }
 
 
-    public void setMarkerad (boolean b){
-        markerad=b;
+    public void setMarkerad(boolean b) {
+        markerad = b;
         repaint();
         System.out.println("SetMarkerad från Place här!!!!");
     }
 
-    public void setUtfalld(boolean b){
-        utfalld=b;
+    public void setUtfalld(boolean b) {
+        utfalld = b;
         repaint();
         System.out.println("SetUtfälld från Place här!!!!");
     }
-
-
-
 
 
 } //End class Place

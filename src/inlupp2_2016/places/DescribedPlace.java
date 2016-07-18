@@ -3,35 +3,25 @@ package inlupp2_2016.places;
 import inlupp2_2016.Category;
 import inlupp2_2016.Position;
 import inlupp2_2016.places.Place;
+import sun.security.krb5.internal.crypto.Des;
 
 import java.awt.*;
 
-public class DescribedPlace extends Place {
-	String description;
+public class DescribedPlace extends NamedPlace {
+    String description;
 
-	//Iochmed att kategori sätts som None ifall ingen väljs används aldirg den här konstruktorn.
-	public DescribedPlace(String name, Position position, String description){
-		super(name, position, Category.Undefined);
-		this.description=description;
-	}
+    public DescribedPlace(String name, String description, Position position, Category category) {
+        super(name, position, category);
+        this.description = description;
+    }
 
-	@Override
-	public String getName() {
-		return super.getName();
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public String getDescription(){
-		return description;
-	}
+    @Override
+    public String toString() {
 
-	@Override
-	public String toString(){
-		 return super.toString() + " " + description;
-	}
-
-	protected void visa (Graphics g){ } //End visa()
-
-	protected void markera (Graphics g){};
-
-	protected void utfallning (Graphics g){ };
+        return "Namn: " + getName() + " Beskrivning: " + getDescription();
+    }
 }

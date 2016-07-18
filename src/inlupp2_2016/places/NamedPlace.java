@@ -7,20 +7,21 @@ import inlupp2_2016.places.Place;
 import java.awt.*;
 
 public class NamedPlace extends Place {
-	//private String farg;
 
-	public NamedPlace(String name, Position position){
-		super(name, position, Category.Undefined);
+	String name;
+
+	public NamedPlace(String name, Position position, Category category){
+		super(position, category);
+		this.name=name;
 	}
 
-
-	public String toString () {
-		return super.toString();
+	@Override
+	public String getName() {
+		return name;
 	}
 
-	protected void visa (Graphics g){ }
-
-	protected void markera (Graphics g){ };
-
-	protected void utfallning (Graphics g){ };
+	@Override
+	public String toString() {
+		return "NamedPlace: " + getName();
+	}
 }

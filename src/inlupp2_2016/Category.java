@@ -19,4 +19,5 @@ public enum Category {
         return categories;
 
     }
+
 }

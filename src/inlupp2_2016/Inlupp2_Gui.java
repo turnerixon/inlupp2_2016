@@ -303,24 +303,12 @@ public class Inlupp2_Gui extends JFrame {
                 }
             } // End try-catch
 
-            if (category == Category.Buss) {
-                place = new BussPlace(name, position);
 
-            } else if (category == Category.Tunnelbana) {
-                place = new TunnelbanaPlace(name, position);
-
-            } else if (category == Category.Tåg) {
-                place = new TrainPlace(name, position);
-            } else if (category == Category.Undefined) {
-                place = new NonePlace(name, position);
+            if (description.isEmpty()) {
+                place = new NamedPlace(name, position, category);
             } else {
-                if (description.isEmpty()) {
-                    place = new NamedPlace(name, position);
-                } else {
-                    place = new DescribedPlace(name, position, description);
-                }
-
-            } // End MusLyss
+                place = new DescribedPlace(name, description, position,  category);
+            }
 
             place.setVisad(true);
             placesByPosition.put(position, place);
@@ -365,8 +353,16 @@ public class Inlupp2_Gui extends JFrame {
     class MusAndPlaceLyss extends MouseAdapter {
 
         public void mouseClicked(MouseEvent mev) {
-            Place place = (Place) mev.getSource();
+            Place place;
 
+            if(mev.getSource() instanceof DescribedPlace)
+            {
+                place = (DescribedPlace)mev.getSource();
+            }
+            else
+            {
+                place = (Place)mev.getSource();
+            }
 
 
             // Klick på Vänsterknappen
