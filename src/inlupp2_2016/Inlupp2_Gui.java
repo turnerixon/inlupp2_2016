@@ -254,7 +254,6 @@ public class Inlupp2_Gui extends JFrame {
             if (categoryList.isSelectionEmpty())
                 category = Category.Undefined;
 
-
             if (boxen.getSelectedItem().equals("Named places")) {
                 try {
 
@@ -288,12 +287,8 @@ public class Inlupp2_Gui extends JFrame {
 
                     name = describedPlaceForm.getName();
                     description = describedPlaceForm.getDescription();
-                    if (name.equals("")) {
-                        JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Inget namn");
-                        return;
-                    }
-                    if (description.equals("")) {
-                        JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Beskrivning saknas");
+                    if (name.equals("") || description.equals("")) {
+                        JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Något av namn eller beskrivning saknades vid skapandet av plats. Skapa om platsen!");
                         return;
                     }
 
@@ -404,6 +399,7 @@ public class Inlupp2_Gui extends JFrame {
                 if (place.getMarkerad()) {
                     bp.remove(place);
                     iter.remove();
+
                     List<Place> sammaNamnList = placesByName.get(place.getName());
                     sammaNamnList.remove(place);
                     if (sammaNamnList.isEmpty())
