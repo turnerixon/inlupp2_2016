@@ -1,5 +1,6 @@
 package inlupp2_2016;
 
+import com.sun.org.apache.xerces.internal.xinclude.XPointerSchema;
 import inlupp2_2016.places.*;
 import javafx.geometry.Pos;
 
@@ -38,6 +39,7 @@ public class Inlupp2_Gui extends JFrame {
     private JMenuBar progMenuBar;
     private JMenu progMenu;
     MusLyss musLyss = new MusLyss();
+    WhatIsHereMusKnappLyss whatIsHereKnappLyss = new  WhatIsHereMusKnappLyss();
     private Place place;
     Map<String, List<Place>> placesByName = new HashMap<>();
     public Map<Position, Place> placesByPosition = new HashMap<>();
@@ -96,6 +98,7 @@ public class Inlupp2_Gui extends JFrame {
         vanster.add(removeButton);
         whatButton = new JButton("What is here?");
         vanster.add(whatButton);
+        whatButton.addActionListener(new WhatIsHereLyss());
         // Knapp-panelen slutar här
 
 		/*
@@ -362,10 +365,11 @@ public class Inlupp2_Gui extends JFrame {
 
             // Klick på Vänsterknappen
             if (mev.getButton() == MouseEvent.BUTTON1) {
-                place.setMarkerad(!place.getMarkerad());
-                System.out.println("Klickar på MusAndPlaceLyss knapp 1" + place.getName() + " " + " x: " + place.getX() + "och " + "y: " + place.getY());
-                //Klick på Högerknappen
-
+                  if(place.getVisad()) {
+                   place.setMarkerad(!place.getMarkerad());
+                    System.out.println("Klickar på MusAndPlaceLyss knapp 1" + place.getName() + " " + " x: " + place.getX() + "och " + "y: " + place.getY());
+                    //Klick på Högerknappen
+                }
             }else if(mev.getButton()== MouseEvent.BUTTON3) {
                 place.setUtfalld(!place.getUtfalld());
                 System.out.println("Klickar på MusPlaceLyss knapp 2");
@@ -444,38 +448,48 @@ public class Inlupp2_Gui extends JFrame {
         public void actionPerformed (ActionEvent ave) {
             Category mycategory = categoryList.getSelectedValue();
             List<Place> platserPerKategori = placesByCategory.get(mycategory);
-
             if(platserPerKategori==null) {
                 JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Det finns ingen plats av den typen att gömma!");
             }
-
             else {
                 for (Place p : platserPerKategori) {
                     p.setVisad(false);
                     p.setMarkerad(false);
                 }
             }
-
         } // End ActionEvent
     } // End HideCategoryLyss
 
-
-    class WhatIsHereLyss implements ActionListener{
-        public void actionPerformed (ActionEvent ave){
-
-        } //End ActionEvent
-      }//End WhatIsHereLyss
-
     class WhatIsHereMusKnappLyss extends MouseAdapter{
-        public void mouseClicked (MouseEvent mev){
-            int x = mev.getX();
-            int y = mev.getY();
+       @Override
+        public void mouseClicked (MouseEvent mev) {
+           int musX = mev.getX();
+           int musY = mev.getY();
 
+           for (Map.Entry<Position, Place> entry : placesByPosition.entrySet()) {
+               if( entry.getKey().getX() >= musX-75 && entry.getKey().getX() <= musX+75 &&
+                   entry.getKey().getY() >= musY-75 && entry.getKey().getY() <= musY+75 )
+               {
+                   System.out.println("Träffat");
 
+               }
+           }
 
+           bp.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+           bp.removeMouseListener(this);
 
         } //End MouseEvent
     }//End WhatIsHereMusKnapp
+
+
+    class WhatIsHereLyss implements ActionListener{
+        @Override
+        public void actionPerformed (ActionEvent ave){
+            bp.addMouseListener(whatIsHereKnappLyss);
+            bp.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+        } //End ActionEvent
+    }//End WhatIsHereLyss
+
 
     public static void main(String[] arg) {
         new Inlupp2_Gui();

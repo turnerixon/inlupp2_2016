@@ -43,7 +43,7 @@ public abstract class Place extends JComponent {
             visa(g);
             System.out.println("Det här är visad, visa(g) i Place");
         } else {
-            System.out.println("Set visible false i Place-klassen här");
+            //System.out.println("Set visible false i Place-klassen här");
         } //End if-Visad
         if (markerad) {
             setBounds(getX(), getY(), 52, 52);

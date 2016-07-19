@@ -23,6 +23,16 @@ public class Position implements Comparable<Position>{
 		return "x = " + x + " y= " + y ; 
 	}
 
+	public boolean isThereAnythingHere(int mouseClickedX, int mouseClickedY) {
+		if (mouseClickedX > x - 21 && mouseClickedX < x + 21 && mouseClickedY < y && mouseClickedY > y - 21) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+
+
 
 	@Override
 	public int compareTo (Position other) {
