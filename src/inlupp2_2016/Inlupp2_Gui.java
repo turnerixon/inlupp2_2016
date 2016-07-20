@@ -461,15 +461,25 @@ public class Inlupp2_Gui extends JFrame {
     } // End HideCategoryLyss
 
     class WhatIsHereMusKnappLyss extends MouseAdapter{
-       @Override
+       private int startX, startY;
+        @Override
+       public void mousePressed (MouseEvent mev){
+           startX = mev.getX();
+           startY = mev.getY();
+       }
+
         public void mouseClicked (MouseEvent mev) {
+
            int musX = mev.getX();
            int musY = mev.getY();
 
            for (Map.Entry<Position, Place> entry : placesByPosition.entrySet()) {
-               if( entry.getKey().getX() >= musX-75 && entry.getKey().getX() <= musX+75 &&
+               if( entry.getKey().getX() >= musX && entry.getKey().getX() >= musX-75 && entry.getKey().getX() <= musX+75 &&
                    entry.getKey().getY() >= musY-75 && entry.getKey().getY() <= musY+75 )
+                    entry.getValue().setVisad(true);
+
                {
+
                    System.out.println("Träffat");
 
                }
