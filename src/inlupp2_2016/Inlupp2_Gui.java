@@ -6,7 +6,7 @@ import javafx.geometry.Pos;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
+import java.io.*;
 import java.util.*;
 import java.util.Iterator;
 import java.util.List;
@@ -68,6 +68,7 @@ public class Inlupp2_Gui extends JFrame {
         progMenu.add(loadPlacesItem);
         JMenuItem saveItem = new JMenuItem("Save");
         progMenu.add(saveItem);
+        saveItem.addActionListener(new SparaLyss());
         JMenuItem exitItem = new JMenuItem("Exit");
         progMenu.add(exitItem);
 
@@ -469,7 +470,6 @@ public class Inlupp2_Gui extends JFrame {
        }
 
         public void mouseClicked (MouseEvent mev) {
-
            int musX = mev.getX();
            int musY = mev.getY();
 
@@ -479,9 +479,7 @@ public class Inlupp2_Gui extends JFrame {
                     entry.getValue().setVisad(true);
 
                {
-
                    System.out.println("Träffat");
-
                }
            }
 
@@ -499,6 +497,39 @@ public class Inlupp2_Gui extends JFrame {
             bp.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
         } //End ActionEvent
     }//End WhatIsHereLyss
+
+
+    //Läsa in filer med platser
+    class LoadFileListener implements ActionListener{
+        public void actionPerformed(ActionEvent ave){
+
+
+        }// End ActionEvent
+    }//End LoadFileListener class
+
+    class SparaLyss implements ActionListener{
+        public void actionPerformed (ActionEvent ave) {
+            try {
+                FileWriter utfil = new FileWriter("");
+                PrintWriter out = new PrintWriter(utfil);
+                for (Place p : placesByPosition.values()){
+                    out.println(getClass()+","+p.getCategory().name()+","+p.getX()+","+p.getY()+","+p.getName());
+                }
+
+                //Skriv ut ClassNamnet, Platsens kategori, X och Y koordinater, Platsens namn och eventuell beskrivning
+
+                out.close();
+                utfil.close();
+
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(null, "Kan inte öppna filen: ");
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Fel : " + e.getMessage());
+            }
+
+
+        }//End ActionPerformed
+    }//End SparaLyss
 
 
     public static void main(String[] arg) {

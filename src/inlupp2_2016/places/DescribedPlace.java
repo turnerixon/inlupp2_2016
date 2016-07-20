@@ -22,6 +22,6 @@ public class DescribedPlace extends NamedPlace {
     @Override
     public String toString() {
 
-        return "Namn: " + getName() + " Beskrivning: " + getDescription();
+        return "DescribedPlace: " + getName() + " Beskrivning: " + getDescription();
     }
 }
