@@ -8,20 +8,25 @@ import java.awt.*;
 
 public class NamedPlace extends Place {
 
-	String name;
+    String name;
 
-	public NamedPlace(String name, Position position, Category category){
-		super(position, category);
-		this.name=name;
-	}
+    public NamedPlace(String name, Position position, Category category) {
+        super(position, category);
+        this.name = name;
+    }
 
-	@Override
-	public String getName() {
-		return name;
-	}
+    @Override
+    public String getName() {
+        return name;
+    }
 
-	@Override
-	public String toString() {
-		return "NamedPlace: " + getName();
-	}
+    @Override
+    public String toString() {
+        return "NamedPlace: " + getName();
+    }
+
+    @Override
+    public String getPrintableInfo() {
+        return "Named," + getCategory().name() + "," + getX() + "," + getY() + "," + getName();
+    }
 }

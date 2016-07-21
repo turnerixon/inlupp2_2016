@@ -27,6 +27,7 @@ public abstract class Place extends JComponent {
         setPreferredSize(new Dimension(50, 50));
     }
 
+
     public Category getCategory() {
         return category;
     }
@@ -113,5 +114,6 @@ public abstract class Place extends JComponent {
         System.out.println("SetUtfälld från Place här!!!!");
     }
 
+    public abstract String getPrintableInfo();
 
 } //End class Place

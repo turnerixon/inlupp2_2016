@@ -1,6 +1,7 @@
 package inlupp2_2016;
 
 import com.sun.org.apache.xerces.internal.xinclude.XPointerSchema;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import inlupp2_2016.places.*;
 import javafx.geometry.Pos;
 
@@ -66,6 +67,7 @@ public class Inlupp2_Gui extends JFrame {
 
         JMenuItem loadPlacesItem = new JMenuItem("Load Places");
         progMenu.add(loadPlacesItem);
+        loadPlacesItem.addActionListener(new LoadFileListenerLyss());
         JMenuItem saveItem = new JMenuItem("Save");
         progMenu.add(saveItem);
         saveItem.addActionListener(new SparaLyss());
@@ -309,32 +311,33 @@ public class Inlupp2_Gui extends JFrame {
                 place = new DescribedPlace(name, description, position,  category);
             }
 
-            place.setVisad(true);
-            placesByPosition.put(position, place);
-            for (Position p : placesByPosition.keySet()) {
-                Place place = placesByPosition.get(p);
-                bp.add(place);
+            addPlace(place);
 
+//            placesByPosition.put(position, place);
+//            for (Position p : placesByPosition.keySet()) {
+//                Place place = placesByPosition.get(p);
+//                bp.add(place);
+//        }
+//
+//            //Möjliggöra att söka fram platser via namn
+//            List<Place> sammaNamnList = placesByName.get(name);
+//            if (sammaNamnList == null) {
+//                sammaNamnList = new ArrayList<>();
+//                placesByName.put(name, sammaNamnList);
+//             } //End sammaNamnList
+//
+//
+//
+//            //Möjliggöra att söka fram platser via category
+//            List<Place> sammaKategoriList = placesByCategory.get(category);
+//            if (sammaKategoriList == null) {
+//                sammaKategoriList = new ArrayList<>();
+//                placesByCategory.put(category, sammaKategoriList);
+//            } //End sammaKategoriList
 
-            }
-            //Möjliggöra att söka fram platser via namn
-            List<Place> sammaNamnList = placesByName.get(name);
-            if (sammaNamnList == null) {
-                sammaNamnList = new ArrayList<>();
-                placesByName.put(name, sammaNamnList);
-            } //End sammaNamnList
-
-            //Möjliggöra att söka fram platser via category
-
-            List<Place> sammaKategoriList = placesByCategory.get(category);
-            if (sammaKategoriList == null) {
-                sammaKategoriList = new ArrayList<>();
-                placesByCategory.put(category, sammaKategoriList);
-            } //End sammaKategoriList
-
-
-            sammaKategoriList.add(place);
-            sammaNamnList.add(place);
+//
+//            sammaKategoriList.add(place);
+//            sammaNamnList.add(place);
             bp.removeMouseListener(musLyss);
             boxen.addActionListener(new PlaceLyss());
             place.addMouseListener(new MusAndPlaceLyss());
@@ -500,23 +503,67 @@ public class Inlupp2_Gui extends JFrame {
 
 
     //Läsa in filer med platser
-    class LoadFileListener implements ActionListener{
+    class LoadFileListenerLyss implements ActionListener{
         public void actionPerformed(ActionEvent ave){
+            //Dialog för filöppning
+            FileFilter mittFileFilter = new FileNameExtensionFilter("places", "Places");
+            jfc.setFileFilter(mittFileFilter);
+            int svar = jfc.showOpenDialog(Inlupp2_Gui.this);
+            if (svar != JFileChooser.APPROVE_OPTION)
+                return;
+            File fil = jfc.getSelectedFile();
 
+            //Inläsning av filen
+            String placesNamn = fil.getAbsolutePath();
+
+            try{
+            FileReader infil = new FileReader(placesNamn);
+            BufferedReader in = new BufferedReader(infil);
+
+                //Skriv ut ClassNamnet, Platsens kategori, X och Y koordinater, Platsens namn och eventuell beskrivning
+            String line;
+            while((line= in.readLine()) !=null){
+                String [] tokens = line.split(",");
+                String place = tokens[1];
+                String category = tokens[2];
+                String position = tokens[3];
+                String name = tokens[4];
+                String despcription = tokens[5];
+
+                System.out.print(line);
+            }
+            in.close();
+            infil.close();
+
+        }catch(FileNotFoundException e) {
+            System.err.println("Kan inte öppna " +placesNamn);
+        }catch (IOException e){
+            System.err.println("Fel: " +e.getMessage());
+        }
 
         }// End ActionEvent
     }//End LoadFileListener class
 
     class SparaLyss implements ActionListener{
         public void actionPerformed (ActionEvent ave) {
+
+            FileFilter bildFilter = new FileNameExtensionFilter("places", "Places");
+            jfc.setFileFilter(bildFilter);
+
+            int svar = jfc.showSaveDialog(Inlupp2_Gui.this);
+            if (svar != JFileChooser.APPROVE_OPTION)
+                return;
+            File fil = jfc.getSelectedFile();
+            String filNamn = fil.getAbsolutePath();
+
             try {
-                FileWriter utfil = new FileWriter("");
+                FileWriter utfil = new FileWriter(filNamn);
                 PrintWriter out = new PrintWriter(utfil);
                 for (Place p : placesByPosition.values()){
-                    out.println(getClass()+","+p.getCategory().name()+","+p.getX()+","+p.getY()+","+p.getName());
-                }
+                    out.println(p.getPrintableInfo());
+                    //Skriv ut ClassNamnet, Platsens kategori, X och Y koordinater, Platsens namn och eventuell beskrivning
 
-                //Skriv ut ClassNamnet, Platsens kategori, X och Y koordinater, Platsens namn och eventuell beskrivning
+                }
 
                 out.close();
                 utfil.close();
@@ -526,16 +573,53 @@ public class Inlupp2_Gui extends JFrame {
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "Fel : " + e.getMessage());
             }
-
-
         }//End ActionPerformed
     }//End SparaLyss
+
+
+
 
 
     public static void main(String[] arg) {
         new Inlupp2_Gui();
 
     } //End main
+
+    private void addPlace(Place nyPlats){
+        String name=nyPlats.getName();
+        Category category = nyPlats.getCategory();
+        int  positionX = nyPlats.getX();
+        int positionY = nyPlats.getY();
+        Position position = new Position(positionX, positionY);
+
+
+        //Möjliggöra att söka fram platser via namn
+        List<Place> sammaNamnList = placesByName.get(name);
+        if (sammaNamnList == null) {
+            sammaNamnList = new ArrayList<>();
+            placesByName.put(name, sammaNamnList);
+        } //End sammaNamnList
+        sammaNamnList.add(nyPlats);
+
+        //Möjliggöra att söka fram platser via category
+        List<Place> sammaKategoriList = placesByCategory.get(category);
+        if (sammaKategoriList == null) {
+            sammaKategoriList = new ArrayList<>();
+            placesByCategory.put(category, sammaKategoriList);
+        } //End sammaKategoriList
+        sammaKategoriList.add(nyPlats);
+
+
+        placesByPosition.put(position, nyPlats);
+        for (Position p : placesByPosition.keySet()) {
+            Place place = placesByPosition.get(p);
+            bp.add(place);
+        }
+
+        place.setVisad(true);
+
+    }//End addPlace ()
+
 
     private void avmarkeraAlla(){
         for (List<Place> placeList : placesByCategory.values()){

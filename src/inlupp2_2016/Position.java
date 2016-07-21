@@ -18,6 +18,8 @@ public class Position implements Comparable<Position>{
 	public int getX() {
 		return x;
 	}
+
+
 	@Override
 	public String toString() {
 		return "x = " + x + " y= " + y ; 

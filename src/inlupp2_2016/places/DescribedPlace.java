@@ -24,4 +24,9 @@ public class DescribedPlace extends NamedPlace {
 
         return "DescribedPlace: " + getName() + " Beskrivning: " + getDescription();
     }
+
+    @Override
+    public String getPrintableInfo() {
+        return "Described," + getCategory().name() + "," + getX() + "," + getY() + "," + getName() + "," + getDescription();
+    }
 }
