@@ -1,7 +1,7 @@
 package inlupp2_2016;
 
 
-public class Position implements Comparable<Position>{
+public class Position {
 
 	private int x;
 	private int y;
@@ -25,15 +25,21 @@ public class Position implements Comparable<Position>{
 		return "x = " + x + " y= " + y ; 
 	}
 
-	@Override
-	public int compareTo (Position other) {
-		if (x <other.x)
-			return -1;
-		else if (x > other.x)
-			return 1;
-		else 
-			return y - other.y;
-	}
+	public boolean equals (Object other){
+	    if(other instanceof Position){
+            Position p = (Position)other;
+            if(x==p.x && y==p.y)
+            return true;
+        else
+            return  false;
+        }
+        else return false;
+    }//End equals()
+
+    public int hashCode (){
+         return x * 10000 +y;
+    }// End hashCode()
+
 
 } //End class Position
 

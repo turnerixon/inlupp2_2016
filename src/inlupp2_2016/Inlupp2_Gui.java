@@ -238,8 +238,7 @@ public class Inlupp2_Gui extends JFrame {
 
                         for (Place p : platserPerKategori) {
                             p.setVisad(true);
-                            p.setMarkerad(true);
-                            System.out.println("Nu trycker jag på HideCategoryLyss");
+                           System.out.println("Nu trycker jag på HideCategoryLyss");
                         }
                     }
                 }
