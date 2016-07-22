@@ -474,10 +474,11 @@ public class Inlupp2_Gui extends JFrame {
         public void mouseClicked (MouseEvent mev) {
            int musX = mev.getX();
            int musY = mev.getY();
+           int extraPixel = 21;
 
            for (Map.Entry<Position, Place> entry : placesByPosition.entrySet()) {
-               if( entry.getKey().getX() >= musX && entry.getKey().getX() >= musX-75 && entry.getKey().getX() <= musX+75 &&
-                   entry.getKey().getY() >= musY-75 && entry.getKey().getY() <= musY+75 )
+               if( entry.getKey().getX() >= startX && entry.getKey().getX() >= startX-extraPixel && entry.getKey().getX() <= startX+extraPixel &&
+                   entry.getKey().getY() >= startY-extraPixel && entry.getKey().getY() <= startY+extraPixel )
                     entry.getValue().setVisad(true);
 
                {
@@ -523,12 +524,19 @@ public class Inlupp2_Gui extends JFrame {
             String line;
             while((line= in.readLine()) !=null){
                 String [] tokens = line.split(",");
-                String place = tokens[1];
+                String type = tokens[1];
                 String category = tokens[2];
-                String position = tokens[3];
-                String name = tokens[4];
-                String despcription = tokens[5];
+                int x = Integer.parseInt(tokens[3]);
+                int y = Integer.parseInt(tokens[4]);
+                String name = tokens[5];
+                String despcription = tokens[6];
 
+                Position pos = new Position(x, y);
+/*
+                if(despcription.isEmpty()){
+                    NamedPlace namedPlace = new NamedPlace(name, pos, category)
+                }
+  */
                 System.out.print(line);
             }
             in.close();
@@ -561,7 +569,7 @@ public class Inlupp2_Gui extends JFrame {
                 for (Place p : placesByPosition.values()){
                     out.println(p.getPrintableInfo());
                     //Skriv ut ClassNamnet, Platsens kategori, X och Y koordinater, Platsens namn och eventuell beskrivning
-
+                    System.out.println(p.getPrintableInfo());
                 }
 
                 out.close();

@@ -27,6 +27,6 @@ public class DescribedPlace extends NamedPlace {
 
     @Override
     public String getPrintableInfo() {
-        return "Described," + getCategory().name() + "," + getX() + "," + getY() + "," + getName() + "," + getDescription();
+        return "Described," + getCategory().name() + "," + getX() + "," + getY() + "," + getName() + "," + getDescription()+"\n ";
     }
 }
