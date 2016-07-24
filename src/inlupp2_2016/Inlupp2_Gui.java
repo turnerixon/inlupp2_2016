@@ -1,9 +1,6 @@
 package inlupp2_2016;
 
-import com.sun.org.apache.xerces.internal.xinclude.XPointerSchema;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import inlupp2_2016.places.*;
-import javafx.geometry.Pos;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -13,7 +10,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.*;
-import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
@@ -374,10 +370,11 @@ public class Inlupp2_Gui extends JFrame {
                     //Klick på Högerknappen
                 }
             }else if(mev.getButton()== MouseEvent.BUTTON3) {
-                place.setUtfalld(!place.getUtfalld());
+              //  place.setUtfalld(!place.getUtfalld());
                 System.out.println("Klickar på MusPlaceLyss knapp 2");
 
             }
+
         }
     } //End MusAndPlaceLyss
 
@@ -522,23 +519,67 @@ public class Inlupp2_Gui extends JFrame {
 
                 //Skriv ut ClassNamnet, Platsens kategori, X och Y koordinater, Platsens namn och eventuell beskrivning
             String line;
-            while((line= in.readLine()) !=null){
-                String [] tokens = line.split(",");
-                String type = tokens[1];
-                String category = tokens[2];
-                int x = Integer.parseInt(tokens[3]);
-                int y = Integer.parseInt(tokens[4]);
-                String name = tokens[5];
-                String despcription = tokens[6];
+            while((line= in.readLine()) !=null) {
 
-                Position pos = new Position(x, y);
-/*
-                if(despcription.isEmpty()){
-                    NamedPlace namedPlace = new NamedPlace(name, pos, category)
-                }
-  */
+                String[] tokens = line.split(",");
+
+                if (tokens[0].equalsIgnoreCase("named")) {
+                    String type = tokens[0];
+                    String category = tokens[1];
+                    int x = Integer.parseInt(tokens[2]);
+                    int y = Integer.parseInt(tokens[3]);
+                    String name = tokens[4];
+
+                    Position pos = new Position(x, y);
+                    Category currentCategory = null;
+
+                    if (category.equalsIgnoreCase("Buss")) {
+                        currentCategory = Category.Buss;
+                    } else if (category.equalsIgnoreCase("Tunnelbana")) {
+                        currentCategory = Category.Tunnelbana;
+                    } else if (category.equalsIgnoreCase("Tåg")) {
+                        currentCategory = Category.Tåg;
+                    } else {
+                        currentCategory = Category.Undefined;
+                    }
+
+                    Place nyPlats = new NamedPlace(name, pos, currentCategory);
+
+                  addPlace(nyPlats);
+
+                } //End if tokens=Named
+
+                else{
+                    String type = tokens[0];
+                    String category = tokens[1];
+                    int x = Integer.parseInt(tokens[2]);
+                    int y = Integer.parseInt(tokens[3]);
+                    String name = tokens[4];
+                    String despcription = tokens[5];
+
+
+                    Position pos = new Position(x, y);
+                    Category currentCategory = null;
+
+                    if (category.equalsIgnoreCase("Buss")) {
+                        currentCategory = Category.Buss;
+                    } else if (category.equalsIgnoreCase("Tunnelbana")) {
+                        currentCategory = Category.Tunnelbana;
+                    } else if (category.equalsIgnoreCase("Tåg")) {
+                        currentCategory = Category.Tåg;
+                    } else {
+                        currentCategory = Category.Undefined;
+                    }
+
+                    Place nyPlats = new DescribedPlace(name, despcription,pos, currentCategory);
+
+                    addPlace(nyPlats);
+
+                }//Tokens = Described
+
                 System.out.print(line);
-            }
+            } //End While-loop
+
             in.close();
             infil.close();
 
@@ -600,6 +641,11 @@ public class Inlupp2_Gui extends JFrame {
         Position position = new Position(positionX, positionY);
 
 
+        placesByPosition.put(position, nyPlats);
+        for (Position p : placesByPosition.keySet()) {
+            Place place = placesByPosition.get(p);
+            bp.add(place);
+
         //Möjliggöra att söka fram platser via namn
         List<Place> sammaNamnList = placesByName.get(name);
         if (sammaNamnList == null) {
@@ -616,14 +662,10 @@ public class Inlupp2_Gui extends JFrame {
         } //End sammaKategoriList
         sammaKategoriList.add(nyPlats);
 
-
-        placesByPosition.put(position, nyPlats);
-        for (Position p : placesByPosition.keySet()) {
-            Place place = placesByPosition.get(p);
-            bp.add(place);
         }
 
-        place.setVisad(true);
+
+
 
     }//End addPlace ()
 
