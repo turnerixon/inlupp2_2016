@@ -630,6 +630,7 @@ public class Inlupp2_Gui extends JFrame {
 
     private void addPlace(Place nyPlats) {
 
+
         String name = nyPlats.getName();
         Category category = nyPlats.getCategory();
         int positionX = nyPlats.getX();
@@ -637,10 +638,6 @@ public class Inlupp2_Gui extends JFrame {
         Position position = new Position(positionX, positionY);
         placesByPosition.put(position, nyPlats);
 
-        for(Place p : placesByPosition.values()){
-            p.setVisad(true);
-            bp.add(p);
-        }
 
 
         //Möjliggöra att söka fram platser via namn

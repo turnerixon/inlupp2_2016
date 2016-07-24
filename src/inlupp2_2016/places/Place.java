@@ -71,6 +71,7 @@ public abstract class Place extends JComponent {
 
     public void setVisad(boolean b) {
         visad = b;
+        revalidate();
         repaint();
         System.out.println("SetVisad i Place-klassen");
     }//end setVisad
