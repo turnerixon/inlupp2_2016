@@ -5,6 +5,7 @@ import inlupp2_2016.places.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.Iterator;
 import java.util.List;
@@ -36,9 +37,9 @@ public class Inlupp2_Gui extends JFrame {
     private JMenuBar progMenuBar;
     private JMenu progMenu;
     MusLyss musLyss = new MusLyss();
-    WhatIsHereMusKnappLyss whatIsHereKnappLyss = new  WhatIsHereMusKnappLyss();
+    WhatIsHereMusKnappLyss whatIsHereKnappLyss = new WhatIsHereMusKnappLyss();
     private Place place;
-    Map<String, List<Place>> placesByName = new HashMap<>();
+    public Map<String, List<Place>> placesByName = new HashMap<>();
     public Map<Position, Place> placesByPosition = new HashMap<>();
     public Map<Category, List<Place>> placesByCategory = new HashMap<>();
 
@@ -219,25 +220,25 @@ public class Inlupp2_Gui extends JFrame {
         public void valueChanged(ListSelectionEvent lev) {
 
             //public void mouseClicked(MouseEvent ave) {
-                Category mycategory = categoryList.getSelectedValue();
-                List<Place> platserPerKategori = placesByCategory.get(mycategory);
+            Category mycategory = categoryList.getSelectedValue();
+            List<Place> platserPerKategori = placesByCategory.get(mycategory);
 
-                avmarkeraAlla();
-                if(platserPerKategori!=null) {
-                    for (List<Place> placeList : placesByCategory.values()) {
-                        if (mycategory != null || !platserPerKategori.isEmpty()) ;
-                        {
-                            for (Place p : placeList) {
-                                p.setMarkerad(false);
-                            }
-                        }
-
-                        for (Place p : platserPerKategori) {
-                            p.setVisad(true);
-                           System.out.println("Nu trycker jag på HideCategoryLyss");
+            avmarkeraAlla();
+            if (platserPerKategori != null) {
+                for (List<Place> placeList : placesByCategory.values()) {
+                    if (mycategory != null || !platserPerKategori.isEmpty()) ;
+                    {
+                        for (Place p : placeList) {
+                            p.setMarkerad(false);
                         }
                     }
+
+                    for (Place p : platserPerKategori) {
+                        p.setVisad(true);
+                        System.out.println("Nu trycker jag på HideCategoryLyss");
+                    }
                 }
+            }
 
         }//End ValueChanged
     } // End Listlyss
@@ -303,7 +304,7 @@ public class Inlupp2_Gui extends JFrame {
             if (description.isEmpty()) {
                 place = new NamedPlace(name, position, category);
             } else {
-                place = new DescribedPlace(name, description, position,  category);
+                place = new DescribedPlace(name, description, position, category);
             }
 
             addPlace(place);
@@ -352,25 +353,22 @@ public class Inlupp2_Gui extends JFrame {
         public void mouseClicked(MouseEvent mev) {
             Place place;
 
-            if(mev.getSource() instanceof DescribedPlace)
-            {
-                place = (DescribedPlace)mev.getSource();
-            }
-            else
-            {
-                place = (Place)mev.getSource();
+            if (mev.getSource() instanceof DescribedPlace) {
+                place = (DescribedPlace) mev.getSource();
+            } else {
+                place = (Place) mev.getSource();
             }
 
 
             // Klick på Vänsterknappen
             if (mev.getButton() == MouseEvent.BUTTON1) {
-                  if(place.getVisad()) {
-                   place.setMarkerad(!place.getMarkerad());
+                if (place.getVisad()) {
+                    place.setMarkerad(!place.getMarkerad());
                     System.out.println("Klickar på MusAndPlaceLyss knapp 1" + place.getName() + " " + " x: " + place.getX() + "och " + "y: " + place.getY());
                     //Klick på Högerknappen
                 }
-            }else if(mev.getButton()== MouseEvent.BUTTON3) {
-              //  place.setUtfalld(!place.getUtfalld());
+            } else if (mev.getButton() == MouseEvent.BUTTON3) {
+                //  place.setUtfalld(!place.getUtfalld());
                 System.out.println("Klickar på MusPlaceLyss knapp 2");
 
             }
@@ -440,18 +438,17 @@ public class Inlupp2_Gui extends JFrame {
         public void mouseClicked(MouseEvent mev) {
             searchField.setText("");
         }//End MouseEvent
-        }//End SearchfieldLyss
+    }//End SearchfieldLyss
 
     //Göm platser från vald kategori.
     class HideCategoryLyss implements ActionListener {
         @Override
-        public void actionPerformed (ActionEvent ave) {
+        public void actionPerformed(ActionEvent ave) {
             Category mycategory = categoryList.getSelectedValue();
             List<Place> platserPerKategori = placesByCategory.get(mycategory);
-            if(platserPerKategori==null) {
+            if (platserPerKategori == null) {
                 JOptionPane.showMessageDialog(Inlupp2_Gui.this, "Det finns ingen plats av den typen att gömma!");
-            }
-            else {
+            } else {
                 for (Place p : platserPerKategori) {
                     p.setVisad(false);
                     p.setMarkerad(false);
@@ -460,39 +457,40 @@ public class Inlupp2_Gui extends JFrame {
         } // End ActionEvent
     } // End HideCategoryLyss
 
-    class WhatIsHereMusKnappLyss extends MouseAdapter{
-       private int startX, startY;
+    class WhatIsHereMusKnappLyss extends MouseAdapter {
+        private int startX, startY;
+
         @Override
-       public void mousePressed (MouseEvent mev){
-           startX = mev.getX();
-           startY = mev.getY();
-       }
+        public void mousePressed(MouseEvent mev) {
+            startX = mev.getX();
+            startY = mev.getY();
+        }
 
-        public void mouseClicked (MouseEvent mev) {
-           int musX = mev.getX();
-           int musY = mev.getY();
-           int extraPixel = 21;
+        public void mouseClicked(MouseEvent mev) {
+            int musX = mev.getX();
+            int musY = mev.getY();
+            int extraPixel = 21;
 
-           for (Map.Entry<Position, Place> entry : placesByPosition.entrySet()) {
-               if( entry.getKey().getX() >= startX && entry.getKey().getX() >= startX-extraPixel && entry.getKey().getX() <= startX+extraPixel &&
-                   entry.getKey().getY() >= startY-extraPixel && entry.getKey().getY() <= startY+extraPixel )
+            for (Map.Entry<Position, Place> entry : placesByPosition.entrySet()) {
+                if (entry.getKey().getX() >= startX && entry.getKey().getX() >= startX - extraPixel && entry.getKey().getX() <= startX + extraPixel &&
+                        entry.getKey().getY() >= startY - extraPixel && entry.getKey().getY() <= startY + extraPixel)
                     entry.getValue().setVisad(true);
 
-               {
-                   System.out.println("Träffat");
-               }
-           }
+                {
+                    System.out.println("Träffat");
+                }
+            }
 
-           bp.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-           bp.removeMouseListener(this);
+            bp.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            bp.removeMouseListener(this);
 
         } //End MouseEvent
     }//End WhatIsHereMusKnapp
 
 
-    class WhatIsHereLyss implements ActionListener{
+    class WhatIsHereLyss implements ActionListener {
         @Override
-        public void actionPerformed (ActionEvent ave){
+        public void actionPerformed(ActionEvent ave) {
             bp.addMouseListener(whatIsHereKnappLyss);
             bp.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
         } //End ActionEvent
@@ -500,8 +498,8 @@ public class Inlupp2_Gui extends JFrame {
 
 
     //Läsa in filer med platser
-    class LoadFileListenerLyss implements ActionListener{
-        public void actionPerformed(ActionEvent ave){
+    class LoadFileListenerLyss implements ActionListener {
+        public void actionPerformed(ActionEvent ave) {
             //Dialog för filöppning
             FileFilter mittFileFilter = new FileNameExtensionFilter("places", "Places");
             jfc.setFileFilter(mittFileFilter);
@@ -513,87 +511,87 @@ public class Inlupp2_Gui extends JFrame {
             //Inläsning av filen
             String placesNamn = fil.getAbsolutePath();
 
-            try{
-            FileReader infil = new FileReader(placesNamn);
-            BufferedReader in = new BufferedReader(infil);
+            try {
+                FileReader infil = new FileReader(placesNamn);
+                BufferedReader in = new BufferedReader(infil);
 
                 //Skriv ut ClassNamnet, Platsens kategori, X och Y koordinater, Platsens namn och eventuell beskrivning
-            String line;
-            while((line= in.readLine()) !=null) {
+                String line;
+                while ((line = in.readLine()) != null) {
 
-                String[] tokens = line.split(",");
+                    String[] tokens = line.split(",");
 
-                if (tokens[0].equalsIgnoreCase("named")) {
-                    String type = tokens[0];
-                    String category = tokens[1];
-                    int x = Integer.parseInt(tokens[2]);
-                    int y = Integer.parseInt(tokens[3]);
-                    String name = tokens[4];
+                    if (tokens[0].equalsIgnoreCase("named")) {
+                        String type = tokens[0];
+                        String category = tokens[1];
+                        int x = Integer.parseInt(tokens[2]);
+                        int y = Integer.parseInt(tokens[3]);
+                        String name = tokens[4];
 
-                    Position pos = new Position(x, y);
-                    Category currentCategory = null;
+                        Position pos = new Position(x, y);
+                        Category currentCategory = null;
 
-                    if (category.equalsIgnoreCase("Buss")) {
-                        currentCategory = Category.Buss;
-                    } else if (category.equalsIgnoreCase("Tunnelbana")) {
-                        currentCategory = Category.Tunnelbana;
-                    } else if (category.equalsIgnoreCase("Tåg")) {
-                        currentCategory = Category.Tåg;
-                    } else {
-                        currentCategory = Category.Undefined;
-                    }
+                        if (category.equalsIgnoreCase("Buss")) {
+                            currentCategory = Category.Buss;
+                        } else if (category.equalsIgnoreCase("Tunnelbana")) {
+                            currentCategory = Category.Tunnelbana;
+                        } else if (category.equalsIgnoreCase("Tåg")) {
+                            currentCategory = Category.Tåg;
+                        } else {
+                            currentCategory = Category.Undefined;
+                        }
 
-                    Place nyPlats = new NamedPlace(name, pos, currentCategory);
+                        Place nyPlats = new NamedPlace(name, pos, currentCategory);
 
-                  addPlace(nyPlats);
+                        addPlace(nyPlats);
 
-                } //End if tokens=Named
+                    } //End if tokens=Named
 
-                else{
-                    String type = tokens[0];
-                    String category = tokens[1];
-                    int x = Integer.parseInt(tokens[2]);
-                    int y = Integer.parseInt(tokens[3]);
-                    String name = tokens[4];
-                    String despcription = tokens[5];
+                    else {
+                        String type = tokens[0];
+                        String category = tokens[1];
+                        int x = Integer.parseInt(tokens[2]);
+                        int y = Integer.parseInt(tokens[3]);
+                        String name = tokens[4];
+                        String despcription = tokens[5];
 
 
-                    Position pos = new Position(x, y);
-                    Category currentCategory = null;
+                        Position pos = new Position(x, y);
+                        Category currentCategory = null;
 
-                    if (category.equalsIgnoreCase("Buss")) {
-                        currentCategory = Category.Buss;
-                    } else if (category.equalsIgnoreCase("Tunnelbana")) {
-                        currentCategory = Category.Tunnelbana;
-                    } else if (category.equalsIgnoreCase("Tåg")) {
-                        currentCategory = Category.Tåg;
-                    } else {
-                        currentCategory = Category.Undefined;
-                    }
+                        if (category.equalsIgnoreCase("Buss")) {
+                            currentCategory = Category.Buss;
+                        } else if (category.equalsIgnoreCase("Tunnelbana")) {
+                            currentCategory = Category.Tunnelbana;
+                        } else if (category.equalsIgnoreCase("Tåg")) {
+                            currentCategory = Category.Tåg;
+                        } else {
+                            currentCategory = Category.Undefined;
+                        }
 
-                    Place nyPlats = new DescribedPlace(name, despcription,pos, currentCategory);
+                        Place nyPlats = new DescribedPlace(name, despcription, pos, currentCategory);
 
-                    addPlace(nyPlats);
+                        addPlace(nyPlats);
 
-                }//Tokens = Described
+                    }//Tokens = Described
 
-                System.out.print(line);
-            } //End While-loop
+                    System.out.print(line);
+                } //End While-loop
 
-            in.close();
-            infil.close();
+                in.close();
+                infil.close();
 
-        }catch(FileNotFoundException e) {
-            System.err.println("Kan inte öppna " +placesNamn);
-        }catch (IOException e){
-            System.err.println("Fel: " +e.getMessage());
-        }
+            } catch (FileNotFoundException e) {
+                System.err.println("Kan inte öppna " + placesNamn);
+            } catch (IOException e) {
+                System.err.println("Fel: " + e.getMessage());
+            }
 
         }// End ActionEvent
     }//End LoadFileListener class
 
-    class SparaLyss implements ActionListener{
-        public void actionPerformed (ActionEvent ave) {
+    class SparaLyss implements ActionListener {
+        public void actionPerformed(ActionEvent ave) {
 
             FileFilter bildFilter = new FileNameExtensionFilter("places", "Places");
             jfc.setFileFilter(bildFilter);
@@ -607,7 +605,7 @@ public class Inlupp2_Gui extends JFrame {
             try {
                 FileWriter utfil = new FileWriter(filNamn);
                 PrintWriter out = new PrintWriter(utfil);
-                for (Place p : placesByPosition.values()){
+                for (Place p : placesByPosition.values()) {
                     out.println(p.getPrintableInfo());
                     //Skriv ut ClassNamnet, Platsens kategori, X och Y koordinater, Platsens namn och eventuell beskrivning
                     System.out.println(p.getPrintableInfo());
@@ -625,26 +623,25 @@ public class Inlupp2_Gui extends JFrame {
     }//End SparaLyss
 
 
-
-
-
     public static void main(String[] arg) {
         new Inlupp2_Gui();
 
     } //End main
 
-    private void addPlace(Place nyPlats){
-        String name=nyPlats.getName();
+    private void addPlace(Place nyPlats) {
+
+        String name = nyPlats.getName();
         Category category = nyPlats.getCategory();
-        int  positionX = nyPlats.getX();
+        int positionX = nyPlats.getX();
         int positionY = nyPlats.getY();
         Position position = new Position(positionX, positionY);
-
-
         placesByPosition.put(position, nyPlats);
-        for (Position p : placesByPosition.keySet()) {
-            Place place = placesByPosition.get(p);
-            bp.add(place);
+
+        for(Place p : placesByPosition.values()){
+            p.setVisad(true);
+            bp.add(p);
+        }
+
 
         //Möjliggöra att söka fram platser via namn
         List<Place> sammaNamnList = placesByName.get(name);
@@ -652,7 +649,7 @@ public class Inlupp2_Gui extends JFrame {
             sammaNamnList = new ArrayList<>();
             placesByName.put(name, sammaNamnList);
         } //End sammaNamnList
-        sammaNamnList.add(nyPlats);
+
 
         //Möjliggöra att söka fram platser via category
         List<Place> sammaKategoriList = placesByCategory.get(category);
@@ -660,11 +657,6 @@ public class Inlupp2_Gui extends JFrame {
             sammaKategoriList = new ArrayList<>();
             placesByCategory.put(category, sammaKategoriList);
         } //End sammaKategoriList
-        sammaKategoriList.add(nyPlats);
-
-        }
-
-
 
 
     }//End addPlace ()
