@@ -47,20 +47,20 @@ public abstract class Place extends JComponent {
             //System.out.println("Set visible false i Place-klassen här");
         } //End if-Visad
         if (markerad) {
-            setBounds(getX(), getY(), 52, 52);
+            if (!utfalld)
+                setBounds(position.getX(), position.getY(), 52, 52);
             g.setColor(Color.RED);
             g.drawRect(0, 0, 50, 50);
             System.out.println("Markerad från Place-klassen");
         }//End markerad()
         if (utfalld) {
             int fontSize = 12;
-            setBounds(getX(), getY(), 250, 100);
+            setBounds(position.getX(), position.getY(), 200, 100);
             g.setColor(Color.LIGHT_GRAY);
             g.fillRect(50, 0, 250, 50);
             g.setFont(new Font("TimesRoman", Font.PLAIN, fontSize));
             g.setColor(Color.BLACK);
             g.drawString(toString(), 50, 20);
-
         }//End if-utfälld
 
     } //End paintComponent

@@ -141,7 +141,7 @@ public class Inlupp2_Gui extends JFrame {
 
             FileFilter bildFilter = new FileNameExtensionFilter("Bilder", "jpg", "png");
             jfc.setFileFilter(bildFilter);
-
+            //jfc.addChoosableFileFilter(bildFilter);
             int svar = jfc.showOpenDialog(Inlupp2_Gui.this);
             if (svar != JFileChooser.APPROVE_OPTION)
                 return;
@@ -253,7 +253,7 @@ public class Inlupp2_Gui extends JFrame {
             Position position = new Position(x, y);
             Category category = categoryList.getSelectedValue();
             if (categoryList.isSelectionEmpty())
-                category = Category.Undefined;
+                category = Category.None;
 
             if (boxen.getSelectedItem().equals("Named places")) {
                 try {
@@ -336,6 +336,7 @@ public class Inlupp2_Gui extends JFrame {
             if (mev.getButton() == MouseEvent.BUTTON1) {
                 if (place.getVisad()) {
                     place.setMarkerad(!place.getMarkerad());
+
                     System.out.println("Klickar på MusAndPlaceLyss knapp 1" + place.getName() + " " + " x: " + place.getX() + "och " + "y: " + place.getY());
                     //Klick på Högerknappen
                 }
@@ -440,6 +441,7 @@ public class Inlupp2_Gui extends JFrame {
     } // End HideCategoryLyss
 
     class WhatIsHereMusKnappLyss extends MouseAdapter {
+        /*
         private int startX, startY;
 
         @Override
@@ -447,10 +449,10 @@ public class Inlupp2_Gui extends JFrame {
             startX = mev.getX();
             startY = mev.getY();
         }
-
+            */
         public void mouseClicked(MouseEvent mev) {
-            int musX = mev.getX();
-            int musY = mev.getY();
+            int startX = mev.getX();
+            int startY = mev.getY();
             int extraPixel = 21;
 
             for (Map.Entry<Position, Place> entry : placesByPosition.entrySet()) {
@@ -473,7 +475,7 @@ public class Inlupp2_Gui extends JFrame {
         @Override
         public void actionPerformed(ActionEvent ave) {
             bp.addMouseListener(whatIsHereKnappLyss);
-            bp.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+            bp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         } //End ActionEvent
     }//End WhatIsHereLyss
 
@@ -519,7 +521,7 @@ public class Inlupp2_Gui extends JFrame {
                         } else if (category.equalsIgnoreCase("Tåg")) {
                             currentCategory = Category.Tåg;
                         } else {
-                            currentCategory = Category.Undefined;
+                            currentCategory = Category.None;
                         }
 
                         Place nyPlats = new NamedPlace(name, pos, currentCategory);
@@ -547,7 +549,7 @@ public class Inlupp2_Gui extends JFrame {
                         } else if (category.equalsIgnoreCase("Tåg")) {
                             currentCategory = Category.Tåg;
                         } else {
-                            currentCategory = Category.Undefined;
+                            currentCategory = Category.None;
                         }
 
                         Place nyPlats = new DescribedPlace(name, despcription, pos, currentCategory);

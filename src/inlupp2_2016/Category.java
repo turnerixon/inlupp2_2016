@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Created by k.Fredrik.Eriksson on 2016-07-12.
  */
 public enum Category {
-    Undefined,
+    None,
     Buss,
     Tunnelbana,
     Tåg;
