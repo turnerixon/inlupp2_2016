@@ -5,7 +5,6 @@ import inlupp2_2016.places.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.Iterator;
 import java.util.List;
@@ -39,7 +38,7 @@ public class Inlupp2_Gui extends JFrame {
     MusLyss musLyss = new MusLyss();
     WhatIsHereMusKnappLyss whatIsHereKnappLyss = new WhatIsHereMusKnappLyss();
     private Place place;
-    public Map<String, List<Place>> placesByName = new HashMap<>();
+    Map<String, List<Place>> placesByName = new HashMap<>();
     public Map<Position, Place> placesByPosition = new HashMap<>();
     public Map<Category, List<Place>> placesByCategory = new HashMap<>();
 
@@ -308,32 +307,6 @@ public class Inlupp2_Gui extends JFrame {
             }
 
             addPlace(place);
-
-//            placesByPosition.put(position, place);
-//            for (Position p : placesByPosition.keySet()) {
-//                Place place = placesByPosition.get(p);
-//                bp.add(place);
-//        }
-//
-//            //Möjliggöra att söka fram platser via namn
-//            List<Place> sammaNamnList = placesByName.get(name);
-//            if (sammaNamnList == null) {
-//                sammaNamnList = new ArrayList<>();
-//                placesByName.put(name, sammaNamnList);
-//             } //End sammaNamnList
-//
-//
-//
-//            //Möjliggöra att söka fram platser via category
-//            List<Place> sammaKategoriList = placesByCategory.get(category);
-//            if (sammaKategoriList == null) {
-//                sammaKategoriList = new ArrayList<>();
-//                placesByCategory.put(category, sammaKategoriList);
-//            } //End sammaKategoriList
-
-//
-//            sammaKategoriList.add(place);
-//            sammaNamnList.add(place);
             bp.removeMouseListener(musLyss);
             boxen.addActionListener(new PlaceLyss());
             place.addMouseListener(new MusAndPlaceLyss());
@@ -359,7 +332,6 @@ public class Inlupp2_Gui extends JFrame {
                 place = (Place) mev.getSource();
             }
 
-
             // Klick på Vänsterknappen
             if (mev.getButton() == MouseEvent.BUTTON1) {
                 if (place.getVisad()) {
@@ -368,7 +340,7 @@ public class Inlupp2_Gui extends JFrame {
                     //Klick på Högerknappen
                 }
             } else if (mev.getButton() == MouseEvent.BUTTON3) {
-                //  place.setUtfalld(!place.getUtfalld());
+                  place.setUtfalld(!place.getUtfalld());
                 System.out.println("Klickar på MusPlaceLyss knapp 2");
 
             }
@@ -386,6 +358,10 @@ public class Inlupp2_Gui extends JFrame {
                 if (pos.getMarkerad()) {
                     pos.setVisad(false);
                     pos.setMarkerad(false);
+
+                    for(MouseListener l : pos.getMouseListeners()){
+                        pos.removeMouseListener(l);
+                    }
                 }
                 System.out.println(pos + " HideLyss här!!");
             }
@@ -425,6 +401,7 @@ public class Inlupp2_Gui extends JFrame {
             else {
                 for (Place p : funnaPlatser) {
                     p.setVisad(true);
+                    p.addMouseListener(new MusAndPlaceLyss());
                     if (!p.getMarkerad()) {
                         p.setMarkerad(true);
                     } else p.setMarkerad(false);
@@ -452,6 +429,11 @@ public class Inlupp2_Gui extends JFrame {
                 for (Place p : platserPerKategori) {
                     p.setVisad(false);
                     p.setMarkerad(false);
+
+                    for(MouseListener l : p.getMouseListeners()){
+                        p.removeMouseListener(l);
+                    }
+
                 }
             }
         } // End ActionEvent
@@ -472,11 +454,10 @@ public class Inlupp2_Gui extends JFrame {
             int extraPixel = 21;
 
             for (Map.Entry<Position, Place> entry : placesByPosition.entrySet()) {
-                if (entry.getKey().getX() >= startX && entry.getKey().getX() >= startX - extraPixel && entry.getKey().getX() <= startX + extraPixel &&
-                        entry.getKey().getY() >= startY - extraPixel && entry.getKey().getY() <= startY + extraPixel)
-                    entry.getValue().setVisad(true);
-
+                if (entry.getKey().getX() >= startX - extraPixel && entry.getKey().getX() <= startX + extraPixel && entry.getKey().getY() >= startY - extraPixel && entry.getKey().getY() <= startY + extraPixel)
                 {
+                    entry.getValue().setVisad(true);
+                    entry.getValue().addMouseListener(new MusAndPlaceLyss());
                     System.out.println("Träffat");
                 }
             }
@@ -522,7 +503,7 @@ public class Inlupp2_Gui extends JFrame {
                     String[] tokens = line.split(",");
 
                     if (tokens[0].equalsIgnoreCase("named")) {
-                        String type = tokens[0];
+
                         String category = tokens[1];
                         int x = Integer.parseInt(tokens[2]);
                         int y = Integer.parseInt(tokens[3]);
@@ -544,7 +525,7 @@ public class Inlupp2_Gui extends JFrame {
                         Place nyPlats = new NamedPlace(name, pos, currentCategory);
 
                         addPlace(nyPlats);
-
+                        nyPlats.addMouseListener(new MusAndPlaceLyss());
                     } //End if tokens=Named
 
                     else {
@@ -572,10 +553,10 @@ public class Inlupp2_Gui extends JFrame {
                         Place nyPlats = new DescribedPlace(name, despcription, pos, currentCategory);
 
                         addPlace(nyPlats);
-
+                        nyPlats.addMouseListener(new MusAndPlaceLyss());
                     }//Tokens = Described
 
-                    System.out.print(line);
+                    //System.out.print(line);
                 } //End While-loop
 
                 in.close();
@@ -586,7 +567,7 @@ public class Inlupp2_Gui extends JFrame {
             } catch (IOException e) {
                 System.err.println("Fel: " + e.getMessage());
             }
-
+            bp.repaint();
         }// End ActionEvent
     }//End LoadFileListener class
 
@@ -639,14 +620,13 @@ public class Inlupp2_Gui extends JFrame {
         placesByPosition.put(position, nyPlats);
 
 
-
         //Möjliggöra att söka fram platser via namn
         List<Place> sammaNamnList = placesByName.get(name);
         if (sammaNamnList == null) {
             sammaNamnList = new ArrayList<>();
             placesByName.put(name, sammaNamnList);
-        } //End sammaNamnList
-
+          } //End sammaNamnList
+        sammaNamnList.add(nyPlats);
 
         //Möjliggöra att söka fram platser via category
         List<Place> sammaKategoriList = placesByCategory.get(category);
@@ -654,6 +634,11 @@ public class Inlupp2_Gui extends JFrame {
             sammaKategoriList = new ArrayList<>();
             placesByCategory.put(category, sammaKategoriList);
         } //End sammaKategoriList
+        sammaKategoriList.add(nyPlats);
+
+        nyPlats.setVisad(true);
+        bp.add(nyPlats);
+        System.out.println(nyPlats.getPrintableInfo());
 
 
     }//End addPlace ()

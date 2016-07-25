@@ -19,6 +19,10 @@ public class Position {
 		return x;
 	}
 
+	public Position getPosition(){
+		Position position = new Position(x,y);
+		return position;
+	}
 
 	@Override
 	public String toString() {
@@ -36,6 +40,7 @@ public class Position {
         else return false;
     }//End equals()
 
+	@Override
     public int hashCode (){
          return x * 10000 +y;
     }// End hashCode()

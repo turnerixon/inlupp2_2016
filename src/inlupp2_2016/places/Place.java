@@ -106,7 +106,7 @@ public abstract class Place extends JComponent {
     public void setMarkerad(boolean b) {
         markerad = b;
         repaint();
-        System.out.println("SetMarkerad från Place här!!!!");
+        System.out.println("SetMarkerad Place här " +getName());
     }
 
     public void setUtfalld(boolean b) {
