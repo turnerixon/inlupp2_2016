@@ -504,62 +504,38 @@ public class Inlupp2_Gui extends JFrame {
                 while ((line = in.readLine()) != null) {
 
                     String[] tokens = line.split(",");
+                    String type = tokens[0];
+                    String category = tokens[1];
+                    int x = Integer.parseInt(tokens[2]);
+                    int y = Integer.parseInt(tokens[3]);
+                    String name = tokens[4];
 
-                    if (tokens[0].equalsIgnoreCase("named")) {
+                    Position pos = new Position(x, y);
+                    Category currentCategory = null;
+                    Place nyPlats = null;
 
-                        String category = tokens[1];
-                        int x = Integer.parseInt(tokens[2]);
-                        int y = Integer.parseInt(tokens[3]);
-                        String name = tokens[4];
+                    if (category.equalsIgnoreCase("Buss")) {
+                        currentCategory = Category.Buss;
+                    } else if (category.equalsIgnoreCase("Tunnelbana")) {
+                        currentCategory = Category.Tunnelbana;
+                    } else if (category.equalsIgnoreCase("Tåg")) {
+                        currentCategory = Category.Tåg;
+                    } else {
+                        currentCategory = Category.None;
+                    }
 
-                        Position pos = new Position(x, y);
-                        Category currentCategory = null;
 
-                        if (category.equalsIgnoreCase("Buss")) {
-                            currentCategory = Category.Buss;
-                        } else if (category.equalsIgnoreCase("Tunnelbana")) {
-                            currentCategory = Category.Tunnelbana;
-                        } else if (category.equalsIgnoreCase("Tåg")) {
-                            currentCategory = Category.Tåg;
-                        } else {
-                            currentCategory = Category.None;
-                        }
-
-                        Place nyPlats = new NamedPlace(name, pos, currentCategory);
-
-                        addPlace(nyPlats);
-                        nyPlats.addMouseListener(new MusAndPlaceLyss());
-                    } //End if tokens=Named
-
-                    else {
-                        String type = tokens[0];
-                        String category = tokens[1];
-                        int x = Integer.parseInt(tokens[2]);
-                        int y = Integer.parseInt(tokens[3]);
-                        String name = tokens[4];
+                    if (type.equalsIgnoreCase("named")) {
+                        nyPlats = new NamedPlace(name, pos, currentCategory);
+                    } else {
                         String despcription = tokens[5];
+                        nyPlats = new DescribedPlace(name, despcription, pos, currentCategory);
+                    }
 
+                    addPlace(nyPlats);
+                    nyPlats.addMouseListener(new MusAndPlaceLyss());
 
-                        Position pos = new Position(x, y);
-                        Category currentCategory = null;
-
-                        if (category.equalsIgnoreCase("Buss")) {
-                            currentCategory = Category.Buss;
-                        } else if (category.equalsIgnoreCase("Tunnelbana")) {
-                            currentCategory = Category.Tunnelbana;
-                        } else if (category.equalsIgnoreCase("Tåg")) {
-                            currentCategory = Category.Tåg;
-                        } else {
-                            currentCategory = Category.None;
-                        }
-
-                        Place nyPlats = new DescribedPlace(name, despcription, pos, currentCategory);
-
-                        addPlace(nyPlats);
-                        nyPlats.addMouseListener(new MusAndPlaceLyss());
-                    }//Tokens = Described
-
-                    //System.out.print(line);
+                  //System.out.print(line);
                 } //End While-loop
 
                 in.close();
