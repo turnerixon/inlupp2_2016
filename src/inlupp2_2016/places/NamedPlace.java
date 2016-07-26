@@ -22,7 +22,7 @@ public class NamedPlace extends Place {
 
     @Override
     public String toString() {
-        return "NamedPlace: " + getName();
+        return   getName();
     }
 
     @Override

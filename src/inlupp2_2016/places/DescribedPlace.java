@@ -22,7 +22,7 @@ public class DescribedPlace extends NamedPlace {
     @Override
     public String toString() {
 
-        return "DescribedPlace: " + getName() + " Beskrivning: " + getDescription();
+        return getName() + " " + getDescription();
     }
 
     @Override

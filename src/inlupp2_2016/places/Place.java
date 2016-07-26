@@ -48,8 +48,9 @@ public abstract class Place extends JComponent {
             System.out.println("Det här är visad, visa(g) i Place");
         }
         if (markerad) {
-            if (!utfalld)
-            setBounds(getCompensatedPosition().getX(), getCompensatedPosition().getY(), sizeX+2, sizeY+2);
+            if(!utfalld) {
+             setBounds(getCompensatedPosition().getX(), getCompensatedPosition().getY(), sizeX + 2, sizeY + 2);
+            }
             g.setColor(Color.RED);
             g.drawRect(0, 0, sizeX, sizeY);
             System.out.println("Markerad från Place-klassen");
@@ -58,10 +59,10 @@ public abstract class Place extends JComponent {
             int fontSize = 12;
             setBounds(getCompensatedPosition().getX(), getCompensatedPosition().getY(), 200, 100);
             g.setColor(Color.LIGHT_GRAY);
-            g.fillRect(sizeX, 0, 250, 50);
+            g.fillRect(0, 0,100, 50);
             g.setFont(new Font("TimesRoman", Font.PLAIN, fontSize));
             g.setColor(Color.BLACK);
-            g.drawString(toString(), 50, 20);
+            g.drawString(toString(), 0, 20);
         }//End if-utfälld
 
     } //End paintComponent
