@@ -41,9 +41,10 @@ public class Inlupp2_Gui extends JFrame {
     Map<String, List<Place>> placesByName = new HashMap<>();
     public Map<Position, Place> placesByPosition = new HashMap<>();
     public Map<Category, List<Place>> placesByCategory = new HashMap<>();
-
+    private boolean thingsHaveChanged =false;
 
     public Inlupp2_Gui() {
+
 
         super("Inlupp 2");
 
@@ -533,6 +534,7 @@ public class Inlupp2_Gui extends JFrame {
                     }
 
                     addPlace(nyPlats);
+                    thingsHaveChanged = true;
                     nyPlats.addMouseListener(new MusAndPlaceLyss());
 
                   //System.out.print(line);
@@ -563,6 +565,7 @@ public class Inlupp2_Gui extends JFrame {
             String filNamn = fil.getAbsolutePath();
 
             try {
+
                 FileWriter utfil = new FileWriter(filNamn);
                 PrintWriter out = new PrintWriter(utfil);
                 for (Place p : placesByPosition.values()) {
@@ -579,8 +582,18 @@ public class Inlupp2_Gui extends JFrame {
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "Fel : " + e.getMessage());
             }
+            thingsHaveChanged=false;
         }//End ActionPerformed
     }//End SparaLyss
+
+    class ExitLyssnare implements ActionListener{
+        public void actionPerformed(ActionEvent ave){
+        /*
+          Kolla om anyThingChanged är false. Fortsätt sedan med något som spara filen.
+            */
+        }
+
+    }//End ExitLyssnare
 
 
     public static void main(String[] arg) {
@@ -622,6 +635,10 @@ public class Inlupp2_Gui extends JFrame {
 
     }//End addPlace ()
 
+    public  boolean okToSaveFile() {
+
+        return placesByName.isEmpty() && thingsHaveChanged;
+    }
 
     private void avmarkeraAlla(){
         for (List<Place> placeList : placesByCategory.values()){
