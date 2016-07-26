@@ -15,6 +15,8 @@ public abstract class Place extends JComponent {
     protected boolean markerad = false;
     protected boolean visad = false;
     private  Color myColor;
+    protected int sizeX = 50;
+    protected int sizeY = 50;
 
 
     final int[] xes = {0, 25, 50};
@@ -24,8 +26,8 @@ public abstract class Place extends JComponent {
 
         this.position = position;
         this.category = category;
-        setBounds(position.getX(), position.getY(), 50, 50);
-        setPreferredSize(new Dimension(50, 50));
+        setBounds(getCompensatedPosition().getX(), getCompensatedPosition().getY(), sizeX, sizeY);
+        setPreferredSize(new Dimension(sizeX, sizeY));
     }
 
 
@@ -44,21 +46,19 @@ public abstract class Place extends JComponent {
         if (visad) {
             visa(g);
             System.out.println("Det här är visad, visa(g) i Place");
-        } else {
-            //System.out.println("Set visible false i Place-klassen här");
-        } //End if-Visad
+        }
         if (markerad) {
             if (!utfalld)
-                setBounds(position.getX(), position.getY(), 52, 52);
+            setBounds(getCompensatedPosition().getX(), getCompensatedPosition().getY(), sizeX+2, sizeY+2);
             g.setColor(Color.RED);
-            g.drawRect(0, 0, 50, 50);
+            g.drawRect(0, 0, sizeX, sizeY);
             System.out.println("Markerad från Place-klassen");
         }//End markerad()
         if (utfalld) {
             int fontSize = 12;
-            setBounds(position.getX(), position.getY(), 200, 100);
+            setBounds(getCompensatedPosition().getX(), getCompensatedPosition().getY(), 200, 100);
             g.setColor(Color.LIGHT_GRAY);
-            g.fillRect(50, 0, 250, 50);
+            g.fillRect(sizeX, 0, 250, 50);
             g.setFont(new Font("TimesRoman", Font.PLAIN, fontSize));
             g.setColor(Color.BLACK);
             g.drawString(toString(), 50, 20);
@@ -128,6 +128,14 @@ public abstract class Place extends JComponent {
         }
 
         super.addMouseListener(l);
+    }
+
+    public Position getCompensatedPosition(){
+        int compensatedX =  position.getX() -(sizeX/2);
+        int compensatedY = position.getY() -sizeY;
+        Position compensatedPosistion = new Position(compensatedX, compensatedY);
+
+        return compensatedPosistion;
     }
 
     public abstract String getPrintableInfo();

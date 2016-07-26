@@ -395,7 +395,7 @@ public class Inlupp2_Gui extends JFrame {
         @Override
         public void actionPerformed(ActionEvent ave) {
             String soktPlats = searchField.getText();
-            List<Place> funnaPlatser = placesByName.get(soktPlats);
+            List<Place> funnaPlatser = placesByName.get(soktPlats.toLowerCase());
             if (funnaPlatser == null || funnaPlatser.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Det namnet finns inte. Vänligen sök på annat namn, med minst ett tecken! ");
                 return;
@@ -496,7 +496,8 @@ public class Inlupp2_Gui extends JFrame {
             String placesNamn = fil.getAbsolutePath();
 
             try {
-                FileReader infil = new FileReader(placesNamn);
+                //FileReader infil = new FileReader(placesNamn);
+                InputStreamReader infil = new InputStreamReader(new FileInputStream(placesNamn), "Cp1252");
                 BufferedReader in = new BufferedReader(infil);
 
                 //Skriv ut ClassNamnet, Platsens kategori, X och Y koordinater, Platsens namn och eventuell beskrivning
@@ -523,7 +524,6 @@ public class Inlupp2_Gui extends JFrame {
                     } else {
                         currentCategory = Category.None;
                     }
-
 
                     if (type.equalsIgnoreCase("named")) {
                         nyPlats = new NamedPlace(name, pos, currentCategory);
@@ -603,7 +603,7 @@ public class Inlupp2_Gui extends JFrame {
         List<Place> sammaNamnList = placesByName.get(name);
         if (sammaNamnList == null) {
             sammaNamnList = new ArrayList<>();
-            placesByName.put(name, sammaNamnList);
+            placesByName.put(name.toLowerCase(), sammaNamnList);
           } //End sammaNamnList
         sammaNamnList.add(nyPlats);
 
