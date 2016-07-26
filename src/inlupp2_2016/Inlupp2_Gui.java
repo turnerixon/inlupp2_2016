@@ -214,7 +214,7 @@ public class Inlupp2_Gui extends JFrame {
     } // End PlaceLyss-knappen
 
 
-    //Välj bland kategorier i listan och markera och visa de som är skapade.
+    //Välj bland kategorier i listan.
     class ListLyss implements ListSelectionListener {
         public void valueChanged(ListSelectionEvent lev) {
 
@@ -234,6 +234,7 @@ public class Inlupp2_Gui extends JFrame {
 
                     for (Place p : platserPerKategori) {
                         p.setVisad(true);
+                        p.addMouseListener(new MusAndPlaceLyss());
                         System.out.println("Nu trycker jag på HideCategoryLyss");
                     }
                 }
@@ -320,34 +321,7 @@ public class Inlupp2_Gui extends JFrame {
 
     }
 
-    //Används för att markera och avmarkera platser
-    class MusAndPlaceLyss extends MouseAdapter {
 
-        public void mouseClicked(MouseEvent mev) {
-            Place place;
-
-            if (mev.getSource() instanceof DescribedPlace) {
-                place = (DescribedPlace) mev.getSource();
-            } else {
-                place = (Place) mev.getSource();
-            }
-
-            // Klick på Vänsterknappen
-            if (mev.getButton() == MouseEvent.BUTTON1) {
-                if (place.getVisad()) {
-                    place.setMarkerad(!place.getMarkerad());
-
-                    System.out.println("Klickar på MusAndPlaceLyss knapp 1" + place.getName() + " " + " x: " + place.getX() + "och " + "y: " + place.getY());
-                    //Klick på Högerknappen
-                }
-            } else if (mev.getButton() == MouseEvent.BUTTON3) {
-                  place.setUtfalld(!place.getUtfalld());
-                System.out.println("Klickar på MusPlaceLyss knapp 2");
-
-            }
-
-        }
-    } //End MusAndPlaceLyss
 
 
     class HideLyss implements ActionListener {
@@ -389,6 +363,33 @@ public class Inlupp2_Gui extends JFrame {
         }//End ActionEvent
     }//End RemoveLyss
 
+    class MusAndPlaceLyss extends MouseAdapter {
+
+        public void mouseClicked(MouseEvent mev) {
+            Place place;
+
+            if (mev.getSource() instanceof DescribedPlace) {
+                place = (DescribedPlace) mev.getSource();
+            } else {
+                place = (Place) mev.getSource();
+            }
+
+            // Klick på Vänsterknappen
+            if (mev.getButton() == MouseEvent.BUTTON1) {
+                if (place.getVisad()) {
+                    place.setMarkerad(!place.getMarkerad());
+
+                    System.out.println("Klickar på MusAndPlaceLyss knapp 1" + place.getName() + " " + " x: " + place.getX() + "och " + "y: " + place.getY());
+                    //Klick på Högerknappen
+                }
+            } else if (mev.getButton() == MouseEvent.BUTTON3) {
+                place.setUtfalld(!place.getUtfalld());
+                System.out.println("Klickar på MusPlaceLyss knapp 2");
+
+            }
+
+        }
+    } //End MusAndPlaceLyss
 
     class SearchLyss implements ActionListener {
         @Override

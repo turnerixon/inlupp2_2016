@@ -5,6 +5,7 @@ import inlupp2_2016.Position;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseListener;
 
 
 public abstract class Place extends JComponent {
@@ -71,6 +72,7 @@ public abstract class Place extends JComponent {
 
     public void setVisad(boolean b) {
         visad = b;
+
         revalidate();
         repaint();
         System.out.println("SetVisad i Place-klassen");
@@ -113,6 +115,19 @@ public abstract class Place extends JComponent {
         utfalld = b;
         repaint();
         System.out.println("SetUtfälld från Place här!!!!");
+    }
+
+    @Override
+    public synchronized void addMouseListener(MouseListener l) {
+        //Endast en av varje sorts muslyssnare är tillåten
+        for(MouseListener mouseListener : this.getMouseListeners())
+        {
+            if(mouseListener.getClass() == l.getClass()){
+                return;
+            }
+        }
+
+        super.addMouseListener(l);
     }
 
     public abstract String getPrintableInfo();
