@@ -69,6 +69,7 @@ public class Inlupp2_Gui extends JFrame {
         progMenu.add(saveItem);
         saveItem.addActionListener(new SparaLyss());
         JMenuItem exitItem = new JMenuItem("Exit");
+        exitItem.addActionListener(new ExitLyssnare());
         progMenu.add(exitItem);
 
         // End ArchiveMenu
@@ -554,43 +555,35 @@ public class Inlupp2_Gui extends JFrame {
 
     class SparaLyss implements ActionListener {
         public void actionPerformed(ActionEvent ave) {
+            sparaSaker();
 
-            FileFilter bildFilter = new FileNameExtensionFilter("places", "Places");
-            jfc.setFileFilter(bildFilter);
-
-            int svar = jfc.showSaveDialog(Inlupp2_Gui.this);
-            if (svar != JFileChooser.APPROVE_OPTION)
-                return;
-            File fil = jfc.getSelectedFile();
-            String filNamn = fil.getAbsolutePath();
-
-            try {
-
-                FileWriter utfil = new FileWriter(filNamn);
-                PrintWriter out = new PrintWriter(utfil);
-                for (Place p : placesByPosition.values()) {
-                    out.println(p.getPrintableInfo());
-                    //Skriv ut ClassNamnet, Platsens kategori, X och Y koordinater, Platsens namn och eventuell beskrivning
-                    System.out.println(p.getPrintableInfo());
-                }
-
-                out.close();
-                utfil.close();
-
-            } catch (FileNotFoundException e) {
-                JOptionPane.showMessageDialog(null, "Kan inte öppna filen: ");
-            } catch (IOException e) {
-                JOptionPane.showMessageDialog(null, "Fel : " + e.getMessage());
-            }
-            thingsHaveChanged=false;
         }//End ActionPerformed
     }//End SparaLyss
 
     class ExitLyssnare implements ActionListener{
         public void actionPerformed(ActionEvent ave){
-        /*
-          Kolla om anyThingChanged är false. Fortsätt sedan med något som spara filen.
-            */
+
+            if(!okToSaveFile()) {
+                int svar =JOptionPane.showConfirmDialog(null, "Du har osparade platser: \nVill du avsluta utan att spara, tryck JA\n Vill du spara innan du avslutar tryck NEJ!" );
+                if(svar ==JOptionPane.YES_OPTION) {
+                System.exit(0);
+                }
+                else if(svar==JOptionPane.NO_OPTION); {
+                    sparaSaker();
+                }
+
+
+            }
+            else {
+                int svar =JOptionPane.showConfirmDialog(null, "Vill du avsluta programmet?","Avsluta programmet", JOptionPane.YES_NO_OPTION);
+                if(svar==JOptionPane.YES_OPTION) {
+                System.exit(0);
+                    }
+
+                }
+
+
+
         }
 
     }//End ExitLyssnare
@@ -647,7 +640,41 @@ public class Inlupp2_Gui extends JFrame {
                 p.setMarkerad(false);
             }
         }
-    }
+    }// End avmarkeraAlla
+
+    private void sparaSaker (){
+
+        FileFilter bildFilter = new FileNameExtensionFilter("places", "Places");
+        jfc.setFileFilter(bildFilter);
+
+        int svar = jfc.showSaveDialog(Inlupp2_Gui.this);
+        if (svar != JFileChooser.APPROVE_OPTION)
+            return;
+        File fil = jfc.getSelectedFile();
+        String filNamn = fil.getAbsolutePath();
+
+        try {
+
+            FileWriter utfil = new FileWriter(filNamn);
+            PrintWriter out = new PrintWriter(utfil);
+            for (Place p : placesByPosition.values()) {
+                out.println(p.getPrintableInfo());
+                //Skriv ut ClassNamnet, Platsens kategori, X och Y koordinater, Platsens namn och eventuell beskrivning
+                System.out.println(p.getPrintableInfo());
+            }
+
+            out.close();
+            utfil.close();
+
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Kan inte öppna filen: ");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Fel : " + e.getMessage());
+        }
+        thingsHaveChanged=false;
+
+
+    }//End sparaSaker()
 }
 
 
