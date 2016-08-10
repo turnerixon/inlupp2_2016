@@ -444,15 +444,7 @@ public class Inlupp2_Gui extends JFrame {
     } // End HideCategoryLyss
 
     class WhatIsHereMusKnappLyss extends MouseAdapter {
-        /*
-        private int startX, startY;
 
-        @Override
-        public void mousePressed(MouseEvent mev) {
-            startX = mev.getX();
-            startY = mev.getY();
-        }
-            */
         public void mouseClicked(MouseEvent mev) {
             int startX = mev.getX();
             int startY = mev.getY();
@@ -563,7 +555,7 @@ public class Inlupp2_Gui extends JFrame {
     class ExitLyssnare implements ActionListener{
         public void actionPerformed(ActionEvent ave){
 
-            if(!okToSaveFile()) {
+            if(okToSaveFile()) {
                 int svar =JOptionPane.showConfirmDialog(null, "Du har osparade platser: \nVill du avsluta utan att spara, tryck JA\n Vill du spara innan du avslutar tryck NEJ!" );
                 if(svar ==JOptionPane.YES_OPTION) {
                 System.exit(0);
@@ -642,7 +634,7 @@ public class Inlupp2_Gui extends JFrame {
         }
     }// End avmarkeraAlla
 
-    private void sparaSaker (){
+    private void sparaSaker(){
 
         FileFilter bildFilter = new FileNameExtensionFilter("places", "Places");
         jfc.setFileFilter(bildFilter);
