@@ -141,6 +141,10 @@ public class Inlupp2_Gui extends JFrame {
         @Override
         public void actionPerformed(ActionEvent ave) {
 
+            if(thingsHaveChanged==true){
+                JOptionPane.showMessageDialog(null, "Du måste spara pågående projekt innan du kan ladda in en ny kartbild");
+                return;
+            }
 
             FileFilter bildFilter = new FileNameExtensionFilter("Bilder", "jpg", "png");
             jfc.setFileFilter(bildFilter);
@@ -151,13 +155,15 @@ public class Inlupp2_Gui extends JFrame {
             File fil = jfc.getSelectedFile();
             String filNamn = fil.getAbsolutePath();
 
-            bp = new BildPlan(filNamn);
-            kartScroll = new JScrollPane(bp);
-
 
             if (kartScroll!= null) {
                 remove(kartScroll);
+                clearAllPlaces();
+
             }
+
+            bp = new BildPlan(filNamn);
+            kartScroll = new JScrollPane(bp);
 
 
             add(kartScroll);
@@ -683,6 +689,9 @@ public class Inlupp2_Gui extends JFrame {
         placesByName.clear();
         placesByPosition.clear();
         placesByCategory.clear();
+        pack();
+        validate();
+        repaint();
     }//End clearAllPlaces ()
 
 }
