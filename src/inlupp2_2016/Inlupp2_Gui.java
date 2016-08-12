@@ -41,7 +41,7 @@ public class Inlupp2_Gui extends JFrame {
     Map<String, List<Place>> placesByName = new HashMap<>();
     public Map<Position, Place> placesByPosition = new HashMap<>();
     public Map<Category, List<Place>> placesByCategory = new HashMap<>();
-    private boolean thingsHaveChanged =false;
+    private boolean thingsHaveChanged = false;
 
     public Inlupp2_Gui() {
 
@@ -141,6 +141,7 @@ public class Inlupp2_Gui extends JFrame {
         @Override
         public void actionPerformed(ActionEvent ave) {
 
+
             FileFilter bildFilter = new FileNameExtensionFilter("Bilder", "jpg", "png");
             jfc.setFileFilter(bildFilter);
             //jfc.addChoosableFileFilter(bildFilter);
@@ -150,12 +151,14 @@ public class Inlupp2_Gui extends JFrame {
             File fil = jfc.getSelectedFile();
             String filNamn = fil.getAbsolutePath();
 
-            if (bp != null) {
-                remove(bp);
-            }
             bp = new BildPlan(filNamn);
-
             kartScroll = new JScrollPane(bp);
+
+
+            if (kartScroll!= null) {
+                remove(kartScroll);
+            }
+
 
             add(kartScroll);
             //PlaceLyss läggs här för att se till att användaren väljer en karta före den börja skapa platser.
@@ -310,6 +313,7 @@ public class Inlupp2_Gui extends JFrame {
             }
 
             addPlace(place);
+            thingsHaveChanged=true;
             bp.removeMouseListener(musLyss);
             boxen.addActionListener(new PlaceLyss());
             place.addMouseListener(new MusAndPlaceLyss());
@@ -324,8 +328,6 @@ public class Inlupp2_Gui extends JFrame {
     }
 
 
-
-
     class HideLyss implements ActionListener {
 
         @Override
@@ -336,7 +338,7 @@ public class Inlupp2_Gui extends JFrame {
                     pos.setVisad(false);
                     pos.setMarkerad(false);
 
-                    for(MouseListener l : pos.getMouseListeners()){
+                    for (MouseListener l : pos.getMouseListeners()) {
                         pos.removeMouseListener(l);
                     }
                 }
@@ -434,7 +436,7 @@ public class Inlupp2_Gui extends JFrame {
                     p.setVisad(false);
                     p.setMarkerad(false);
 
-                    for(MouseListener l : p.getMouseListeners()){
+                    for (MouseListener l : p.getMouseListeners()) {
                         p.removeMouseListener(l);
                     }
 
@@ -451,8 +453,7 @@ public class Inlupp2_Gui extends JFrame {
             int extraPixel = 21;
 
             for (Map.Entry<Position, Place> entry : placesByPosition.entrySet()) {
-                if (entry.getKey().getX() >= startX - extraPixel && entry.getKey().getX() <= startX + extraPixel && entry.getKey().getY() >= startY - extraPixel && entry.getKey().getY() <= startY + extraPixel)
-                {
+                if (entry.getKey().getX() >= startX - extraPixel && entry.getKey().getX() <= startX + extraPixel && entry.getKey().getY() >= startY - extraPixel && entry.getKey().getY() <= startY + extraPixel) {
                     entry.getValue().setVisad(true);
                     entry.getValue().addMouseListener(new MusAndPlaceLyss());
                     System.out.println("Träffat");
@@ -478,6 +479,11 @@ public class Inlupp2_Gui extends JFrame {
     //Läsa in filer med platser
     class LoadFileListenerLyss implements ActionListener {
         public void actionPerformed(ActionEvent ave) {
+            if (thingsHaveChanged) {
+                JOptionPane.showMessageDialog(null, "BLäh!!!");
+            }
+
+
             //Dialog för filöppning
             FileFilter mittFileFilter = new FileNameExtensionFilter("places", "Places");
             jfc.setFileFilter(mittFileFilter);
@@ -485,6 +491,7 @@ public class Inlupp2_Gui extends JFrame {
             if (svar != JFileChooser.APPROVE_OPTION)
                 return;
             File fil = jfc.getSelectedFile();
+
 
             //Inläsning av filen
             String placesNamn = fil.getAbsolutePath();
@@ -527,10 +534,10 @@ public class Inlupp2_Gui extends JFrame {
                     }
 
                     addPlace(nyPlats);
-                    thingsHaveChanged = true;
+                   // thingsHaveChanged = true;
                     nyPlats.addMouseListener(new MusAndPlaceLyss());
 
-                  //System.out.print(line);
+                    //System.out.print(line);
                 } //End While-loop
 
                 in.close();
@@ -542,6 +549,7 @@ public class Inlupp2_Gui extends JFrame {
                 System.err.println("Fel: " + e.getMessage());
             }
             bp.repaint();
+
         }// End ActionEvent
     }//End LoadFileListener class
 
@@ -552,28 +560,25 @@ public class Inlupp2_Gui extends JFrame {
         }//End ActionPerformed
     }//End SparaLyss
 
-    class ExitLyssnare implements ActionListener{
-        public void actionPerformed(ActionEvent ave){
+    class ExitLyssnare implements ActionListener {
+        public void actionPerformed(ActionEvent ave) {
 
-            if(okToSaveFile()) {
-                int svar =JOptionPane.showConfirmDialog(null, "Du har osparade platser: \nVill du avsluta utan att spara, tryck JA\n Vill du spara innan du avslutar tryck NEJ!" );
-                if(svar ==JOptionPane.YES_OPTION) {
-                System.exit(0);
-                }
-                else if(svar==JOptionPane.NO_OPTION); {
+            if (thingsHaveChanged==true) {
+                int svar = JOptionPane.showConfirmDialog(null, "Du har osparade platser: \nVill du avsluta utan att spara, tryck JA\n Vill du spara innan du avslutar tryck NEJ!");
+                if (svar == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+                } else if (svar == JOptionPane.NO_OPTION); {
                     sparaSaker();
                 }
 
 
-            }
-            else {
-                int svar =JOptionPane.showConfirmDialog(null, "Vill du avsluta programmet?","Avsluta programmet", JOptionPane.YES_NO_OPTION);
-                if(svar==JOptionPane.YES_OPTION) {
-                System.exit(0);
-                    }
-
+            } else {
+                int svar = JOptionPane.showConfirmDialog(null, "Vill du avsluta programmet?", "Avsluta programmet", JOptionPane.YES_NO_OPTION);
+                if (svar == JOptionPane.YES_OPTION) {
+                    System.exit(0);
                 }
 
+            }
 
 
         }
@@ -602,7 +607,7 @@ public class Inlupp2_Gui extends JFrame {
         if (sammaNamnList == null) {
             sammaNamnList = new ArrayList<>();
             placesByName.put(name.toLowerCase(), sammaNamnList);
-          } //End sammaNamnList
+        } //End sammaNamnList
         sammaNamnList.add(nyPlats);
 
         //Möjliggöra att söka fram platser via category
@@ -615,26 +620,32 @@ public class Inlupp2_Gui extends JFrame {
 
         nyPlats.setVisad(true);
         bp.add(nyPlats);
+        //thingsHaveChanged=true; kommenterar bort denna då enbart enbart om ny plats skapas via mus borde räknas som förändring. Denna finns ju redan på fil
         System.out.println(nyPlats.getPrintableInfo());
 
 
     }//End addPlace ()
 
-    public  boolean okToSaveFile() {
+    public boolean okToExitFile() {
 
-        return placesByName.isEmpty() && thingsHaveChanged;
-    }
+        return true;
 
-    private void avmarkeraAlla(){
-        for (List<Place> placeList : placesByCategory.values()){
-            for(Place p : placeList)
-            {
+    }//End okToExitFile ()
+
+    private void avmarkeraAlla() {
+        for (List<Place> placeList : placesByCategory.values()) {
+            for (Place p : placeList) {
                 p.setMarkerad(false);
             }
         }
     }// End avmarkeraAlla
 
-    private void sparaSaker(){
+    private void sparaSaker() {
+
+        if (thingsHaveChanged==false) {
+            JOptionPane.showMessageDialog(null, "Du har inget att spara. Gå välj exit eller stäng ner programmet via krysset");
+            return;
+        }
 
         FileFilter bildFilter = new FileNameExtensionFilter("places", "Places");
         jfc.setFileFilter(bildFilter);
@@ -663,10 +674,17 @@ public class Inlupp2_Gui extends JFrame {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Fel : " + e.getMessage());
         }
-        thingsHaveChanged=false;
+        thingsHaveChanged = false;
 
 
-    }//End sparaSaker()
+        }//End sparaSaker()
+
+    private void clearAllPlaces () {
+        placesByName.clear();
+        placesByPosition.clear();
+        placesByCategory.clear();
+    }//End clearAllPlaces ()
+
 }
 
 
