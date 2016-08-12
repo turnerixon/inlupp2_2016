@@ -14,6 +14,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.event.MouseListener;
+
 
 public class Inlupp2_Gui extends JFrame {
 
@@ -157,16 +159,17 @@ public class Inlupp2_Gui extends JFrame {
 
 
             if (kartScroll!= null) {
-                remove(kartScroll);
                 clearAllPlaces();
-
+                for(ActionListener actionListener: boxen.getActionListeners()){
+                    boxen.removeActionListener(actionListener);
+                }
+                remove(kartScroll);
             }
 
             bp = new BildPlan(filNamn);
             kartScroll = new JScrollPane(bp);
-
-
             add(kartScroll);
+
             //PlaceLyss läggs här för att se till att användaren väljer en karta före den börja skapa platser.
             boxen.addActionListener(new PlaceLyss());
             pack();
