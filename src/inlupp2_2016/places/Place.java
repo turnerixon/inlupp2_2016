@@ -45,7 +45,6 @@ public abstract class Place extends JComponent {
         super.paintComponent(g);
         if (visad) {
             visa(g);
-            System.out.println("Det här är visad, visa(g) i Place");
         }
         if (markerad) {
             if(!utfalld) {
@@ -53,7 +52,7 @@ public abstract class Place extends JComponent {
             }
             g.setColor(Color.RED);
             g.drawRect(0, 0, sizeX, sizeY);
-            System.out.println("Markerad från Place-klassen");
+
         }//End markerad()
         if (utfalld) {
             int fontSize = 12;
@@ -76,7 +75,7 @@ public abstract class Place extends JComponent {
 
         revalidate();
         repaint();
-        System.out.println("SetVisad i Place-klassen");
+
     }//end setVisad
 
     public boolean getMarkerad() {
@@ -109,13 +108,13 @@ public abstract class Place extends JComponent {
     public void setMarkerad(boolean b) {
         markerad = b;
         repaint();
-        System.out.println("SetMarkerad Place här " +getName());
+
     }
 
     public void setUtfalld(boolean b) {
         utfalld = b;
         repaint();
-        System.out.println("SetUtfälld från Place här!!!!");
+
     }
 
     @Override

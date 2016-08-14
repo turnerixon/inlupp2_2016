@@ -251,7 +251,7 @@ public class Inlupp2_Gui extends JFrame {
                     for (Place p : platserPerKategori) {
                         p.setVisad(true);
                         p.addMouseListener(new MusAndPlaceLyss());
-                        System.out.println("Nu trycker jag på HideCategoryLyss");
+
                     }
                 }
             }
@@ -333,7 +333,7 @@ public class Inlupp2_Gui extends JFrame {
             bp.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             bp.validate();
             bp.repaint();
-            System.out.println("Klickad");
+
         }
 
     }
@@ -353,7 +353,7 @@ public class Inlupp2_Gui extends JFrame {
                         pos.removeMouseListener(l);
                     }
                 }
-                System.out.println(pos + " HideLyss här!!");
+
             }
 
         } //HideLyss ActionPerfomed
@@ -393,13 +393,9 @@ public class Inlupp2_Gui extends JFrame {
             if (mev.getButton() == MouseEvent.BUTTON1) {
                 if (place.getVisad()) {
                     place.setMarkerad(!place.getMarkerad());
-
-                    System.out.println("Klickar på MusAndPlaceLyss knapp 1" + place.getName() + " " + " x: " + place.getX() + "och " + "y: " + place.getY());
-                    //Klick på Högerknappen
                 }
             } else if (mev.getButton() == MouseEvent.BUTTON3) {
                 place.setUtfalld(!place.getUtfalld());
-                System.out.println("Klickar på MusPlaceLyss knapp 2");
 
             }
 
@@ -467,7 +463,7 @@ public class Inlupp2_Gui extends JFrame {
                 if (entry.getKey().getX() >= startX - extraPixel && entry.getKey().getX() <= startX + extraPixel && entry.getKey().getY() >= startY - extraPixel && entry.getKey().getY() <= startY + extraPixel) {
                     entry.getValue().setVisad(true);
                     entry.getValue().addMouseListener(new MusAndPlaceLyss());
-                    System.out.println("Träffat");
+
                 }
             }
 
