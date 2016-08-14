@@ -44,6 +44,7 @@ public class Inlupp2_Gui extends JFrame {
     public Map<Position, Place> placesByPosition = new HashMap<>();
     public Map<Category, List<Place>> placesByCategory = new HashMap<>();
     private boolean thingsHaveChanged = false;
+    private boolean isLoadedFile = false;
 
     public Inlupp2_Gui() {
 
@@ -130,7 +131,8 @@ public class Inlupp2_Gui extends JFrame {
         hideCatButton.addActionListener(new HideCategoryLyss());
         add(right, BorderLayout.EAST);
 
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        addWindowListener(new StangningsLyss());
         setSize(800, 500);
         setLocation(250, 250);
         setVisible(true);
@@ -488,8 +490,10 @@ public class Inlupp2_Gui extends JFrame {
     //Läsa in filer med platser
     class LoadFileListenerLyss implements ActionListener {
         public void actionPerformed(ActionEvent ave) {
-            if (thingsHaveChanged) {
-                JOptionPane.showMessageDialog(null, "BLäh!!!");
+                if (isLoadedFile) {
+                    JOptionPane.showMessageDialog(null, "Du har platser i kartan som behöver sparas innan du kan ladda in fler");
+                    return;
+
             }
 
 
@@ -543,7 +547,7 @@ public class Inlupp2_Gui extends JFrame {
                     }
 
                     addPlace(nyPlats);
-                   // thingsHaveChanged = true;
+                   isLoadedFile=true;
                     nyPlats.addMouseListener(new MusAndPlaceLyss());
 
                     //System.out.print(line);
@@ -571,26 +575,11 @@ public class Inlupp2_Gui extends JFrame {
 
     class ExitLyssnare implements ActionListener {
         public void actionPerformed(ActionEvent ave) {
-
-            if (thingsHaveChanged==true) {
-                int svar = JOptionPane.showConfirmDialog(null, "Du har osparade platser: \nVill du avsluta utan att spara, tryck JA\n Vill du spara innan du avslutar tryck NEJ!");
-                if (svar == JOptionPane.YES_OPTION) {
-                    System.exit(0);
-                } else if (svar == JOptionPane.NO_OPTION); {
-                    sparaSaker();
-                }
+        exitAndSave();
 
 
-            } else {
-                int svar = JOptionPane.showConfirmDialog(null, "Vill du avsluta programmet?", "Avsluta programmet", JOptionPane.YES_NO_OPTION);
-                if (svar == JOptionPane.YES_OPTION) {
-                    System.exit(0);
-                }
 
-            }
-
-
-        }
+        }// End actionPerformed ExitLyssnare
 
     }//End ExitLyssnare
 
@@ -684,6 +673,7 @@ public class Inlupp2_Gui extends JFrame {
             JOptionPane.showMessageDialog(null, "Fel : " + e.getMessage());
         }
         thingsHaveChanged = false;
+        isLoadedFile = false;
 
 
         }//End sparaSaker()
@@ -697,6 +687,39 @@ public class Inlupp2_Gui extends JFrame {
         repaint();
     }//End clearAllPlaces ()
 
-}
+    private void exitAndSave (){
+        if (thingsHaveChanged==true) {
+            int svar = JOptionPane.showConfirmDialog(null, "Du har osparade platser: \nVill du avsluta utan att spara, tryck JA\n Vill du spara innan du avslutar tryck NEJ!");
+            if (svar == JOptionPane.YES_OPTION) {
+                System.exit(0);
+            } else if (svar == JOptionPane.NO_OPTION); {
+                sparaSaker();
+            }
+
+        // thigsHaveChanged ==false
+        } else {
+            int svarExit = JOptionPane.showConfirmDialog(null, "Vill du avsluta programmet?", "Avsluta programmet", JOptionPane.YES_NO_OPTION);
+            if (svarExit == JOptionPane.YES_OPTION) {
+                System.exit(0);
+            }
+            if (svarExit == JOptionPane.NO_OPTION){
+                setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+            }
+
+        }
+
+    }//End exitAndSave ()
+
+
+
+//Stäng programmet via stängningsrutan
+    private class StangningsLyss extends WindowAdapter {
+        @Override
+        public void windowClosing(WindowEvent e) {
+            exitAndSave();
+            }
+        } //end StäningsLyss
+
+}//End Inlupp2_Gui
 
 
