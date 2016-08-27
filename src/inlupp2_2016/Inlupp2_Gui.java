@@ -45,6 +45,7 @@ public class Inlupp2_Gui extends JFrame {
     public Map<Category, List<Place>> placesByCategory = new HashMap<>();
     private boolean thingsHaveChanged = false;
     private boolean isLoadedFile = false;
+    private List<Place> markedPlaces = new ArrayList<>();
 
     public Inlupp2_Gui() {
 
@@ -344,8 +345,8 @@ public class Inlupp2_Gui extends JFrame {
         @Override
         public void actionPerformed(ActionEvent ave) {
 
-            for (Place pos : placesByPosition.values()) {
-                if (pos.getMarkerad()) {
+            for (Place pos : markedPlaces) {
+                    {
                     pos.setVisad(false);
                     pos.setMarkerad(false);
 
@@ -364,14 +365,14 @@ public class Inlupp2_Gui extends JFrame {
             for (Iterator<Map.Entry<Position, Place>> iter = placesByPosition.entrySet().iterator(); iter.hasNext(); ) {
                 Map.Entry<Position, Place> entry = iter.next();
                 Place place = entry.getValue();
-                if (place.getMarkerad()) {
-                    bp.remove(place);
-                    iter.remove();
+                for (Place p : markedPlaces) {
 
                     List<Place> sammaNamnList = placesByName.get(place.getName());
                     sammaNamnList.remove(place);
                     if (sammaNamnList.isEmpty())
                         placesByName.remove(place.getName());
+                    bp.remove(p);
+                    iter.remove();
                     repaint();
                 }
             }
@@ -393,7 +394,14 @@ public class Inlupp2_Gui extends JFrame {
             if (mev.getButton() == MouseEvent.BUTTON1) {
                 if (place.getVisad()) {
                     place.setMarkerad(!place.getMarkerad());
-                }
+                    if(place.getMarkerad()){
+                        markedPlaces.add(place);
+                    } else{
+                        markedPlaces.remove(place);
+                    }
+
+
+                } //end getVisad()
             } else if (mev.getButton() == MouseEvent.BUTTON3) {
                 place.setUtfalld(!place.getUtfalld());
 
@@ -407,6 +415,7 @@ public class Inlupp2_Gui extends JFrame {
         public void actionPerformed(ActionEvent ave) {
             String soktPlats = searchField.getText();
             List<Place> funnaPlatser = placesByName.get(soktPlats.toLowerCase());
+            avmarkeraAlla();
             if (funnaPlatser == null || funnaPlatser.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Det namnet finns inte. Vänligen sök på annat namn, med minst ett tecken! ");
                 return;
@@ -634,6 +643,18 @@ public class Inlupp2_Gui extends JFrame {
         }
     }// End avmarkeraAlla
 
+    private void markeraPlats (Place place) {
+        markedPlaces.add(place);
+    } //End markeraPlats
+
+    private void avmarkeraPlats(Place place){
+        markedPlaces.remove(place);
+    }// End avmarkeraPlats
+
+    private void taBortAllaMarkeradePlatser(){
+        markedPlaces.clear();
+    }
+
     private void sparaSaker() {
 
         if (thingsHaveChanged==false) {
@@ -678,6 +699,7 @@ public class Inlupp2_Gui extends JFrame {
         placesByName.clear();
         placesByPosition.clear();
         placesByCategory.clear();
+        taBortAllaMarkeradePlatser();
         pack();
         validate();
         repaint();
