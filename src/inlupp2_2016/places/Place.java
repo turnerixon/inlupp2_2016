@@ -138,6 +138,10 @@ public abstract class Place extends JComponent {
         return compensatedPosistion;
     }
 
+    public Position getPosition(){
+        return position;
+    }
+
     public abstract String getPrintableInfo();
 
 } //End class Place

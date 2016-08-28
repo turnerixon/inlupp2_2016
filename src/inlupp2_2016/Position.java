@@ -19,6 +19,11 @@ public class Position {
 		return x;
 	}
 
+	public Position getPosition (){
+		Position position = new Position(y, y);
+		return position;
+	}
+
 
 	@Override
 	public String toString() {

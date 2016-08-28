@@ -365,12 +365,20 @@ public class Inlupp2_Gui extends JFrame {
                  for(Place p : markedPlaces){
                      placesByCategory.get(p.getCategory()).remove(p);
                      if(placesByCategory.get(p.getCategory()).isEmpty())placesByCategory.remove(p.getCategory());
+
                      placesByName.get(p.getName()).remove(p);
-                  //   if(placesByName.get(p.getName().isEmpty());
-                    // placesByName.remove(p.getName());
-                    // placesByPosition.get(p)
+                     if(placesByName.get(p.getName()).isEmpty());
+                     placesByName.remove(p.getName());
+
+                     placesByPosition.get(p.getPosition()).remove(p);
+                     placesByPosition.remove(p.getPosition());
+                     bp.remove(p);
+
 
                  }//For-loop markedPlaces
+            thingsHaveChanged=true;
+            markedPlaces.clear();
+            repaint();
 
         }//End ActionEvent
     }//End RemoveLyss
@@ -647,8 +655,13 @@ public class Inlupp2_Gui extends JFrame {
         markedPlaces.remove(place);
     }// End avmarkeraPlats
 
-    private void taBortAllaMarkeradePlatser(){
+    private void taBortAllaMarkeradePlatser()
+    {
+        placesByCategory.clear();
+        placesByName.clear();
+        placesByPosition.clear();
         markedPlaces.clear();
+
     }
 
     private void sparaSaker() {
