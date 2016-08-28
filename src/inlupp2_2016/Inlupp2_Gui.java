@@ -362,20 +362,16 @@ public class Inlupp2_Gui extends JFrame {
 
     class RemoveLyss implements ActionListener {
         public void actionPerformed(ActionEvent ave) {
-            for (Iterator<Map.Entry<Position, Place>> iter = placesByPosition.entrySet().iterator(); iter.hasNext(); ) {
-                Map.Entry<Position, Place> entry = iter.next();
-                Place place = entry.getValue();
-                for (Place p : markedPlaces) {
+                 for(Place p : markedPlaces){
+                     placesByCategory.get(p.getCategory()).remove(p);
+                     if(placesByCategory.get(p.getCategory()).isEmpty())placesByCategory.remove(p.getCategory());
+                     placesByName.get(p.getName()).remove(p);
+                  //   if(placesByName.get(p.getName().isEmpty());
+                    // placesByName.remove(p.getName());
+                    // placesByPosition.get(p)
 
-                    List<Place> sammaNamnList = placesByName.get(place.getName());
-                    sammaNamnList.remove(place);
-                    if (sammaNamnList.isEmpty())
-                        placesByName.remove(place.getName());
-                    bp.remove(p);
-                    iter.remove();
-                    repaint();
-                }
-            }
+                 }//For-loop markedPlaces
+
         }//End ActionEvent
     }//End RemoveLyss
 
