@@ -39,7 +39,6 @@ public class Inlupp2_Gui extends JFrame {
     private JMenu progMenu;
     MusLyss musLyss = new MusLyss();
     WhatIsHereMusKnappLyss whatIsHereKnappLyss = new WhatIsHereMusKnappLyss();
-    private Place place;
     Map<String, List<Place>> placesByName = new HashMap<>();
     public Map<Position, Place> placesByPosition = new HashMap<>();
     public Map<Category, List<Place>> placesByCategory = new HashMap<>();
@@ -317,7 +316,7 @@ public class Inlupp2_Gui extends JFrame {
                 }
             } // End try-catch
 
-
+            Place place;
             if (description.isEmpty()) {
                 place = new NamedPlace(name, position, category);
             } else {
@@ -346,15 +345,13 @@ public class Inlupp2_Gui extends JFrame {
         public void actionPerformed(ActionEvent ave) {
 
             for (Place pos : markedPlaces) {
-                    {
-                    pos.setVisad(false);
-                    pos.setMarkerad(false);
 
-                    for (MouseListener l : pos.getMouseListeners()) {
-                        pos.removeMouseListener(l);
-                    }
+                pos.setVisad(false);
+                pos.setMarkerad(false);
+
+                for (MouseListener l : pos.getMouseListeners()) {
+                    pos.removeMouseListener(l);
                 }
-
             }
 
         } //HideLyss ActionPerfomed
@@ -363,9 +360,26 @@ public class Inlupp2_Gui extends JFrame {
     class RemoveLyss implements ActionListener {
         public void actionPerformed(ActionEvent ave) {
 
+            for(Place pos : markedPlaces)
+            {
+                bp.remove(pos);
+                placesByName.remove(pos.getName());
 
+                for (Iterator<Map.Entry<Position, Place>> iter = placesByPosition.entrySet().iterator(); iter.hasNext(); ) {
+                    Map.Entry<Position, Place> entry = iter.next();
+                    Place place = entry.getValue();
+                    if(place == pos) {
+                        iter.remove();
+                    }
+                }
+            }
+
+            markedPlaces.clear();
+            repaint();
         }//End ActionEvent
     }//End RemoveLyss
+
+
 
     class MusAndPlaceLyss extends MouseAdapter {
 
