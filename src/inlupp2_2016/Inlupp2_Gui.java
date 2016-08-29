@@ -364,9 +364,6 @@ public class Inlupp2_Gui extends JFrame {
         public void actionPerformed(ActionEvent ave) {
 
 
-
-
-
         }//End ActionEvent
     }//End RemoveLyss
 
