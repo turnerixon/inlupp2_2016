@@ -250,7 +250,7 @@ public class Inlupp2_Gui extends JFrame {
 
                     for (Place p : platserPerKategori) {
                         p.setVisad(true);
-                        avmarkeraAlla();
+                        p.setMarkerad(false);
                         p.addMouseListener(new MusAndPlaceLyss());
 
                     }
@@ -366,6 +366,12 @@ public class Inlupp2_Gui extends JFrame {
                 bp.remove(pos);
                 placesByName.remove(pos.getName());
 
+/*
+Du måste ta bort plats från sammaKategoriList när du tar bort platsen från placesByPosition
+Du måste ta bort platsen från sammaNamnList när du tar bort platsen från placesByName
+
+ */
+
                 for (Iterator<Map.Entry<Position, Place>> iter = placesByPosition.entrySet().iterator(); iter.hasNext(); ) {
                     Map.Entry<Position, Place> entry = iter.next();
                     Place place = entry.getValue();
@@ -373,6 +379,9 @@ public class Inlupp2_Gui extends JFrame {
                         iter.remove();
                     }
                 }
+
+
+
             }
 
             markedPlaces.clear();
