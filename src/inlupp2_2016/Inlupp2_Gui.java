@@ -250,6 +250,7 @@ public class Inlupp2_Gui extends JFrame {
 
                     for (Place p : platserPerKategori) {
                         p.setVisad(true);
+                        avmarkeraAlla();
                         p.addMouseListener(new MusAndPlaceLyss());
 
                     }
@@ -641,6 +642,7 @@ public class Inlupp2_Gui extends JFrame {
         for (List<Place> placeList : placesByCategory.values()) {
             for (Place p : placeList) {
                 p.setMarkerad(false);
+                markedPlaces.clear();
             }
         }
     }// End avmarkeraAlla
