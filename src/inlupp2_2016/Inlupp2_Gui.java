@@ -1,6 +1,7 @@
 package inlupp2_2016;
 
 import inlupp2_2016.places.*;
+import javafx.geometry.Pos;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -364,14 +365,23 @@ public class Inlupp2_Gui extends JFrame {
             for(Place pos : markedPlaces)
             {
                 bp.remove(pos);
-                placesByName.remove(pos.getName());
+                List<Place> sammaPlaceNameList = placesByName.get(pos.getName());
+                List<Position> sammaPositionList = new ArrayList<Position>(placesByPosition.keySet());
+                List<Category> sammaKategoriList = new ArrayList<Category> (placesByCategory.keySet());
+
+                sammaPlaceNameList.remove(pos);
+                if(sammaPlaceNameList.isEmpty())
+                    placesByName.remove(pos);
+
+                sammaPositionList.remove(pos.getPosition());
+                if(sammaPositionList.isEmpty())
+                    placesByPosition.remove(pos.getPosition());
+
+                sammaKategoriList.remove(pos.getCategory());
+                if(sammaKategoriList.isEmpty())
+                    placesByCategory.remove(pos.getCategory());
 
 /*
-Du måste ta bort plats från sammaKategoriList när du tar bort platsen från placesByPosition
-Du måste ta bort platsen från sammaNamnList när du tar bort platsen från placesByName
-
- */
-
                 for (Iterator<Map.Entry<Position, Place>> iter = placesByPosition.entrySet().iterator(); iter.hasNext(); ) {
                     Map.Entry<Position, Place> entry = iter.next();
                     Place place = entry.getValue();
@@ -379,6 +389,8 @@ Du måste ta bort platsen från sammaNamnList när du tar bort platsen från pla
                         iter.remove();
                     }
                 }
+
+                */
 
 
 
