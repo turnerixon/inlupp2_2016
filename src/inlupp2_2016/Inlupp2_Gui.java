@@ -364,33 +364,41 @@ public class Inlupp2_Gui extends JFrame {
 
             for(Place pos : markedPlaces)
             {
-                bp.remove(pos);
-                List<Place> sammaPlaceNameList = placesByName.get(pos.getName());
+                //Hämta platser från respektive datastruktur
+                List<String> sammaPlaceNameList = new ArrayList<String>(placesByName.keySet());
                 List<Position> sammaPositionList = new ArrayList<Position>(placesByPosition.keySet());
                 List<Category> sammaKategoriList = new ArrayList<Category> (placesByCategory.keySet());
 
-                sammaPlaceNameList.remove(pos);
-                if(sammaPlaceNameList.isEmpty())
-                    placesByName.remove(pos);
+                //Gå igenom platserna per namn och ta bort dem.
+                for(Place p : markedPlaces){
+                    if(sammaPlaceNameList.equals(p.getName())){
+                        sammaPlaceNameList.remove(p);
+                        if(sammaPlaceNameList.isEmpty())
+                            placesByName.remove(p.getName());
+                    }
+                }//End for-loop
 
-                sammaPositionList.remove(pos.getPosition());
-                if(sammaPositionList.isEmpty())
-                    placesByPosition.remove(pos.getPosition());
+                //Gå igenom platserna i Position och ta bort dem
+                for(Place p: markedPlaces){
+                    if(sammaPositionList.equals(p.getPosition())) {
+                        sammaPositionList.remove(p);
+                        if (sammaPositionList.isEmpty())
+                            placesByPosition.remove(p.getPosition());
+                    }
 
-                sammaKategoriList.remove(pos.getCategory());
-                if(sammaKategoriList.isEmpty())
-                    placesByCategory.remove(pos.getCategory());
+                }//End Position-loop
 
-/*
-                for (Iterator<Map.Entry<Position, Place>> iter = placesByPosition.entrySet().iterator(); iter.hasNext(); ) {
-                    Map.Entry<Position, Place> entry = iter.next();
-                    Place place = entry.getValue();
-                    if(place == pos) {
-                        iter.remove();
+                // Gå igenom platserna i Category och ta bort dem
+                for(Place p : markedPlaces){
+                    if(sammaKategoriList.equals(p.getCategory())){
+                        sammaKategoriList.remove(p);
+                        if(sammaKategoriList.isEmpty())
+                            placesByCategory.remove(p.getCategory());
                     }
                 }
 
-                */
+                // Ta bort från kartan
+                bp.remove(pos);
 
 
 
@@ -398,6 +406,7 @@ public class Inlupp2_Gui extends JFrame {
 
             markedPlaces.clear();
             repaint();
+            thingsHaveChanged=true;
         }//End ActionEvent
     }//End RemoveLyss
 
@@ -710,12 +719,11 @@ public class Inlupp2_Gui extends JFrame {
                 //Skriv ut ClassNamnet, Platsens kategori, X och Y koordinater, Platsens namn och eventuell beskrivning
                 System.out.println(p.getPrintableInfo());
             }
-
-            out.close();
-            utfil.close();
+                out.close();
+                utfil.close();
 
         } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Kan inte öppna filen: ");
+            JOptionPane.showMessageDialog(null, "Kan inte Spara filen: ");
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Fel : " + e.getMessage());
         }
