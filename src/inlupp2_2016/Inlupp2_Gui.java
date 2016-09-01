@@ -366,8 +366,17 @@ public class Inlupp2_Gui extends JFrame {
             {
                 //Hämta platser från respektive datastruktur
                 List<String> sammaPlaceNameList = new ArrayList<String>(placesByName.keySet());
-                List<Position> sammaPositionList = new ArrayList<Position>(placesByPosition.keySet());
                 List<Category> sammaKategoriList = new ArrayList<Category> (placesByCategory.keySet());
+
+
+                for (Iterator<Map.Entry<Position, Place>> iter = placesByPosition.entrySet().iterator(); iter.hasNext(); ) {
+                    Map.Entry<Position, Place> entry = iter.next();
+                    Place place = entry.getValue();
+                    if (place == pos) {
+                        iter.remove();
+                    }
+                }// End remove in placesByPosition
+
 
                 //Gå igenom platserna per namn och ta bort dem.
                 for(Place p : markedPlaces){
@@ -375,18 +384,9 @@ public class Inlupp2_Gui extends JFrame {
                         sammaPlaceNameList.remove(p);
                         if(sammaPlaceNameList.isEmpty())
                             placesByName.remove(p.getName());
+
                     }
                 }//End for-loop
-
-                //Gå igenom platserna i Position och ta bort dem
-                for(Place p: markedPlaces){
-                    if(sammaPositionList.equals(p.getPosition())) {
-                        sammaPositionList.remove(p);
-                        if (sammaPositionList.isEmpty())
-                            placesByPosition.remove(p.getPosition());
-                    }
-
-                }//End Position-loop
 
                 // Gå igenom platserna i Category och ta bort dem
                 for(Place p : markedPlaces){
@@ -435,6 +435,7 @@ public class Inlupp2_Gui extends JFrame {
 
 
                 } //end getVisad()
+                //Klick på högerknappen
             } else if (mev.getButton() == MouseEvent.BUTTON3) {
                 place.setUtfalld(!place.getUtfalld());
 
