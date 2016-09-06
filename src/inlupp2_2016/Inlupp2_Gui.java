@@ -364,7 +364,7 @@ public class Inlupp2_Gui extends JFrame {
 
             for(Place pos : markedPlaces)
             {
-                //Hämta platser från respektive datastruktur
+                //Hämta platser i listform från respektive datastruktur
                 List<String> sammaPlaceNameList = new ArrayList<String>(placesByName.keySet());
                 List<Category> sammaKategoriList = new ArrayList<Category> (placesByCategory.keySet());
 
@@ -388,7 +388,7 @@ public class Inlupp2_Gui extends JFrame {
                     }
                 }//End for-loop
 
-                // Gå igenom platserna i Category och ta bort dem
+                // Gå igenom platserna per Category och ta bort dem
                 for(Place p : markedPlaces){
                     if(sammaKategoriList.equals(p.getCategory())){
                         sammaKategoriList.remove(p);
