@@ -11,6 +11,8 @@ public class NamedPlace extends Place {
     String name;
 
     public NamedPlace(String name, Position position, Category category) {
+        if(position.getY()<0)
+            throw  new IllegalAccessException()
         super(position, category);
         this.name = name;
     }
